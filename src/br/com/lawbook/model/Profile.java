@@ -1,28 +1,27 @@
 package br.com.lawbook.model;
 
 import java.util.Calendar;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.OneToMany;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 02SEP2011-01 
+ * @version 04SEP2011-02 
  */
 
-@Entity
-@Table(name="LWB_USER_PROFILE")
+@Entity(name="LWB_USER_PROFILE")
 public class Profile {
 	
-	@Id
+	@Id 
 	@GeneratedValue
-	@SequenceGenerator(name="LWB_USER_PROFILE_SEQ", sequenceName="LWB_USER_PROFILE_SEQ")
 	private Long id;
 	@Column(length = 50)
 	private String firstName;
@@ -30,10 +29,13 @@ public class Profile {
 	private String lastName;
 	private Calendar birth;
 	@ManyToOne
-	@JoinColumn(name="locationId")
+	@JoinColumn(name="location_id")
 	private Location location;
-	@Column(length = 100)
+	@Column(length = 255, name="about_me")
 	private String aboutMe;
+	@OneToMany
+	@JoinTable(name="lwb_wall_messages")
+	private List<Messages> wall;
 	
 	public Long getId() {
 		return id;
@@ -70,5 +72,11 @@ public class Profile {
 	}
 	public void setAboutMe(String aboutMe) {
 		this.aboutMe = aboutMe;
+	}
+	public List<Messages> getWall() {
+		return wall;
+	}
+	public void setWall(List<Messages> wall) {
+		this.wall = wall;
 	}
 }

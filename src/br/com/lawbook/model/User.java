@@ -6,21 +6,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 02SEP2011-01 
+ * @version 04SEP2011-02 
  * 
  */
-@Entity
-@Table(name="LWB_USER")
+@Entity(name="LWB_USER")
 public class User {
 	
 	@Id
 	@GeneratedValue
-	@SequenceGenerator(name="LWB_USER_SEQ", sequenceName="LWB_USER_SEQ")
 	private Long id;
 	@Column(length = 100)
 	private String userName;
@@ -29,7 +25,7 @@ public class User {
 	@Column(length = 100)
 	private String password;
 	@OneToOne
-	@JoinColumn(name="perfilId")
+	@JoinColumn(name="perfil_id")
 	private Profile profile;
 	
 	public Long getId() {

@@ -4,11 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 02SEP2011-01 
+ * @version 04SEP2011-02 
  */
 
 @Entity(name="LWB_LOCATION")
@@ -16,7 +15,6 @@ public class Location {
 
 	@Id
 	@GeneratedValue
-	@SequenceGenerator(name="LWB_LOCATION_SEQ", sequenceName="LWB_LOCATION_SEQ")
 	private Long id;
 	@Column(length = 50)
 	private String country;
@@ -24,13 +22,13 @@ public class Location {
 	private String state;
 	@Column(length = 50)
 	private String city;
-	@Column(length = 100)
+	@Column(length = 100, name="main_address")
 	private String mainAdd;
-	@Column(length = 9)
+	@Column(length = 9, name="main_address_zipcode")
 	private String mainZipCode;
-	@Column(length = 100)
+	@Column(length = 100, name="sec_address")
 	private String secAdd;
-	@Column(length = 9)
+	@Column(length = 9, name="sec_address_zipcode")
 	private String secAddZipCode;
 	
 	public Long getId() {

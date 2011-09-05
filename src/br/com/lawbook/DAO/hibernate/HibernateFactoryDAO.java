@@ -1,16 +1,17 @@
-package br.com.lawbook.DAO;
+package br.com.lawbook.DAO.hibernate;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import br.com.lawbook.DAO.FactoryDAO;
 import br.com.lawbook.util.HibernateUtil;
 
-public class FactoryHibernateDAO extends FactoryDAO {
+public class HibernateFactoryDAO extends FactoryDAO {
 
     private Session session;
     private Transaction tx;
 
-    public FactoryHibernateDAO() {
+    public HibernateFactoryDAO() {
         this.session = HibernateUtil.getSession();
     }
 

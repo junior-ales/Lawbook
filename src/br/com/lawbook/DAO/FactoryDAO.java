@@ -1,9 +1,11 @@
 package br.com.lawbook.DAO;
 
+import br.com.lawbook.DAO.hibernate.HibernateFactoryDAO;
+
 public abstract class FactoryDAO {
 
     public static FactoryDAO getFactoryDAO() {
-        return new FactoryHibernateDAO();
+        return new HibernateFactoryDAO();
     }
 
     public abstract void beginTx();
