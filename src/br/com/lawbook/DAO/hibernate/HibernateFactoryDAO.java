@@ -6,6 +6,12 @@ import org.hibernate.Transaction;
 import br.com.lawbook.DAO.FactoryDAO;
 import br.com.lawbook.util.HibernateUtil;
 
+/**
+ * @author Edilson Luiz Ales Junior
+ * @version 04SEP2011-01 
+ * 
+ */
+
 public class HibernateFactoryDAO extends FactoryDAO {
 
     private Session session;

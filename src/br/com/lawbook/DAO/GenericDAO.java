@@ -5,6 +5,12 @@ import java.util.List;
 
 import org.hibernate.Session;
 
+/**
+ * @author Edilson Luiz Ales Junior
+ * @version 04SEP2011-01 
+ * 
+ */
+
 public interface GenericDAO<T> {
 
     public Session getSession();

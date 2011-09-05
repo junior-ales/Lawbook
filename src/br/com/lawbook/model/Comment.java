@@ -8,6 +8,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+/**
+ * @author Edilson Luiz Ales Junior
+ * @version 05SEP2011-02 
+ * 
+ */
+
 @Entity(name="lwb_comment")
 public class Comment {
 	
@@ -43,6 +49,9 @@ public class Comment {
 		return dateTime;
 	}
 	public void setDateTime(Calendar dateTime) {
+		if (Calendar.getInstance().compareTo(dateTime) < 0) {
+			throw new IllegalArgumentException("A data e hora do comentario deve ser menor que a de agora");
+		}
 		this.dateTime = dateTime;
 	}
 }

@@ -6,6 +6,12 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import org.hibernate.Session;
 
+/**
+ * @author Edilson Luiz Ales Junior
+ * @version 04SEP2011-01 
+ * 
+ */
+
 @SuppressWarnings("unchecked")
 public class HibernateGenericDAO<T> implements GenericDAO<T> {
 
