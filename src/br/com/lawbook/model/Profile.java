@@ -8,16 +8,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 05SEP2011-03
+ * @version 05SEP2011-05
  */
 
-@Entity(name = "LWB_USER_PROFILE")
+@Entity(name = "lwb_user_profile")
 public class Profile {
 
 	@Id
@@ -33,10 +32,16 @@ public class Profile {
 	private Location location;
 	@Column(length = 255, name = "about_me")
 	private String aboutMe;
-	@OneToMany
-	@JoinTable(name = "lwb_wall_messages")
-	private List<Message> wall;
-
+	@OneToOne
+	@JoinColumn(name = "wall_id")
+	private List<Post> wall;
+	@OneToOne
+	@JoinColumn(name="friends_list_id")
+	private List<User> friendsList;
+	@OneToOne
+	@JoinColumn(name = "stream_id")
+	private List<Post> stream;
+	
 	public Long getId() {
 		return id;
 	}
@@ -88,11 +93,27 @@ public class Profile {
 		this.aboutMe = aboutMe;
 	}
 
-	public List<Message> getWall() {
+	public List<Post> getWall() {
 		return wall;
 	}
 
-	public void setWall(List<Message> wall) {
+	public void setWall(List<Post> wall) {
 		this.wall = wall;
+	}
+
+	public List<User> getFriendsList() {
+		return friendsList;
+	}
+
+	public void setFriendsList(List<User> friendsList) {
+		this.friendsList = friendsList;
+	}
+
+	public List<Post> getStream() {
+		return stream;
+	}
+
+	public void setStream(List<Post> stream) {
+		this.stream = stream;
 	}
 }

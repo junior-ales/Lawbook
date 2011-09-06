@@ -12,7 +12,7 @@ import javax.persistence.OneToOne;
  * @version 04SEP2011-02 
  * 
  */
-@Entity(name="LWB_USER")
+@Entity(name="lwb_user")
 public class User {
 	
 	@Id

@@ -4,7 +4,7 @@ import java.util.Calendar;
 
 import org.junit.Test;
 
-import br.com.lawbook.model.Message;
+import br.com.lawbook.model.Post;
 
 /**
  * @author Edilson Luiz Ales Junior
@@ -16,7 +16,7 @@ public class MessageTest {
 
 	@Test(expected=IllegalArgumentException.class)
 	public void testSetDateTime() {
-		Message message = new Message();
+		Post message = new Post();
 		Calendar now = Calendar.getInstance();
 		
 		// testing passing the next second as parameter

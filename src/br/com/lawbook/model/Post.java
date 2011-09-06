@@ -17,8 +17,8 @@ import javax.persistence.OneToMany;
  * 
  */
 
-@Entity(name="lwb_message")
-public class Message {
+@Entity(name="lwb_post")
+public class Post {
 	
 	@Id
 	@GeneratedValue
@@ -27,13 +27,13 @@ public class Message {
 	@JoinColumn(name="sender_id")
 	public User senderId;
 	@OneToMany
-	@JoinTable(name="lwb_message_receivers")
+	@JoinTable(name="lwb_post_receivers")
 	public List<User> receiversId;
 	@Column(length = 255)
 	public String content;
 	public Calendar dateTime;
 	@OneToMany
-	@JoinTable(name="lwb_message_comments")
+	@JoinTable(name="lwb_post_comments")
 	public List<Comment> comments;
 	
 	public Long getId() {
