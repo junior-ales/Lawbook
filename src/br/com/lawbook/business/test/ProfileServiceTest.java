@@ -4,19 +4,10 @@ import org.junit.Test;
 
 import br.com.lawbook.model.Post;
 import br.com.lawbook.model.Profile;
+import br.com.lawbook.util.DBMock;
 
 @SuppressWarnings("unused")
 public class ProfileServiceTest {
-	
-	
-//	private User userSender;
-//	private List<User> userReceivers;
-//	private Profile profileSender;
-//	private User ownUser;
-//	private Profile ownProfile;
-//	private Post ownPost;
-//	private Post senderPost;
-//	private Post receiverPost;
 	
 	@Test
 	public void getFirstWallTest() {
