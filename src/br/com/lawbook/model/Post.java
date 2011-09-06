@@ -14,7 +14,7 @@ import javax.persistence.OneToMany;
 /**
  * @author Edilson Luiz Ales Junior
  * @version 05SEP2011-03 
- * 
+ *
  */
 
 @Entity(name="lwb_post")
@@ -48,11 +48,11 @@ public class Post {
 	public void setSenderId(User senderId) {
 		this.senderId = senderId;
 	}
-	public List<User> getReceiverId() {
+	public List<User> getReceiversId() {
 		return receiversId;
 	}
-	public void setReceiverId(List<User> receiverId) {
-		this.receiversId = receiverId;
+	public void setReceiversId(List<User> receiversId) {
+		this.receiversId = receiversId;
 	}
 	public String getContent() {
 		return content;
@@ -68,6 +68,12 @@ public class Post {
 			throw new IllegalArgumentException("A data e hora da mensagem deve ser menor que a de agora");
 		}
 		this.dateTime = dateTime;
+	}
+	public List<Comment> getComments() {
+		return comments;
+	}
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
 	}
 	
 }

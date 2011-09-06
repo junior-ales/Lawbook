@@ -11,7 +11,6 @@ import javax.persistence.ManyToOne;
 /**
  * @author Edilson Luiz Ales Junior
  * @version 05SEP2011-02 
- * 
  */
 
 @Entity(name="lwb_comment")
