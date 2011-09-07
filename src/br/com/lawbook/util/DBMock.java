@@ -7,7 +7,7 @@ import br.com.lawbook.model.*;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 06SEP2011-02
+ * @version 07SEP2011-03
  * 
  */
 public class DBMock {
@@ -27,9 +27,9 @@ public class DBMock {
 	}
 	
 	private DBMock() {
-		DBMockService ds = new DBMockService();
-		tableUser = ds.generateTableUser(new ArrayList<User>());;
-		tableProfile = ds.generateTableProfile(tableUser);
+		DBMockPopulate dbp = DBMockPopulate.getInstance();
+		tableUser = dbp.generateTableUser();
+		tableProfile = dbp.generateTableProfile();
 		tablePost = new ArrayList<Post>();
 		tableComment = new ArrayList<Comment>();
 		tableLocation = new ArrayList<Location>();
