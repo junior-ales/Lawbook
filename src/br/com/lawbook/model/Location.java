@@ -7,10 +7,10 @@ import javax.persistence.Id;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 04SEP2011-02 
+ * @version 08SEP2011-03 
  */
 
-@Entity(name="LWB_LOCATION")
+@Entity(name="lwb_location")
 public class Location {
 
 	@Id
@@ -78,5 +78,12 @@ public class Location {
 	}
 	public void setSecAddZipCode(String secAddZipCode) {
 		this.secAddZipCode = secAddZipCode;
+	}
+	@Override
+	public String toString() {
+		return "Location [id=" + id + ", country=" + country + ", state="
+				+ state + ", city=" + city + ", mainAdd=" + mainAdd
+				+ ", mainZipCode=" + mainZipCode + ", secAdd=" + secAdd
+				+ ", secAddZipCode=" + secAddZipCode + "]";
 	}
 }

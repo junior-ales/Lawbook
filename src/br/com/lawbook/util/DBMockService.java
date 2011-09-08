@@ -16,19 +16,7 @@ import br.com.lawbook.model.User;
 
 public class DBMockService {
 
-	private static DBMockService instance;
 	private DBMock db;
-	
-	public static DBMockService getInstance() {
-		if (instance == null) {
-			instance = new DBMockService();
-		}
-		return instance;
-	}
-
-	private DBMockService() {
-		this.db = DBMock.getInstance();
-	}
 	
 	protected User getNewUser(Long userId) {
 		User user = new User();
@@ -36,13 +24,14 @@ public class DBMockService {
 		user.setUserName("user-" + userId);
 		user.setPassword("passUser-" + userId);
 		user.setEmail("emailUser-" + userId + "-@mail.com");
-		user.setPerfil(getNewProfile(userId + 10L));
+		user.setProfile(getNewProfile(userId + 10L));
 		return user;
 	}
 
 	protected Profile getNewProfile(Long profileId) {
 		Profile profile = new Profile();
 		Calendar c = Calendar.getInstance();
+		
 		profile.setId(profileId);
 		profile.setFirstName("FN-" + profileId + "-Profile");
 		profile.setLastName("LN-" + profileId + "-Profile");
@@ -94,9 +83,20 @@ public class DBMockService {
 	}
 	
 	protected Location getLocationById(Long locationId) {
+		db = DBMock.getInstance();
 		for (Location l : this.db.getTableLocation()) {
 			if (l.getId() == locationId) {
 				return l;
+			}
+		}
+		return null;
+	}
+	
+	protected Profile getProfileById(Long profileId) {
+		db = DBMock.getInstance();
+		for (Profile p : this.db.getTableProfile()) {
+			if (p.getId() == profileId) {
+				return p;
 			}
 		}
 		return null;

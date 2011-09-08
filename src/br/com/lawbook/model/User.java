@@ -9,7 +9,7 @@ import javax.persistence.OneToOne;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 04SEP2011-02 
+ * @version 08SEP2011-03 
  * 
  */
 @Entity(name="lwb_user")
@@ -52,11 +52,16 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public Profile getPerfil() {
+	public Profile getProfile() {
 		return profile;
 	}
-	public void setPerfil(Profile perfil) {
+	public void setProfile(Profile perfil) {
 		this.profile = perfil;
+	}
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", userName=" + userName + ", email=" + email
+				+ ", password=" + password + ", profile=" + profile + "]";
 	}
 	
 }

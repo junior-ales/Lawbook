@@ -3,11 +3,15 @@ package br.com.lawbook.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.lawbook.model.*;
+import br.com.lawbook.model.Comment;
+import br.com.lawbook.model.Location;
+import br.com.lawbook.model.Post;
+import br.com.lawbook.model.Profile;
+import br.com.lawbook.model.User;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 07SEP2011-03
+ * @version 08SEP2011-04
  * 
  */
 public class DBMock {
@@ -27,12 +31,21 @@ public class DBMock {
 	}
 	
 	private DBMock() {
-		DBMockPopulate dbp = DBMockPopulate.getInstance();
-		tableUser = dbp.generateTableUser();
-		tableProfile = dbp.generateTableProfile();
+		tableLocation = new ArrayList<Location>();
+		tableUser = new ArrayList<User>();
+		tableProfile = new ArrayList<Profile>();
 		tablePost = new ArrayList<Post>();
 		tableComment = new ArrayList<Comment>();
-		tableLocation = new ArrayList<Location>();
+		generateTables();
+	}
+
+	private void generateTables() {
+		DBMockPopulate dbp = new DBMockPopulate();
+		tableLocation = dbp.generateTableLocation();
+		dbp.generateTableUserProfile(tableUser, tableProfile);
+//		tableProfile = dbp.generateTableProfile();
+//		tablePost = dbp.generateTablePost();
+//		tableComment = dbp.generateTableComment();
 	}
 
 	public List<User> getTableUser() {

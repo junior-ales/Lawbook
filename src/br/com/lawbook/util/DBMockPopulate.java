@@ -16,38 +16,28 @@ import br.com.lawbook.model.*;
 @SuppressWarnings("unused")
 public class DBMockPopulate {
 
-	private static DBMockPopulate instance;
 	private DBMockService dbs;
 	private final static Long TABLE_SIZE = 5L;
 
-	public static DBMockPopulate getInstance() {
-		if (instance == null) {
-			instance = new DBMockPopulate();
-		}
-		return instance;
-	}
-
-	private DBMockPopulate() {
-		this.dbs = DBMockService.getInstance();
-	}
-
-	protected List<User> generateTableUser() {
-		List<User> tableUser = new ArrayList<User>();
+	protected void generateTableUserProfile(List<User> tableUser, List<Profile> tableProfile) {
+		User u = new User();
 		for (Long i = 1L; i <= TABLE_SIZE; i++) {
-			tableUser.add(dbs.getNewUser(i));
+			u = dbs.getNewUser(i);
+			tableUser.add(u);
+			tableProfile.add(u.getProfile());
 		}
-		return tableUser;
 	}
 
-	protected List<Profile> generateTableProfile() {
-		List<Profile> tableProfile = new ArrayList<Profile>();
-		for (Long i = 1L; i <= TABLE_SIZE; i++) {
-			tableProfile.add(dbs.getNewProfile(i * 10L));
-		}
-		return tableProfile;
-	}
+//	protected List<Profile> generateTableProfile() {
+//		List<Profile> tableProfile = new ArrayList<Profile>();
+//		for (Long i = 1L; i <= TABLE_SIZE; i++) {
+//			tableProfile.add(dbs.getNewProfile(i * 10L));
+//		}
+//		return tableProfile;
+//	}
 
 	protected List<Location> generateTableLocation() {
+		this.dbs = new DBMockService();
 		List<Location> tableLocation = new ArrayList<Location>();
 		for (Long i = 1L; i <= TABLE_SIZE; i++) {
 			tableLocation.add(dbs.getNewLocation(i * 100L));
