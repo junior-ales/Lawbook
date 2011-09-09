@@ -17,10 +17,9 @@ import br.com.lawbook.model.User;
  * @version 07SEP2011-01 
  * 
  */
-@SuppressWarnings("unused")
+//@SuppressWarnings("unused")
 public class DBMockService {
 
-	private DBMock db;
 	private List<User> tableUser;
 	private List<Profile> tableProfile;
 	private List<Post> tablePost;
@@ -34,6 +33,9 @@ public class DBMockService {
 		this.tableComment = tableComment;
 		this.tableLocation = tableLocation;
 	}
+	
+	public DBMockService() {
+	}
 
 	public User getNewUser(Long userId) {
 		User user = new User();
@@ -41,8 +43,7 @@ public class DBMockService {
 		user.setUserName("user-" + userId);
 		user.setPassword("passUser-" + userId);
 		user.setEmail("emailUser-" + userId + "-@mail.com");
-		user.setProfile(null);
-//		user.setProfile(getNewProfile(userId * 10L));
+		user.setProfile(getNewProfile(userId * 10L));
 		return user;
 	}
 
@@ -52,8 +53,7 @@ public class DBMockService {
 		profile.setFirstName("FN-" + profileId + "-Profile");
 		profile.setLastName("LN-" + profileId + "-Profile");
 		profile.setBirth(this.newDate(profileId));
-		profile.setLocation(null);
-//		profile.setLocation(this.getLocationById(200L));
+		profile.setLocation(new Location());
 		profile.setAboutMe("I'm the profile " + profileId + ". What great profile test ahn?");
 		profile.setWall(null);
 		profile.setFriendsList(null);
@@ -64,22 +64,18 @@ public class DBMockService {
 	public Post getNewPost(Long postId) {
 		Post post = new Post();
 		post.setId(postId);
-		post.setSenderId(null);
-		post.setReceiversId(null);
-//		post.setSenderId(this.getUserById(postId / 1000L));
-//		post.setReceiversId(this.getRandomReceivers(postId));
+		post.setSenderId(new User());
+		post.setReceiversId(new ArrayList<User>());
 		post.setContent("Post content bla bla bla bla bla - " + postId);
 		post.setDateTime(this.newDate(postId));
-		post.setComments(null);
-//		post.setComments(this.getRandomComments(postId));
+		post.setComments(new ArrayList<Comment>());
 		return post;
 	}
 
 	public Comment getNewComment(Long commentId) {
 		Comment comment = new Comment();
 		comment.setId(commentId);
-		comment.setSenderId(null);
-//		comment.setSenderId(this.getUserById(commentId / 10000L));
+		comment.setSenderId(new User());
 		comment.setContent("Comment content bla bla bla bla bla - " + commentId);
 		comment.setDateTime(this.newDate(commentId));
 		return comment;
@@ -160,38 +156,6 @@ public class DBMockService {
 			e.printStackTrace();
 		}
 		return c;
-	}
-	
-	private List<User> getRandomReceivers(Long postId) {
-		List<User> users = new ArrayList<User>();
-		if (postId % 3 == 1) {
-			users.add(this.getUserById(postId / 1000L));
-			return users;
-		}
-		else if(postId % 3 == 2) {
-			users.add(this.getUserById(postId / 1000L));
-			users.add(this.getUserById((postId / 1000L) - 1));
-			return users;
-		}
-		else {
-			return users;
-		}
-	}
-	
-	private List<Comment> getRandomComments(Long postId) {
-		List<Comment> comments = new ArrayList<Comment>();
-		if (postId % 3 == 1) {
-			comments.add(this.getCommentById(postId * 10L));
-			return comments;
-		}
-		else if(postId % 3 == 2) {
-			comments.add(this.getCommentById(postId * 10L));
-			comments.add(this.getCommentById((postId * 10L) - 1));
-			return comments;
-		}
-		else {
-			return comments;
-		}
 	}
 	
 }

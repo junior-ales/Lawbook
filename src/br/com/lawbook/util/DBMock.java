@@ -14,6 +14,7 @@ import br.com.lawbook.model.User;
  * @version 09SEP2011-05
  * 
  */
+
 public class DBMock {
 
 	private static DBMock instance;
@@ -37,7 +38,6 @@ public class DBMock {
 		tableComment = new ArrayList<Comment>();
 		tablePost = new ArrayList<Post>();
 		generateTables();
-		applyDependencies(); 
 	}
 
 	private void generateTables() {
@@ -47,11 +47,6 @@ public class DBMock {
 		tableProfile = dbp.generateTableProfile();
 		tableComment = dbp.generateTableComment();
 		tablePost = dbp.generateTablePost();
-	}
-	
-	private void applyDependencies() {
-		//DBMockService dbs = new DBMockService(tableUser, tableProfile, tablePost, tableComment, tableLocation);
-		
 	}
 
 	public List<User> getTableUser() {

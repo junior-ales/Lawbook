@@ -1,6 +1,5 @@
 package br.com.lawbook.util;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import br.com.lawbook.model.Comment;
@@ -45,9 +44,10 @@ public class DBMockPopulate {
 	}
 
 	public List<Profile> generateTableProfile() {
-		List<Profile> tableProfile = new ArrayList<Profile>();		
-		for (Long i = 1L; i <= TABLE_SIZE; i++) {
-			tableProfile.add(dbs.getNewProfile(i * 10L));
+		User u = new User();
+		for (int i = 0; i < this.tableUser.size(); i++) {
+			u = this.tableUser.get(i);
+			tableProfile.add(u.getProfile());
 		}
 		return tableProfile;
 	}
