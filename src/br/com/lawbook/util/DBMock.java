@@ -34,9 +34,10 @@ public class DBMock {
 		tableLocation = new ArrayList<Location>();
 		tableUser = new ArrayList<User>();
 		tableProfile = new ArrayList<Profile>();
-		tablePost = new ArrayList<Post>();
 		tableComment = new ArrayList<Comment>();
+		tablePost = new ArrayList<Post>();
 		generateTables();
+		applyDependencies(); 
 	}
 
 	private void generateTables() {
@@ -44,8 +45,13 @@ public class DBMock {
 		tableLocation = dbp.generateTableLocation();
 		tableUser = dbp.generateTableUser();
 		tableProfile = dbp.generateTableProfile();
-		tablePost = dbp.generateTablePost();
 		tableComment = dbp.generateTableComment();
+		tablePost = dbp.generateTablePost();
+	}
+	
+	private void applyDependencies() {
+		//DBMockService dbs = new DBMockService(tableUser, tableProfile, tablePost, tableComment, tableLocation);
+		
 	}
 
 	public List<User> getTableUser() {

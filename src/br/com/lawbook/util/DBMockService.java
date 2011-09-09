@@ -2,6 +2,7 @@ package br.com.lawbook.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -34,23 +35,25 @@ public class DBMockService {
 		this.tableLocation = tableLocation;
 	}
 
-	protected User getNewUser(Long userId) {
+	public User getNewUser(Long userId) {
 		User user = new User();
 		user.setId(userId);
 		user.setUserName("user-" + userId);
 		user.setPassword("passUser-" + userId);
 		user.setEmail("emailUser-" + userId + "-@mail.com");
-		user.setProfile(getNewProfile(userId + 10L));
+		user.setProfile(null);
+//		user.setProfile(getNewProfile(userId * 10L));
 		return user;
 	}
 
-	protected Profile getNewProfile(Long profileId) {
+	public Profile getNewProfile(Long profileId) {
 		Profile profile = new Profile();
 		profile.setId(profileId);
 		profile.setFirstName("FN-" + profileId + "-Profile");
 		profile.setLastName("LN-" + profileId + "-Profile");
-		profile.setBirth(newDate(profileId));
-		profile.setLocation(this.getLocationById(profileId * 10L));
+		profile.setBirth(this.newDate(profileId));
+		profile.setLocation(null);
+//		profile.setLocation(this.getLocationById(200L));
 		profile.setAboutMe("I'm the profile " + profileId + ". What great profile test ahn?");
 		profile.setWall(null);
 		profile.setFriendsList(null);
@@ -58,27 +61,31 @@ public class DBMockService {
 		return profile;
 	}
 
-	protected Post getNewPost(Long postId) {
+	public Post getNewPost(Long postId) {
 		Post post = new Post();
 		post.setId(postId);
-		post.setSenderId(this.getUserById(postId / 1000L));
+		post.setSenderId(null);
 		post.setReceiversId(null);
+//		post.setSenderId(this.getUserById(postId / 1000L));
+//		post.setReceiversId(this.getRandomReceivers(postId));
 		post.setContent("Post content bla bla bla bla bla - " + postId);
-		post.setDateTime(newDate(postId));
+		post.setDateTime(this.newDate(postId));
 		post.setComments(null);
+//		post.setComments(this.getRandomComments(postId));
 		return post;
 	}
 
-	protected Comment getNewComment(Long commentId) {
+	public Comment getNewComment(Long commentId) {
 		Comment comment = new Comment();
 		comment.setId(commentId);
-		comment.setSenderId(this.getUserById(commentId / 10000L));
+		comment.setSenderId(null);
+//		comment.setSenderId(this.getUserById(commentId / 10000L));
 		comment.setContent("Comment content bla bla bla bla bla - " + commentId);
-		comment.setDateTime(newDate(commentId));
+		comment.setDateTime(this.newDate(commentId));
 		return comment;
 	}
 
-	protected Location getNewLocation(Long locationId) {
+	public Location getNewLocation(Long locationId) {
 		Location location = new Location();
 		location.setId(locationId);
 		location.setCountry("Country-"+locationId);
@@ -100,6 +107,7 @@ public class DBMockService {
 		return null;
 	}
 	public Profile getProfileById(Long profileId) {
+		
 		for (Profile p : this.tableProfile) {
 			if (p.getId() == profileId) {
 				return p;
@@ -109,7 +117,8 @@ public class DBMockService {
 	}
 	
 	public Location getLocationById(Long locationId) {
-		for (Location l : this.tableLocation) {
+		List<Location> locations = this.tableLocation;
+		for (Location l : locations) {
 			if (l.getId() == locationId) {
 				return l;
 			}
@@ -118,8 +127,10 @@ public class DBMockService {
 	}
 	
 	public Post getPostById(Long postId) {
-		for (Post p : this.tablePost) {
+		List<Post> posts = this.tablePost;
+		for (Post p : posts) {
 			if (p.getId() == postId) {
+				System.out.println(p.toString());
 				return p;
 			}
 		}
@@ -127,8 +138,9 @@ public class DBMockService {
 	}
 	
 	public Comment getCommentById(Long commentId) {
-		for (Comment c : this.tableComment) {
-			if (c.getId() == commentId) {
+		List<Comment> comments = this.tableComment;
+		for (Comment c : comments) {
+			if (c.getId().equals(commentId)) {
 				return c;
 			}
 		}
@@ -139,12 +151,47 @@ public class DBMockService {
 		Calendar c = Calendar.getInstance();
 		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		try {
-			c.setTime(df.parse("01/08/1988"));
+			c.setTime(df.parse("02/08/1988"));
+			if(objId > 500) {
+				objId = (objId * 10L) / 100L;
+			}
 			c.add(Calendar.DAY_OF_YEAR, objId.intValue());
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		return c;
+	}
+	
+	private List<User> getRandomReceivers(Long postId) {
+		List<User> users = new ArrayList<User>();
+		if (postId % 3 == 1) {
+			users.add(this.getUserById(postId / 1000L));
+			return users;
+		}
+		else if(postId % 3 == 2) {
+			users.add(this.getUserById(postId / 1000L));
+			users.add(this.getUserById((postId / 1000L) - 1));
+			return users;
+		}
+		else {
+			return users;
+		}
+	}
+	
+	private List<Comment> getRandomComments(Long postId) {
+		List<Comment> comments = new ArrayList<Comment>();
+		if (postId % 3 == 1) {
+			comments.add(this.getCommentById(postId * 10L));
+			return comments;
+		}
+		else if(postId % 3 == 2) {
+			comments.add(this.getCommentById(postId * 10L));
+			comments.add(this.getCommentById((postId * 10L) - 1));
+			return comments;
+		}
+		else {
+			return comments;
+		}
 	}
 	
 }

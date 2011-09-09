@@ -3,16 +3,18 @@
  */
 package br.com.lawbook.util.test;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
 import org.junit.Test;
 
-import br.com.lawbook.model.*;
+import br.com.lawbook.model.Comment;
+import br.com.lawbook.model.Location;
+import br.com.lawbook.model.Post;
+import br.com.lawbook.model.Profile;
+import br.com.lawbook.model.User;
 import br.com.lawbook.util.DBMock;
-import br.com.lawbook.util.DBMockService;
 
 /**
  * @author Edilson Luiz Ales Junior
@@ -20,7 +22,12 @@ import br.com.lawbook.util.DBMockService;
  */
 
 public class DBMockTest {
-
+	
+	
+	public DBMockTest() {
+		
+	}
+	
 	@Test
 	public void tableUserGenerationTest() {
 		DBMock db = DBMock.getInstance();
@@ -49,6 +56,7 @@ public class DBMockTest {
 		for (int i = 0; i < locations.size(); i++) {
 			System.out.println(locations.get(i).toString());
 		}
+		
 	}
 	
 	@Test
@@ -70,44 +78,7 @@ public class DBMockTest {
 			System.out.println(comments.get(i).toString());
 		}
 	}
+
 	
-	@Test
-	public void getUserByIdTest() {
-		DBMock db = DBMock.getInstance();
-		DBMockService dbs = new DBMockService(db.getTableUser(), db.getTableProfile(), 
-				db.getTablePost(), db.getTableComment(), db.getTableLocation());
-		assertNotNull(dbs.getUserById(1L));
-	}
 	
-	@Test
-	public void getProfileByIdTest() {
-		DBMock db = DBMock.getInstance();
-		DBMockService dbs = new DBMockService(db.getTableUser(), db.getTableProfile(), 
-				db.getTablePost(), db.getTableComment(), db.getTableLocation());
-		assertNotNull(dbs.getProfileById(10L));
-	}
-	
-	@Test
-	public void getLocationByIdTest() {
-		DBMock db = DBMock.getInstance();
-		DBMockService dbs = new DBMockService(db.getTableUser(), db.getTableProfile(), 
-				db.getTablePost(), db.getTableComment(), db.getTableLocation());
-		assertNotNull(dbs.getLocationById(100L));
-	}
-	
-	@Test
-	public void getPostByIdTest() {
-		DBMock db = DBMock.getInstance();
-		DBMockService dbs = new DBMockService(db.getTableUser(), db.getTableProfile(), 
-				db.getTablePost(), db.getTableComment(), db.getTableLocation());
-		assertNotNull(dbs.getPostById(1000L));
-	}
-	
-	@Test
-	public void getCommentByIdTest() {
-		DBMock db = DBMock.getInstance();
-		DBMockService dbs = new DBMockService(db.getTableUser(), db.getTableProfile(), 
-				db.getTablePost(), db.getTableComment(), db.getTableLocation());
-		assertNotNull(dbs.getCommentById(10000L));
-	}
 }

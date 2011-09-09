@@ -1,19 +1,20 @@
 package br.com.lawbook.util;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
-import br.com.lawbook.model.*;
+import br.com.lawbook.model.Comment;
+import br.com.lawbook.model.Location;
+import br.com.lawbook.model.Post;
+import br.com.lawbook.model.Profile;
+import br.com.lawbook.model.User;
 
 /**
  * @author Edilson Luiz Ales Junior
  * @version 07SEP2011-04
  * 
  */
-@SuppressWarnings("unused")
+
 public class DBMockPopulate {
 
 	private DBMockService dbs;
@@ -32,43 +33,40 @@ public class DBMockPopulate {
 		this.tablePost = tablePost;
 		this.tableComment = tableComment;
 		this.tableLocation = tableLocation;
-		this.dbs = new DBMockService(tableUser, tableProfile, tablePost,
-				tableComment, tableLocation);
+		this.dbs = new DBMockService(this.tableUser, this.tableProfile, this.tablePost,
+				this.tableComment, this.tableLocation);
 	}
 
-	protected List<User> generateTableUser() {
-		User u = new User();
+	public List<User> generateTableUser() {
 		for (Long i = 1L; i <= TABLE_SIZE; i++) {
 			tableUser.add(dbs.getNewUser(i));
 		}
 		return tableUser;
 	}
 
-	protected List<Profile> generateTableProfile() {
-		User u = new User();
-		for (int i = 0; i < this.tableUser.size(); i++) {
-			u = this.tableUser.get(i);
-			tableProfile.add(u.getProfile());
+	public List<Profile> generateTableProfile() {
+		List<Profile> tableProfile = new ArrayList<Profile>();		
+		for (Long i = 1L; i <= TABLE_SIZE; i++) {
+			tableProfile.add(dbs.getNewProfile(i * 10L));
 		}
 		return tableProfile;
 	}
 
-	protected List<Location> generateTableLocation() {
-
+	public List<Location> generateTableLocation() {
 		for (Long i = 1L; i <= TABLE_SIZE; i++) {
 			tableLocation.add(dbs.getNewLocation(i * 100L));
 		}
 		return tableLocation;
 	}
 
-	protected List<Post> generateTablePost() {
+	public List<Post> generateTablePost() {
 		for (Long i = 1L; i <= TABLE_SIZE; i++) {
 			tablePost.add(dbs.getNewPost(i * 1000L));
 		}
 		return tablePost;
 	}
 
-	protected List<Comment> generateTableComment() {
+	public List<Comment> generateTableComment() {
 		for (Long i = 1L; i <= TABLE_SIZE; i++) {
 			tableComment.add(dbs.getNewComment(i * 10000L));
 		}
