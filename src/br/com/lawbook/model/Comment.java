@@ -1,5 +1,6 @@
 package br.com.lawbook.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +11,7 @@ import javax.persistence.ManyToOne;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 05SEP2011-02 
+ * @version 09SEP2011-03 
  * 
  */
 
@@ -53,5 +54,11 @@ public class Comment {
 			throw new IllegalArgumentException("A data e hora do comentario deve ser menor que a de agora");
 		}
 		this.dateTime = dateTime;
+	}
+	@Override
+	public String toString() {
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		return "Comment [id=" + id + ", senderId=" + senderId + ", content="
+				+ content + ", dateTime=" + df.format(dateTime.getTime()) + "]";
 	}
 }

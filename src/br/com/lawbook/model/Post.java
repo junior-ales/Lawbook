@@ -1,5 +1,6 @@
 package br.com.lawbook.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import javax.persistence.Column;
@@ -13,7 +14,7 @@ import javax.persistence.OneToMany;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 05SEP2011-03 
+ * @version 09SEP2011-04 
  *
  */
 
@@ -76,4 +77,11 @@ public class Post {
 		this.comments = comments;
 	}
 	
+	@Override
+	public String toString() {
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		return "Post [id=" + id + ", senderId=" + senderId + ", receiversId="
+				+ receiversId + ", content=" + content + ", dateTime="
+				+ df.format(dateTime.getTime()) + ", comments=" + comments + "]";
+	}
 }

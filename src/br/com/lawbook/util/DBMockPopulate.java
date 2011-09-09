@@ -18,27 +18,43 @@ public class DBMockPopulate {
 
 	private DBMockService dbs;
 	private final static Long TABLE_SIZE = 5L;
+	private List<User> tableUser;
+	private List<Profile> tableProfile;
+	private List<Post> tablePost;
+	private List<Comment> tableComment;
+	private List<Location> tableLocation;
 
-	protected void generateTableUserProfile(List<User> tableUser, List<Profile> tableProfile) {
-		User u = new User();
-		for (Long i = 1L; i <= TABLE_SIZE; i++) {
-			u = dbs.getNewUser(i);
-			tableUser.add(u);
-			tableProfile.add(u.getProfile());
-		}
+	public DBMockPopulate(List<User> tableUser, List<Profile> tableProfile,
+			List<Post> tablePost, List<Comment> tableComment,
+			List<Location> tableLocation) {
+		this.tableUser = tableUser;
+		this.tableProfile = tableProfile;
+		this.tablePost = tablePost;
+		this.tableComment = tableComment;
+		this.tableLocation = tableLocation;
+		this.dbs = new DBMockService(tableUser, tableProfile, tablePost,
+				tableComment, tableLocation);
 	}
 
-//	protected List<Profile> generateTableProfile() {
-//		List<Profile> tableProfile = new ArrayList<Profile>();
-//		for (Long i = 1L; i <= TABLE_SIZE; i++) {
-//			tableProfile.add(dbs.getNewProfile(i * 10L));
-//		}
-//		return tableProfile;
-//	}
+	protected List<User> generateTableUser() {
+		User u = new User();
+		for (Long i = 1L; i <= TABLE_SIZE; i++) {
+			tableUser.add(dbs.getNewUser(i));
+		}
+		return tableUser;
+	}
+
+	protected List<Profile> generateTableProfile() {
+		User u = new User();
+		for (int i = 0; i < this.tableUser.size(); i++) {
+			u = this.tableUser.get(i);
+			tableProfile.add(u.getProfile());
+		}
+		return tableProfile;
+	}
 
 	protected List<Location> generateTableLocation() {
-		this.dbs = new DBMockService();
-		List<Location> tableLocation = new ArrayList<Location>();
+
 		for (Long i = 1L; i <= TABLE_SIZE; i++) {
 			tableLocation.add(dbs.getNewLocation(i * 100L));
 		}
@@ -46,7 +62,6 @@ public class DBMockPopulate {
 	}
 
 	protected List<Post> generateTablePost() {
-		List<Post> tablePost = new ArrayList<Post>();
 		for (Long i = 1L; i <= TABLE_SIZE; i++) {
 			tablePost.add(dbs.getNewPost(i * 1000L));
 		}
@@ -54,7 +69,6 @@ public class DBMockPopulate {
 	}
 
 	protected List<Comment> generateTableComment() {
-		List<Comment> tableComment = new ArrayList<Comment>();
 		for (Long i = 1L; i <= TABLE_SIZE; i++) {
 			tableComment.add(dbs.getNewComment(i * 10000L));
 		}

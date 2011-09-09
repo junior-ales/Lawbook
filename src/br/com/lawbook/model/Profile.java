@@ -1,5 +1,6 @@
 package br.com.lawbook.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import javax.persistence.OneToOne;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 05SEP2011-05
+ * @version 09SEP2011-06
  */
 
 @Entity(name = "lwb_user_profile")
@@ -115,5 +116,14 @@ public class Profile {
 
 	public void setStream(List<Post> stream) {
 		this.stream = stream;
+	}
+
+	@Override
+	public String toString() {
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		return "Profile [id=" + id + ", firstName=" + firstName + ", lastName="
+				+ lastName + ", birth=" + df.format(birth.getTime()) + ", location=" + location
+				+ ", aboutMe=" + aboutMe + ", wall=" + wall + ", friendsList="
+				+ friendsList + ", stream=" + stream + "]";
 	}
 }

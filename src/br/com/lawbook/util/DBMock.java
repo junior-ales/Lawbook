@@ -11,7 +11,7 @@ import br.com.lawbook.model.User;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 08SEP2011-04
+ * @version 09SEP2011-05
  * 
  */
 public class DBMock {
@@ -40,12 +40,12 @@ public class DBMock {
 	}
 
 	private void generateTables() {
-		DBMockPopulate dbp = new DBMockPopulate();
+		DBMockPopulate dbp = new DBMockPopulate(tableUser, tableProfile, tablePost, tableComment, tableLocation);
 		tableLocation = dbp.generateTableLocation();
-		dbp.generateTableUserProfile(tableUser, tableProfile);
-//		tableProfile = dbp.generateTableProfile();
-//		tablePost = dbp.generateTablePost();
-//		tableComment = dbp.generateTableComment();
+		tableUser = dbp.generateTableUser();
+		tableProfile = dbp.generateTableProfile();
+		tablePost = dbp.generateTablePost();
+		tableComment = dbp.generateTableComment();
 	}
 
 	public List<User> getTableUser() {
