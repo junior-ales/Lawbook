@@ -9,7 +9,7 @@ import javax.persistence.OneToOne;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 08SEP2011-03 
+ * @version 10SEP2011-04 
  * 
  */
 @Entity(name="lwb_user")
@@ -61,7 +61,7 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", userName=" + userName + ", email=" + email
-				+ ", password=" + password + ", profile=" + profile + "]";
+				+ ", password=" + password + ", profileId=" + profile.getId() + "]";
 	}
 	
 }

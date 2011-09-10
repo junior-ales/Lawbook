@@ -14,7 +14,7 @@ import javax.persistence.OneToOne;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 09SEP2011-06
+ * @version 10SEP2011-08
  */
 
 @Entity(name = "lwb_user_profile")
@@ -34,14 +34,8 @@ public class Profile {
 	@Column(length = 255, name = "about_me")
 	private String aboutMe;
 	@OneToOne
-	@JoinColumn(name = "wall_id")
-	private List<Post> wall;
-	@OneToOne
 	@JoinColumn(name="friends_list_id")
 	private List<User> friendsList;
-	@OneToOne
-	@JoinColumn(name = "stream_id")
-	private List<Post> stream;
 	
 	public Long getId() {
 		return id;
@@ -94,14 +88,6 @@ public class Profile {
 		this.aboutMe = aboutMe;
 	}
 
-	public List<Post> getWall() {
-		return wall;
-	}
-
-	public void setWall(List<Post> wall) {
-		this.wall = wall;
-	}
-
 	public List<User> getFriendsList() {
 		return friendsList;
 	}
@@ -110,20 +96,11 @@ public class Profile {
 		this.friendsList = friendsList;
 	}
 
-	public List<Post> getStream() {
-		return stream;
-	}
-
-	public void setStream(List<Post> stream) {
-		this.stream = stream;
-	}
-
 	@Override
 	public String toString() {
 		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		return "Profile [id=" + id + ", firstName=" + firstName + ", lastName="
-				+ lastName + ", birth=" + df.format(birth.getTime()) + ", location=" + location
-				+ ", aboutMe=" + aboutMe + ", wall=" + wall + ", friendsList="
-				+ friendsList + ", stream=" + stream + "]";
+				+ lastName + ", birth=" + df.format(birth.getTime()) + ", locationId=" + location.getId()
+				+ ", aboutMe=" + aboutMe + ", friendsList=" + friendsList + "]";
 	}
 }

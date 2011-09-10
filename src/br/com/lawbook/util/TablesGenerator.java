@@ -3,15 +3,11 @@ package br.com.lawbook.util;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 
-import br.com.lawbook.model.Comment;
-import br.com.lawbook.model.Location;
-import br.com.lawbook.model.Post;
-import br.com.lawbook.model.Profile;
-import br.com.lawbook.model.User;
+import br.com.lawbook.model.*;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 04SEP2011-02 
+ * @version 10SEP2011-03 
  * 
  */
 

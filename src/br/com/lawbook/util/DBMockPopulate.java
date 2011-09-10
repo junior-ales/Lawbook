@@ -2,11 +2,7 @@ package br.com.lawbook.util;
 
 import java.util.List;
 
-import br.com.lawbook.model.Comment;
-import br.com.lawbook.model.Location;
-import br.com.lawbook.model.Post;
-import br.com.lawbook.model.Profile;
-import br.com.lawbook.model.User;
+import br.com.lawbook.model.*;
 
 /**
  * @author Edilson Luiz Ales Junior

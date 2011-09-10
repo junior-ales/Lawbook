@@ -14,7 +14,7 @@ import javax.persistence.OneToMany;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 09SEP2011-04 
+ * @version 10SEP2011-05 
  *
  */
 
@@ -26,10 +26,10 @@ public class Post {
 	public Long id;
 	@ManyToOne
 	@JoinColumn(name="sender_id")
-	public User senderId;
+	public User sender;
 	@OneToMany
 	@JoinTable(name="lwb_post_receivers")
-	public List<User> receiversId;
+	public List<User> receivers;
 	@Column(length = 255)
 	public String content;
 	public Calendar dateTime;
@@ -43,17 +43,17 @@ public class Post {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public User getSenderId() {
-		return senderId;
+	public User getSender() {
+		return sender;
 	}
-	public void setSenderId(User senderId) {
-		this.senderId = senderId;
+	public void setSender(User sender) {
+		this.sender = sender;
 	}
-	public List<User> getReceiversId() {
-		return receiversId;
+	public List<User> getReceivers() {
+		return receivers;
 	}
-	public void setReceiversId(List<User> receiversId) {
-		this.receiversId = receiversId;
+	public void setReceivers(List<User> receivers) {
+		this.receivers = receivers;
 	}
 	public String getContent() {
 		return content;
@@ -79,9 +79,13 @@ public class Post {
 	
 	@Override
 	public String toString() {
+		String comments = "";
+		for (Comment c : this.comments) {
+			comments += c.getContent();
+		}
 		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-		return "Post [id=" + id + ", senderId=" + senderId + ", receiversId="
-				+ receiversId + ", content=" + content + ", dateTime="
+		return "Post [id=" + id + ", senderId=" + sender.getId() + ", receivers="
+				+ receivers + ", content=" + content + ", dateTime="
 				+ df.format(dateTime.getTime()) + ", comments=" + comments + "]";
 	}
 }

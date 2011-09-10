@@ -9,8 +9,8 @@ import org.junit.Test;
 
 public class ProfileServiceTest {
 	
+	@Test
 	public void getFirstWallTest() {
-
 		
 	}
 	

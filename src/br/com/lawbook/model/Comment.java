@@ -23,7 +23,7 @@ public class Comment {
 	public Long id;
 	@ManyToOne
 	@JoinColumn(name="sender_id")
-	public User senderId;
+	public User sender;
 	@Column(length = 255)
 	public String content;
 	public Calendar dateTime;
@@ -34,11 +34,11 @@ public class Comment {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public User getSenderId() {
-		return senderId;
+	public User getSender() {
+		return sender;
 	}
-	public void setSenderId(User senderId) {
-		this.senderId = senderId;
+	public void setSender(User sender) {
+		this.sender = sender;
 	}
 	public String getContent() {
 		return content;
@@ -58,7 +58,7 @@ public class Comment {
 	@Override
 	public String toString() {
 		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-		return "Comment [id=" + id + ", senderId=" + senderId + ", content="
+		return "Comment [id=" + id + ", senderId=" + sender.getId() + ", content="
 				+ content + ", dateTime=" + df.format(dateTime.getTime()) + "]";
 	}
 }

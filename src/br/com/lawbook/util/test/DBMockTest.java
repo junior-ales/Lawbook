@@ -9,24 +9,15 @@ import java.util.List;
 
 import org.junit.Test;
 
-import br.com.lawbook.model.Comment;
-import br.com.lawbook.model.Location;
-import br.com.lawbook.model.Post;
-import br.com.lawbook.model.Profile;
-import br.com.lawbook.model.User;
+import br.com.lawbook.model.*;
 import br.com.lawbook.util.DBMock;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 08SEP2011-01
+ * @version 10SEP2011-02
  */
 
 public class DBMockTest {
-	
-	
-	public DBMockTest() {
-		
-	}
 	
 	@Test
 	public void tableUserGenerationTest() {
@@ -79,6 +70,4 @@ public class DBMockTest {
 		}
 	}
 
-	
-	
 }

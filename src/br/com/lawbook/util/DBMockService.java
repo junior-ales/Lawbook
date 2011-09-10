@@ -5,19 +5,17 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
 
-import br.com.lawbook.model.Comment;
-import br.com.lawbook.model.Location;
-import br.com.lawbook.model.Post;
-import br.com.lawbook.model.Profile;
-import br.com.lawbook.model.User;
+import br.com.lawbook.model.*;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 07SEP2011-01 
+ * @version 10SEP2011-02 
  * 
  */
-//@SuppressWarnings("unused")
+
+@SuppressWarnings("unused")
 public class DBMockService {
 
 	private List<User> tableUser;
@@ -55,27 +53,33 @@ public class DBMockService {
 		profile.setBirth(this.newDate(profileId));
 		profile.setLocation(new Location());
 		profile.setAboutMe("I'm the profile " + profileId + ". What great profile test ahn?");
-		profile.setWall(null);
 		profile.setFriendsList(null);
-		profile.setStream(null);
 		return profile;
 	}
 
 	public Post getNewPost(Long postId) {
 		Post post = new Post();
 		post.setId(postId);
-		post.setSenderId(new User());
-		post.setReceiversId(new ArrayList<User>());
+		post.setSender(new User());
+		post.setReceivers(new ArrayList<User>());
 		post.setContent("Post content bla bla bla bla bla - " + postId);
 		post.setDateTime(this.newDate(postId));
 		post.setComments(new ArrayList<Comment>());
 		return post;
 	}
+	
+	private Long newId() {
+		Long id = new Random().nextLong();
+		if (id < 0) {
+			id = id * -1L;
+		}
+		return id % 10000L;
+	}
 
 	public Comment getNewComment(Long commentId) {
 		Comment comment = new Comment();
 		comment.setId(commentId);
-		comment.setSenderId(new User());
+		comment.setSender(new User());
 		comment.setContent("Comment content bla bla bla bla bla - " + commentId);
 		comment.setDateTime(this.newDate(commentId));
 		return comment;
