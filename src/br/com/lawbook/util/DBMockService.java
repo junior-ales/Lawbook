@@ -11,7 +11,7 @@ import br.com.lawbook.model.*;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 10SEP2011-02 
+ * @version 12SEP2011-03 
  * 
  */
 
@@ -24,15 +24,15 @@ public class DBMockService {
 	private List<Comment> tableComment;
 	private List<Location> tableLocation;
 	
+	public DBMockService() {
+	}
+	
 	public DBMockService(List<User> tableUser, List<Profile> tableProfile, List<Post> tablePost, List<Comment> tableComment, List<Location> tableLocation) {
 		this.tableUser = tableUser;
 		this.tableProfile = tableProfile;
 		this.tablePost = tablePost;
 		this.tableComment = tableComment;
 		this.tableLocation = tableLocation;
-	}
-	
-	public DBMockService() {
 	}
 
 	public User getNewUser(Long userId) {
@@ -53,33 +53,25 @@ public class DBMockService {
 		profile.setBirth(this.newDate(profileId));
 		profile.setLocation(new Location());
 		profile.setAboutMe("I'm the profile " + profileId + ". What great profile test ahn?");
-		profile.setFriendsList(null);
+		profile.setFriendsList(new ArrayList<Profile>());
 		return profile;
 	}
 
 	public Post getNewPost(Long postId) {
 		Post post = new Post();
 		post.setId(postId);
-		post.setSender(new User());
-		post.setReceivers(new ArrayList<User>());
+		post.setSender(new Profile());
+		post.setReceivers(new ArrayList<Profile>());
 		post.setContent("Post content bla bla bla bla bla - " + postId);
 		post.setDateTime(this.newDate(postId));
 		post.setComments(new ArrayList<Comment>());
 		return post;
 	}
-	
-	private Long newId() {
-		Long id = new Random().nextLong();
-		if (id < 0) {
-			id = id * -1L;
-		}
-		return id % 10000L;
-	}
 
 	public Comment getNewComment(Long commentId) {
 		Comment comment = new Comment();
 		comment.setId(commentId);
-		comment.setSender(new User());
+		comment.setSender(new Profile());
 		comment.setContent("Comment content bla bla bla bla bla - " + commentId);
 		comment.setDateTime(this.newDate(commentId));
 		return comment;
@@ -98,6 +90,14 @@ public class DBMockService {
 		return location;
 	}
 
+	private Long newId() {
+		Long id = new Random().nextLong();
+		if (id < 0) {
+			id = id * -1L;
+		}
+		return id % 10000L;
+	}
+	
 	public User getUserById(Long userId) {
 		for (User u : this.tableUser) {
 			if (u.getId() == userId) {

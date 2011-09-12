@@ -14,7 +14,7 @@ import javax.persistence.OneToOne;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 10SEP2011-08
+ * @version 12SEP2011-09
  */
 
 @Entity(name = "lwb_user_profile")
@@ -35,7 +35,7 @@ public class Profile {
 	private String aboutMe;
 	@OneToOne
 	@JoinColumn(name="friends_list_id")
-	private List<User> friendsList;
+	private List<Profile> friendsList;
 	
 	public Long getId() {
 		return id;
@@ -88,19 +88,23 @@ public class Profile {
 		this.aboutMe = aboutMe;
 	}
 
-	public List<User> getFriendsList() {
+	public List<Profile> getFriendsList() {
 		return friendsList;
 	}
 
-	public void setFriendsList(List<User> friendsList) {
+	public void setFriendsList(List<Profile> friendsList) {
 		this.friendsList = friendsList;
 	}
 
 	@Override
 	public String toString() {
+		String friends = "";
+		for (Profile p : this.friendsList) {
+			friends += " " + p.getFirstName();
+		}
 		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		return "Profile [id=" + id + ", firstName=" + firstName + ", lastName="
 				+ lastName + ", birth=" + df.format(birth.getTime()) + ", locationId=" + location.getId()
-				+ ", aboutMe=" + aboutMe + ", friendsList=" + friendsList + "]";
+				+ ", aboutMe=" + aboutMe + ", friendsList=" + friends + "]";
 	}
 }

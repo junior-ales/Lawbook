@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 09SEP2011-03 
+ * @version 12SEP2011-04 
  * 
  */
 
@@ -23,7 +23,7 @@ public class Comment {
 	public Long id;
 	@ManyToOne
 	@JoinColumn(name="sender_id")
-	public User sender;
+	public Profile sender;
 	@Column(length = 255)
 	public String content;
 	public Calendar dateTime;
@@ -34,10 +34,10 @@ public class Comment {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public User getSender() {
+	public Profile getSender() {
 		return sender;
 	}
-	public void setSender(User sender) {
+	public void setSender(Profile sender) {
 		this.sender = sender;
 	}
 	public String getContent() {

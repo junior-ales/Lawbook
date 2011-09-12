@@ -7,7 +7,7 @@ import br.com.lawbook.model.*;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 10SEP2011-06
+ * @version 12SEP2011-07
  * 
  */
 
@@ -35,33 +35,6 @@ public class DBMock {
 		tablePost = new ArrayList<Post>();
 		generateTables();
 		applyDependencies();
-	}
-
-	private void generateTables() {
-		DBMockPopulate dbp = new DBMockPopulate(tableUser, tableProfile, tablePost, tableComment, tableLocation);
-		tableLocation = dbp.generateTableLocation();
-		tableUser = dbp.generateTableUser();
-		tableProfile = dbp.generateTableProfile();
-		tableComment = dbp.generateTableComment();
-		tablePost = dbp.generateTablePost();
-	}
-	
-	private void applyDependencies() {
-		for (int i = 0; i < tableProfile.size(); i++) {
-			tableProfile.get(i).setLocation(tableLocation.get(i));
-		}
-		for (int i = 0; i < tablePost.size(); i++) {
-			List<User> receivers = new ArrayList<User>();
-			List<Comment> comments = new ArrayList<Comment>();
-			tablePost.get(i).setSender(tableUser.get(i));
-			receivers.add(tableUser.get(i));
-			tablePost.get(i).setReceivers(receivers);
-			comments.add(tableComment.get(i));
-			tablePost.get(i).setComments(comments);
-		}
-		for (int i = 0; i < tableComment.size(); i++) {
-			tableComment.get(i).setSender(tableUser.get(i));
-		}
 	}
 
 	public List<User> getTableUser() {
@@ -104,4 +77,51 @@ public class DBMock {
 		this.tableLocation = tableLocation;
 	}
 	
+	private void generateTables() {
+		DBMockPopulate dbp = new DBMockPopulate(tableUser, tableProfile, tablePost, tableComment, tableLocation);
+		tableLocation = dbp.generateTableLocation();
+		tableUser = dbp.generateTableUser();
+		tableProfile = dbp.generateTableProfile();
+		tableComment = dbp.generateTableComment();
+		tablePost = dbp.generateTablePost();
+	}
+	
+	private void applyDependencies() {
+		profileDependencies();
+		postDependencies();
+		commentDependencies();
+	}
+	
+	private void commentDependencies() {
+		for (int i = 0; i < tableComment.size(); i++) {
+			tableComment.get(i).setSender(tableProfile.get(i));
+		}
+	}
+	
+	private void postDependencies() {
+		for (int i = 0, j = tablePost.size() - 1; i < tablePost.size(); i++, j--) {
+			List<Profile> receivers = new ArrayList<Profile>();
+			List<Comment> comments = new ArrayList<Comment>();
+			tablePost.get(i).setSender(tableProfile.get(j));
+			if (i != j) {
+				receivers.add(tableProfile.get(i));
+			}
+			tablePost.get(i).setReceivers(receivers);
+			comments.add(tableComment.get(i));
+			tablePost.get(i).setComments(comments);
+		}
+	}
+	
+	private void profileDependencies() {
+		for (int i = 0, j = tableProfile.size() - 1; i < tableProfile.size(); i++) {
+			tableProfile.get(i).setLocation(tableLocation.get(i));
+			if (j - i != i) {
+				tableProfile.get(i).getFriendsList().add(tableProfile.get(j - i));
+			}
+			else {
+				tableProfile.get(i).getFriendsList().add(tableProfile.get(j));
+				tableProfile.get(j).getFriendsList().add(tableProfile.get(i));
+			}
+		}
+	}
 }

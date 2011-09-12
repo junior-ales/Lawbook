@@ -14,7 +14,7 @@ import javax.persistence.OneToMany;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 10SEP2011-05 
+ * @version 12SEP2011-06 
  *
  */
 
@@ -26,10 +26,10 @@ public class Post {
 	public Long id;
 	@ManyToOne
 	@JoinColumn(name="sender_id")
-	public User sender;
+	public Profile sender;
 	@OneToMany
 	@JoinTable(name="lwb_post_receivers")
-	public List<User> receivers;
+	public List<Profile> receivers;
 	@Column(length = 255)
 	public String content;
 	public Calendar dateTime;
@@ -43,16 +43,16 @@ public class Post {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public User getSender() {
+	public Profile getSender() {
 		return sender;
 	}
-	public void setSender(User sender) {
+	public void setSender(Profile sender) {
 		this.sender = sender;
 	}
-	public List<User> getReceivers() {
+	public List<Profile> getReceivers() {
 		return receivers;
 	}
-	public void setReceivers(List<User> receivers) {
+	public void setReceivers(List<Profile> receivers) {
 		this.receivers = receivers;
 	}
 	public String getContent() {
