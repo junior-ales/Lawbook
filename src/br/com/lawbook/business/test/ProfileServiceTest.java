@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import br.com.lawbook.business.ProfileService;
 import br.com.lawbook.model.Comment;
 import br.com.lawbook.model.Post;
 import br.com.lawbook.model.Profile;
@@ -19,6 +20,18 @@ import br.com.lawbook.util.DBMock;
 
 public class ProfileServiceTest {
 
+	@Test
+	public void getProfileByIdTest() {
+		ProfileService service = ProfileService.getInstance();
+		Profile p = new Profile();
+		Long id = 15L;
+		p.setId(id);
+		service.save(p);
+		service.getProfileById(id);
+		assertTrue(service.getProfileById(id).equals(p));
+	}
+	
+	
 	@Test
 	public void getStreamTest() {
 		

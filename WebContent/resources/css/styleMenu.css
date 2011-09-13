@@ -1,0 +1,75 @@
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:100%;
+    line-height:1em;
+    color:#000;
+}
+.nav{
+    position: absolute;
+    top: 460px;
+    left: 145px;
+}
+.nav>a{
+    font:bold 18px/34px 'PT Sans Narrow', sans-serif;
+    color:#fff;
+    text-transform:uppercase;
+    text-decoration:none;
+    background:#d62d32;
+    padding:0 14px;
+    display:inline-block;
+    margin-bottom:1px;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    width: 150px; /* Width of Menu Items */
+    border-bottom: 1px solid #ccc;
+}
+
+ul li {
+    display:block;
+    position:relative;
+    z-index:1;
+    height:46px;
+    margin-bottom:1px;
+}
+
+li ul {
+    position: absolute;
+    left: 149px; /* Set 1px less than menu width */
+    top: 0;
+    display: none;
+}
+
+/* Styles for Menu Items */
+ul li a:hover{
+    font:bold 20px/40px 'PT Sans Narrow', sans-serif;
+    display: block;
+    text-decoration: none;
+    text-transform:uppercase;
+    color: white;
+    background: #000; /* IE6 Bug */
+    padding: 5px;
+    border-bottom: 0;
+}
+ul li a {
+    font:bold 20px/40px 'PT Sans Narrow', sans-serif;
+    display: block;
+    text-decoration: none;
+    text-transform:uppercase;
+    color: #000;
+    background: #fff; /* IE6 Bug */
+    padding: 5px;
+    border: 1px solid #000; /* IE6 Bug */
+    
+}
+
+
+    /* Holly Hack. IE Requirement \*/
+    * html ul li { float: left; height: 1%; }
+* html ul li a { height: 1%; }
+/* End */
+
+li:hover ul, li.over ul { display: block; } /* The magic */

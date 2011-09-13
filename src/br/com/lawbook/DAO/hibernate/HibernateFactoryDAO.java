@@ -4,11 +4,12 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import br.com.lawbook.DAO.FactoryDAO;
+import br.com.lawbook.DAO.ProfileDAO;
 import br.com.lawbook.util.HibernateUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 04SEP2011-01 
+ * @version 13SEP2011-02 
  * 
  */
 
@@ -39,4 +40,9 @@ public class HibernateFactoryDAO extends FactoryDAO {
         }
         this.session.close();
     }
+
+	@Override
+	public ProfileDAO getProfileDAO() {
+		return new HibernateProfileDAO(this.session);
+	}
 }
