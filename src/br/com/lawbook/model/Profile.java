@@ -9,8 +9,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 
 /**
  * @author Edilson Luiz Ales Junior
@@ -33,8 +34,8 @@ public class Profile {
 	private Location location;
 	@Column(length = 255, name = "about_me")
 	private String aboutMe;
-	@OneToOne
-	@JoinColumn(name="friends_list_id")
+	@ManyToMany
+	@JoinTable(name="lwb_friends_list")
 	private List<Profile> friendsList;
 	
 	public Long getId() {

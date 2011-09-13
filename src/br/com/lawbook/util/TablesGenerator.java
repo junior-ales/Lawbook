@@ -7,7 +7,7 @@ import br.com.lawbook.model.*;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 10SEP2011-03 
+ * @version 12SEP2011-04 
  * 
  */
 
