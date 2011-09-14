@@ -4,7 +4,7 @@ import br.com.lawbook.DAO.hibernate.HibernateFactoryDAO;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 13SEP2011-02 
+ * @version 14SEP2011-03 
  * 
  */
 
@@ -21,4 +21,6 @@ public abstract class FactoryDAO {
     public abstract void shutTx();
 
 	public abstract ProfileDAO getProfileDAO();
+
+	public abstract PostDAO getPostDAO();
 }

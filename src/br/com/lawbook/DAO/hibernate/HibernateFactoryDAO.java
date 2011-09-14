@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import br.com.lawbook.DAO.FactoryDAO;
+import br.com.lawbook.DAO.PostDAO;
 import br.com.lawbook.DAO.ProfileDAO;
 import br.com.lawbook.util.HibernateUtil;
 
@@ -44,5 +45,10 @@ public class HibernateFactoryDAO extends FactoryDAO {
 	@Override
 	public ProfileDAO getProfileDAO() {
 		return new HibernateProfileDAO(this.session);
+	}
+
+	@Override
+	public PostDAO getPostDAO() {
+		return new HibernatePostDAO(this.session);
 	}
 }

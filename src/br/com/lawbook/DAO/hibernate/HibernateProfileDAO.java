@@ -16,6 +16,4 @@ public class HibernateProfileDAO extends HibernateGenericDAO<Profile> implements
 	public HibernateProfileDAO(Session session) {
 		super(session);
 	}
-
-
 }

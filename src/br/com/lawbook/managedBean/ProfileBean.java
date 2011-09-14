@@ -1,12 +1,9 @@
 package br.com.lawbook.managedBean;
 
-import java.util.List;
-
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
 import br.com.lawbook.business.ProfileService;
-import br.com.lawbook.model.Post;
 import br.com.lawbook.model.Profile;
 
 /**
@@ -18,6 +15,7 @@ import br.com.lawbook.model.Profile;
 public class ProfileBean {
 	
 	private ProfileService service;
+	@SuppressWarnings("unused")
 	private Profile profile;
 
 	public ProfileBean(Profile profile) {
@@ -25,10 +23,6 @@ public class ProfileBean {
 		setProfile(profile);
 	}
 	
-	public List<Post> getStream() {
-		return service.getStream(this.profile);
-	}
-
 	private void setProfile(Profile profile) {
 		if (!this.service.checkIfExist(profile.getId())) {
 			throw new IllegalArgumentException("Profile doesn't exist, please create one to use this feature");
