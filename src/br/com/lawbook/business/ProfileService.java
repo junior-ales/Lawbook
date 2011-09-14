@@ -9,7 +9,7 @@ import br.com.lawbook.model.Profile;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 13SEP2011-02 
+ * @version 14SEP2011-02 
  */
 
 public class ProfileService {
@@ -27,19 +27,27 @@ public class ProfileService {
 	}
 	
 	public Profile getProfileById(Long id) {
-		return null;
+		FactoryDAO factory = FactoryDAO.getFactoryDAO();
+		ProfileDAO dao = factory.getProfileDAO();
+		factory.beginTx();
+		Profile profile = dao.getById(id);
+		return profile;
+	}
+
+	public void save(Profile profile) {
+		FactoryDAO factory = FactoryDAO.getFactoryDAO();
+		ProfileDAO dao = factory.getProfileDAO();
+		factory.beginTx();
+		dao.save(profile);
+		factory.shutTx();
 	}
 
 	public List<Post> getStream(Profile profile) {
 		return null;
 	}
 
-	public void save(Profile p) {
-		FactoryDAO factoryDAO = FactoryDAO.getFactoryDAO();
-		ProfileDAO profileDAO = factoryDAO.getProfileDAO();
-		factoryDAO.beginTx();
-		profileDAO.save(p);
-		factoryDAO.shutTx();
+	public boolean checkIfExist(Long profileId) {
+		return getProfileById(profileId) == null ? false : true;
 	}
 	
 }

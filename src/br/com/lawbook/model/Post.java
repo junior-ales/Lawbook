@@ -1,8 +1,10 @@
 package br.com.lawbook.model;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 /**
  * @author Edilson Luiz Ales Junior
@@ -19,7 +22,7 @@ import javax.persistence.OneToMany;
  */
 
 @Entity(name="lwb_post")
-public class Post {
+public class Post implements Serializable {
 	
 	@Id
 	@GeneratedValue
@@ -36,6 +39,8 @@ public class Post {
 	@OneToMany
 	@JoinTable(name="lwb_post_comments")
 	public List<Comment> comments;
+	@Transient
+	private static final long serialVersionUID = 1L;
 	
 	public Long getId() {
 		return id;

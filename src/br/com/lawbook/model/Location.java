@@ -1,17 +1,20 @@
 package br.com.lawbook.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 08SEP2011-03 
+ * @version 14SEP2011-04 
  */
 
 @Entity(name="lwb_location")
-public class Location {
+public class Location implements Serializable {
 
 	@Id
 	@GeneratedValue
@@ -30,6 +33,8 @@ public class Location {
 	private String secAdd;
 	@Column(length = 9, name="sec_address_zipcode")
 	private String secAddZipCode;
+	@Transient
+	private static final long serialVersionUID = 1L;
 	
 	public Long getId() {
 		return id;

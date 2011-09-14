@@ -1,5 +1,6 @@
 package br.com.lawbook.model;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -12,14 +13,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 12SEP2011-09
+ * @version 14SEP2011-10
  */
 
 @Entity(name = "lwb_user_profile")
-public class Profile {
+public class Profile implements Serializable {
 
 	@Id
 	@GeneratedValue
@@ -37,6 +39,8 @@ public class Profile {
 	@ManyToMany
 	@JoinTable(name="lwb_friends_list")
 	private List<Profile> friendsList;
+	@Transient
+	private static final long serialVersionUID = 1L;
 	
 	public Long getId() {
 		return id;

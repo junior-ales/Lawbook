@@ -5,9 +5,11 @@ import static org.junit.Assert.*;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import br.com.lawbook.business.ProfileService;
+import br.com.lawbook.managedBean.ProfileBean;
 import br.com.lawbook.model.Comment;
 import br.com.lawbook.model.Post;
 import br.com.lawbook.model.Profile;
@@ -15,11 +17,12 @@ import br.com.lawbook.util.DBMock;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 12SEP2011-02
+ * @version 14SEP2011-03
  */
 
 public class ProfileServiceTest {
 
+	@Ignore
 	@Test
 	public void getProfileByIdTest() {
 		ProfileService service = ProfileService.getInstance();
@@ -31,7 +34,12 @@ public class ProfileServiceTest {
 		assertTrue(service.getProfileById(id).equals(p));
 	}
 	
+	@Test(expected=IllegalArgumentException.class)
+	public void nullProfileTest() {
+		new ProfileBean(new Profile());
+	}
 	
+	@Ignore
 	@Test
 	public void getStreamTest() {
 		

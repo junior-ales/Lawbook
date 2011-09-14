@@ -11,7 +11,7 @@ import br.com.lawbook.model.Profile;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 13SEP2011-01
+ * @version 14SEP2011-02
  */
 @ManagedBean
 @RequestScoped
@@ -25,13 +25,14 @@ public class ProfileBean {
 		setProfile(profile);
 	}
 	
-	private List<Post> getStream() {
-		List<Post> posts = service.getStream(this.profile);
-		return posts;
+	public List<Post> getStream() {
+		return service.getStream(this.profile);
 	}
 
 	private void setProfile(Profile profile) {
-		
+		if (!this.service.checkIfExist(profile.getId())) {
+			throw new IllegalArgumentException("Profile doesn't exist, please create one to use this feature");
+		}
 		this.profile = profile;
 	}
 	

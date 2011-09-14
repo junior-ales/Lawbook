@@ -1,22 +1,25 @@
 package br.com.lawbook.model;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 12SEP2011-04 
+ * @version 14SEP2011-05 
  * 
  */
 
 @Entity(name="lwb_comment")
-public class Comment {
+public class Comment implements Serializable {
 	
 	@Id
 	@GeneratedValue
@@ -27,6 +30,8 @@ public class Comment {
 	@Column(length = 255)
 	public String content;
 	public Calendar dateTime;
+	@Transient
+	private static final long serialVersionUID = 1L;
 	
 	public Long getId() {
 		return id;
