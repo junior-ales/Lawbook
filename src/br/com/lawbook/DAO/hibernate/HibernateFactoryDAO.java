@@ -8,7 +8,7 @@ import br.com.lawbook.util.HibernateUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 13SEP2011-02 
+ * @version 15SEP2011-03 
  * 
  */
 
