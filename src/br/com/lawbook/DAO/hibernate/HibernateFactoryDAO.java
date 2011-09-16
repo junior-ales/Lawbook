@@ -8,7 +8,7 @@ import br.com.lawbook.util.HibernateUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 15SEP2011-03 
+ * @version 16SEP2011-04 
  * 
  */
 
@@ -53,5 +53,15 @@ public class HibernateFactoryDAO extends FactoryDAO {
 	@Override
 	public UserDAO getUserDAO() {
 		return new HibernateUserDAO(this.session);
+	}
+
+	@Override
+	public LocationDAO getLocationDAO() {
+		return new HibernateLocationDAO(this.session);
+	}
+
+	@Override
+	public CommentDAO getCommentDAO() {
+		return new HibernateCommentDAO(this.session);
 	}
 }

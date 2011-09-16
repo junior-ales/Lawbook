@@ -10,7 +10,7 @@ import br.com.lawbook.model.User;
  *  
  */
 
-public class UserService {
+public class UserService  {
 
 	private static UserService instance;
 
