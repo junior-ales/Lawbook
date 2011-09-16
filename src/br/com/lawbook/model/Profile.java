@@ -1,7 +1,6 @@
 package br.com.lawbook.model;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
@@ -17,7 +16,7 @@ import javax.persistence.Transient;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 14SEP2011-10
+ * @version 15SEP2011-11
  */
 
 @Entity(name = "lwb_user_profile")
@@ -101,15 +100,4 @@ public class Profile implements Serializable {
 		this.friendsList = friendsList;
 	}
 
-	@Override
-	public String toString() {
-		String friends = "";
-		for (Profile p : this.friendsList) {
-			friends += " " + p.getFirstName();
-		}
-		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-		return "Profile [id=" + id + ", firstName=" + firstName + ", lastName="
-				+ lastName + ", birth=" + df.format(birth.getTime()) + ", locationId=" + location.getId()
-				+ ", aboutMe=" + aboutMe + ", friendsList=" + friends + "]";
-	}
 }

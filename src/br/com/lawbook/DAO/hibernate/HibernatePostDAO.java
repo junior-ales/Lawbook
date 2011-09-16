@@ -24,8 +24,7 @@ public class HibernatePostDAO extends HibernateGenericDAO<Post> implements PostD
 
 	@Override
 	public List<Post> getStreamPosts(List<Profile> friendsList) {
-//		String q = " from Post post where post.sender_id in ( :ras )";
-//		Query query = this.getSession().createQuery(q);
+		// TODO Auto-generated method stub
 		return null;
 	}
 

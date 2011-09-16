@@ -3,9 +3,7 @@ package br.com.lawbook.DAO.hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import br.com.lawbook.DAO.FactoryDAO;
-import br.com.lawbook.DAO.PostDAO;
-import br.com.lawbook.DAO.ProfileDAO;
+import br.com.lawbook.DAO.*;
 import br.com.lawbook.util.HibernateUtil;
 
 /**
@@ -50,5 +48,10 @@ public class HibernateFactoryDAO extends FactoryDAO {
 	@Override
 	public PostDAO getPostDAO() {
 		return new HibernatePostDAO(this.session);
+	}
+
+	@Override
+	public UserDAO getUserDAO() {
+		return new HibernateUserDAO(this.session);
 	}
 }
