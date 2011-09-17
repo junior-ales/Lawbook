@@ -1,65 +1,99 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <meta http-equiv="content-type" content="text/html;charset=utf-8" />
-        <title>Bem vindo ao Lawbook!</title>
-        <link rel="icon" href="resources/images/icon.png" type="image/x-icon"/>
-        <script type="text/javascript" src="resources/js/jquery-1.6.2.js"></script>
-        <script type="text/javascript" src="resources/js/apresentacao.js"></script>
-        <style type="text/css">
-            @import "resources/css/style.css";
-            @import "resources/css/styleMenu.css";
-        </style>
-    </head>
-    <body>
-        <div id="principal"> 
-            <div class="blockProjeto">
-                <h2>Apresentamos a vocês o lawbook.</h2><h3>Uma rede social diferente!</h3>
-                <p class="white">
-                    Novas formas de comunicação, especialmente as digitais, são criadas a todo tempo num meio aonde mudanças são tão rápidas quanto às idéias que as dão início. Um dos grandes marcos dessas formas é a comunicação via redes sociais. O que começou apenas com o intuito de entreter as pessoas, hoje é muito utilizado no meio corporativo. Prova disso é o crescimento das empresas que investem nas redes sociais, em média as empresas que tem canais em mídias sociais cresceram 18% em um ano, enquanto aos concorrentes que não tiveram investimentos nesta linha, tiveram queda de 6%. Alguns exemplos dos benefícios das redes sociais, destacada pelo especialista em T. I. Luís Fuzaro, são: "evitar informação duplicada, aumentar o trabalho colaborativo  e melhorar os repositórios  para criar  um conhecimento coletivo da empresa."
-                </p>
-                <p class="gray">
-                    Tendo isso em mente, o Lawbook foi idealizado como uma rede social empresarial, que serve como uma ferramenta de comunicação entre contratantes e contratados, facilitando a comunicação entre as partes.
-                </p>
-                <p class="white">
-                    Com isso o advogado e o cliente estarão cada vez mais próximos e com um controle maior das informações processuais, pois o  Lawbook proporcionará um roteamento das informações de acordo com o interesse do advogado e do cliente. O sistema conta também com o controle da agenda, além de o advogado receber avisos informando prazos importantes, a agenda poderá ser acessada em qualquer dispositivo móvel que possua acesso à Internet.
-                </p>
-                <hr/>
-            </div>
-            <div class="blockObjetivo">
-                <div class="columnLeft">
-                    <h2>Objetivo</h2>
-                    <p>O principal objetivo do Lawbook é facilitar e agilizar a comunicação Cliente x Advogado, Advogado x Advogado e Cliente x Cliente. De forma cômoda, o cliente poderá acessar via web seu processo para saber sobre as atualizações, sem precisar se deslocar até o escritório ou aguardar o advogado entrar em contato. O cliente se sentirá mais próximo, pelo fato do sistema ser web e o advogado conseguir atualizar seu processo e responder seus questionamentos de forma mais ágil. Como transparência e agilidade são valores essenciais do sistema, a imagem da empresa valoriza, demonstrando seriedade e comprometimento máximo com seus contratantes.
-                    O sistema possui também uma função para o controle da agenda. Com ela o usuário além de ter o controle total de sua agenda, receberá por email o lembrete de datas importantes, possibilitando que o mesmo escolha quantos dias antes do prazo deseja receber o aviso.
-                    </p>
-                </div>
-                <div class="columnRight">
-                    <div class="separador">
-                        <p>
-                            O Lawbook também tem a opção de fazer o upload dos arquivos digitalizados incluindo-os no processo. Gerando conforto para o cliente, que poderá visualizar o seu processo de qualquer lugar com acesso a internet. Junto com a opção do upload das páginas do processo, poderá ser enviado documentos importantes do cliente para o advogado, com a demora de um clique. Com isso criando uma economia de tempo tanto para cliente como para advogado.
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="vista">
-                <img id="logo" src="resources/images/logo.png" alt="logo" />
-                <img id="banner" src="resources/images/banner.png" alt="banner" />
-            
-            <div class="nav"><a href="#" id="entrar">Entrar</a>
-                <ul> 
-                    <li><a href="#" id="menuProjeto">Projeto</a></li> 
-                     
-                    <li><a href="#" id="menuObjetivo">Objetivo</a></li> 
-                    <li><a href="#" id="Contatos">Contatos</a> </li>
-                </ul> 
-            </div>
-            </div>
-            <div id="loginBlock">
-                <input type="text" class="login" value="Login:"/>
-                <input type="password" class="senha" value="Senha:"/>
-                <input type="button" value="Entrar" id="btEntrar" />
-            </div>
-        </div>
-    </body>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+<f:view>
+	<h:head>
+		<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+		<title>Bem vindo ao Lawbook!</title>
+		<link rel="icon" href="resources/images/icon.png" type="image/x-icon" />
+	</h:head>
+	<h:body>
+		<h:outputStylesheet name="style.css" library="css" />
+		<h:outputStylesheet name="styleMenu.css" library="css" />
+		<h:outputScript name="jquery-1.6.2.js" library="js" />
+		<h:outputScript name="apresentacao.js" library="js" />
+		<div id="principal">
+			<div class="blockProjeto">
+				<h2>Apresentamos a vocês o lawbook.</h2>
+				<h3>Uma rede social diferente!</h3>
+				<p class="white">Novas formas de comunicação, especialmente as
+					digitais, são criadas a todo tempo num meio aonde mudanças são tão
+					rápidas quanto às idéias que as dão início. Um dos grandes marcos
+					dessas formas é a comunicação via redes sociais. O que começou
+					apenas com o intuito de entreter as pessoas, hoje é muito utilizado
+					no meio corporativo. Prova disso é o crescimento das empresas que
+					investem nas redes sociais, em média as empresas que tem canais em
+					mídias sociais cresceram 18% em um ano, enquanto aos concorrentes
+					que não tiveram investimentos nesta linha, tiveram queda de 6%.
+					Alguns exemplos dos benefícios das redes sociais, destacada pelo
+					especialista em T. I. Luís Fuzaro, são: "evitar informação
+					duplicada, aumentar o trabalho colaborativo e melhorar os
+					repositórios para criar um conhecimento coletivo da empresa."</p>
+				<p class="gray">Tendo isso em mente, o Lawbook foi idealizado
+					como uma rede social empresarial, que serve como uma ferramenta de
+					comunicação entre contratantes e contratados, facilitando a
+					comunicação entre as partes.</p>
+				<p class="white">Com isso o advogado e o cliente estarão cada
+					vez mais próximos e com um controle maior das informações
+					processuais, pois o Lawbook proporcionará um roteamento das
+					informações de acordo com o interesse do advogado e do cliente. O
+					sistema conta também com o controle da agenda, além de o advogado
+					receber avisos informando prazos importantes, a agenda poderá ser
+					acessada em qualquer dispositivo móvel que possua acesso à
+					Internet.</p>
+				<hr />
+			</div>
+			<div class="blockObjetivo">
+				<div class="columnLeft">
+					<h2>Objetivo</h2>
+					<p>O principal objetivo do Lawbook é facilitar e agilizar a
+						comunicação Cliente x Advogado, Advogado x Advogado e Cliente x
+						Cliente. De forma cômoda, o cliente poderá acessar via web seu
+						processo para saber sobre as atualizações, sem precisar se
+						deslocar até o escritório ou aguardar o advogado entrar em
+						contato. O cliente se sentirá mais próximo, pelo fato do sistema
+						ser web e o advogado conseguir atualizar seu processo e responder
+						seus questionamentos de forma mais ágil. Como transparência e
+						agilidade são valores essenciais do sistema, a imagem da empresa
+						valoriza, demonstrando seriedade e comprometimento máximo com seus
+						contratantes. O sistema possui também uma função para o controle
+						da agenda. Com ela o usuário além de ter o controle total de sua
+						agenda, receberá por email o lembrete de datas importantes,
+						possibilitando que o mesmo escolha quantos dias antes do prazo
+						deseja receber o aviso.</p>
+				</div>
+				<div class="columnRight">
+					<div class="separador">
+						<p>O Lawbook também tem a opção de fazer o upload dos arquivos
+							digitalizados incluindo-os no processo. Gerando conforto para o
+							cliente, que poderá visualizar o seu processo de qualquer lugar
+							com acesso a internet. Junto com a opção do upload das páginas do
+							processo, poderá ser enviado documentos importantes do cliente
+							para o advogado, com a demora de um clique. Com isso criando uma
+							economia de tempo tanto para cliente como para advogado.</p>
+					</div>
+				</div>
+			</div>
+			<div class="vista">
+				<img id="logo" src="resources/images/logo.png" alt="logo" /> 
+				<img id="banner" src="resources/images/banner.png" alt="banner" />
+				<div class="nav">
+					<a href="#" id="entrar">Entrar</a>
+					<ul>
+						<li><a href="#" id="menuProjeto">Projeto</a></li>
+						<li><a href="#" id="menuObjetivo">Objetivo</a></li>
+						<li><a href="#" id="Contatos">Contatos</a></li>
+					</ul>
+				</div>
+			</div>
+			<div id="loginBlock">
+				<input type="text" class="login" value="Login:" />
+				<input type="password" class="senha" value="Senha:" /> 
+				<input type="button" value="Entrar" id="btEntrar" />
+			</div>
+		</div>
+	</h:body>
+</f:view>
 </html>
