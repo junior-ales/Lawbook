@@ -3,7 +3,8 @@ package br.com.lawbook.DAO.hibernate;
 import java.io.Serializable;
 import java.util.List;
 
-//import org.hibernate.Query;
+
+import org.hibernate.Query;
 import org.hibernate.Session;
 
 import br.com.lawbook.DAO.PostDAO;
@@ -28,9 +29,14 @@ public class HibernatePostDAO extends HibernateGenericDAO<Post> implements PostD
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Post> getProfileWall(Serializable profileId) {
-		// TODO Auto-generated method stub
-		return null;
+		Query query = this.getSession().createQuery("from lwb_post where sender_id = :profileId and receiver_id = 0");
+        query.setParameter("profileId", profileId);
+        query.setMaxResults(10);
+        return (List<Post>) query.list();
+		
 	}
 }
+

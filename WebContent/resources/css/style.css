@@ -57,7 +57,7 @@ p{
 .blockProjeto {
     color: white;
     position:absolute;
-    background-image: url('../images/repeat.png');
+    background-image: url('../resources/images/repeat.png');
     background-repeat: repeat;
     left:700px;
     width:550px;
@@ -68,7 +68,7 @@ p{
 .blockObjetivo{
     color: white;
     position:absolute;
-    background-image: url('../images/repeat.png');
+    background-image: url('../resources/images/repeat.png');
     background-repeat: repeat;
     left:700px;
     width:550px;

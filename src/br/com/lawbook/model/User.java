@@ -6,13 +6,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 14SEP2011-05 
+ * @version 19SEP2011-07 
  * 
  */
 @Entity(name="lwb_user")
@@ -27,9 +25,8 @@ public class User implements Serializable {
 	private String email;
 	@Column(length = 100)
 	private String password;
-	@OneToOne
-	@JoinColumn(name="perfil_id")
-	private Profile profile;
+	@Column(length = 100)
+	private String authority;
 	@Transient
 	private static final long serialVersionUID = 1L;
 	
@@ -57,16 +54,16 @@ public class User implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public Profile getProfile() {
-		return profile;
+	public String getAuthority() {
+		return authority;
 	}
-	public void setProfile(Profile perfil) {
-		this.profile = perfil;
+	public void setAuthority(String authority) {
+		this.authority = authority;
 	}
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", userName=" + userName + ", email=" + email
-				+ ", password=" + password + ", profileId=" + profile.getId() + "]";
+				+ ", password=" + password + ", authority=" + authority + "]";
 	}
 	
 }

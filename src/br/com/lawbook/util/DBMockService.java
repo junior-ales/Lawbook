@@ -41,13 +41,13 @@ public class DBMockService {
 		user.setUserName("user-" + userId);
 		user.setPassword("passUser-" + userId);
 		user.setEmail("emailUser-" + userId + "-@mail.com");
-		user.setProfile(getNewProfile(userId * 10L));
 		return user;
 	}
 
 	public Profile getNewProfile(Long profileId) {
 		Profile profile = new Profile();
 		profile.setId(profileId);
+		profile.setUserOwner(getUserById(profileId / 10L));
 		profile.setFirstName("FN-" + profileId + "-Profile");
 		profile.setLastName("LN-" + profileId + "-Profile");
 		profile.setBirth(this.newDate(profileId));
@@ -61,7 +61,7 @@ public class DBMockService {
 		Post post = new Post();
 		post.setId(postId);
 		post.setSender(new Profile());
-		post.setReceivers(new ArrayList<Profile>());
+//		post.setReceiver(new ArrayList<Profile>());
 		post.setContent("Post content bla bla bla bla bla - " + postId);
 		post.setDateTime(this.newDate(postId));
 		post.setComments(new ArrayList<Comment>());

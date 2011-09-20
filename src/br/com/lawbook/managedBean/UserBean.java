@@ -20,7 +20,7 @@ public class UserBean {
 	private String passwordConfirmation;
 	private String email;
 
-	private UserBean() {
+	public UserBean() {
 		this.service = UserService.getInstance();
 	}
 

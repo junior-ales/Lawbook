@@ -28,13 +28,13 @@ public class DBMock {
 	}
 	
 	private DBMock() {
-		tableLocation = new ArrayList<Location>();
-		tableUser = new ArrayList<User>();
-		tableProfile = new ArrayList<Profile>();
-		tableComment = new ArrayList<Comment>();
-		tablePost = new ArrayList<Post>();
-		generateTables();
-		applyDependencies();
+//		tableLocation = new ArrayList<Location>();
+//		tableUser = new ArrayList<User>();
+//		tableProfile = new ArrayList<Profile>();
+//		tableComment = new ArrayList<Comment>();
+//		tablePost = new ArrayList<Post>();
+//		generateTables();
+//		applyDependencies();
 	}
 
 	public List<User> getTableUser() {
@@ -99,17 +99,17 @@ public class DBMock {
 	}
 	
 	private void postDependencies() {
-		for (int i = 0, j = tablePost.size() - 1; i < tablePost.size(); i++, j--) {
-			List<Profile> receivers = new ArrayList<Profile>();
-			List<Comment> comments = new ArrayList<Comment>();
-			tablePost.get(i).setSender(tableProfile.get(j));
-			if (i != j) {
-				receivers.add(tableProfile.get(i));
-			}
-			tablePost.get(i).setReceivers(receivers);
-			comments.add(tableComment.get(i));
-			tablePost.get(i).setComments(comments);
-		}
+//		for (int i = 0, j = tablePost.size() - 1; i < tablePost.size(); i++, j--) {
+//			List<Profile> receivers = new ArrayList<Profile>();
+//			List<Comment> comments = new ArrayList<Comment>();
+//			tablePost.get(i).setSender(tableProfile.get(j));
+//			if (i != j) {
+//				receivers.add(tableProfile.get(i));
+//			}
+//			tablePost.get(i).setReceiver(receivers);
+//			comments.add(tableComment.get(i));
+//			tablePost.get(i).setComments(comments);
+//		}
 	}
 	
 	private void profileDependencies() {

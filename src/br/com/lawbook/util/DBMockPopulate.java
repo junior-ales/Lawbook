@@ -40,10 +40,8 @@ public class DBMockPopulate {
 	}
 
 	public List<Profile> generateTableProfile() {
-		User u = new User();
-		for (int i = 0; i < this.tableUser.size(); i++) {
-			u = this.tableUser.get(i);
-			tableProfile.add(u.getProfile());
+		for (Long i = 1L; i <= TABLE_SIZE; i++) {
+			tableProfile.add(dbs.getNewProfile(i));
 		}
 		return tableProfile;
 	}
