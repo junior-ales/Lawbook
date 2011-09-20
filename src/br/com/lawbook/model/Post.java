@@ -17,7 +17,7 @@ import javax.persistence.Transient;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 12SEP2011-06 
+ * @version 19SEP2011-08 
  *
  */
 
@@ -30,9 +30,9 @@ public class Post implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="sender_id")
 	public Profile sender;
-	@OneToMany
-	@JoinTable(name="lwb_post_receivers")
-	public List<Profile> receivers;
+	@ManyToOne
+	@JoinColumn(name="receiver_id")
+	public Profile receiver;
 	@Column(length = 255)
 	public String content;
 	public Calendar dateTime;
@@ -41,6 +41,18 @@ public class Post implements Serializable {
 	public List<Comment> comments;
 	@Transient
 	private static final long serialVersionUID = 1L;
+
+	public Post(Long id, Profile sender, Profile receiver, String content, Calendar dateTime, List<Comment> comments) {
+		this.id = id;
+		this.sender = sender;
+		this.receiver = receiver;
+		this.content = content;
+		this.dateTime = dateTime;
+		this.comments = comments;
+	}
+	
+	public Post() {
+	}
 	
 	public Long getId() {
 		return id;
@@ -54,11 +66,11 @@ public class Post implements Serializable {
 	public void setSender(Profile sender) {
 		this.sender = sender;
 	}
-	public List<Profile> getReceivers() {
-		return receivers;
+	public Profile getReceiver() {
+		return receiver;
 	}
-	public void setReceivers(List<Profile> receivers) {
-		this.receivers = receivers;
+	public void setReceiver(Profile receiver) {
+		this.receiver = receiver;
 	}
 	public String getContent() {
 		return content;
@@ -85,12 +97,14 @@ public class Post implements Serializable {
 	@Override
 	public String toString() {
 		String comments = "";
-		for (Comment c : this.comments) {
-			comments += c.getContent();
+		if (this.comments != null) {
+			for (Comment c : this.comments) {
+				comments += c.getContent();
+			}
 		}
 		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-		return "Post [id=" + id + ", senderId=" + sender.getId() + ", receivers="
-				+ receivers + ", content=" + content + ", dateTime="
+		return "Post [id=" + id + ", senderId=" + sender.getId() + ", receiver="
+				+ receiver.getId() + ", content=" + content + ", dateTime="
 				+ df.format(dateTime.getTime()) + ", comments=" + comments + "]";
 	}
 }
