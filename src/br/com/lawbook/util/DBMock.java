@@ -11,6 +11,7 @@ import br.com.lawbook.model.*;
  * 
  */
 
+@SuppressWarnings("unused")
 public class DBMock {
 
 	private static DBMock instance;

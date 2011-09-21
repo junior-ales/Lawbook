@@ -16,7 +16,7 @@ public class PostsTest {
 	public void getProfileWallTest() {
 		FactoryDAO factory = FactoryDAO.getFactoryDAO();
 		PostDAO dao = factory.getPostDAO();
-		List<Post> wallPosts = dao.getProfileWall(99L);
+		List<Post> wallPosts = dao.getProfileWall(10L);
 		
 		assertTrue(wallPosts.size() == 3);
 		for (Post p : wallPosts) {

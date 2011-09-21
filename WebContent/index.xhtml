@@ -92,7 +92,7 @@
 				<form action="j_spring_security_check" method="post">
 					<input name="j_username" type="text" class="login" value="${not empty login_error ? SPRING_SECURITY_LAST_USERNAME : ''}" />
 					<input name="j_password" type="password" class="senha" />
-					<h:button value="Entrar" outcome="pages/profile" />
+					<h:commandButton value="Entrar" type="submit" />
 				</form>
 			</div>
 		</div>
