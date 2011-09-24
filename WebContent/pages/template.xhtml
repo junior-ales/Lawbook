@@ -9,19 +9,19 @@
 	<h:head>
 		<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 		<title>Bem vindo ao Lawbook!</title>
-		<link rel="icon" href="../resources/images/icon.png"
-			type="image/x-icon" />
+		<link rel="icon" href="../resources/images/icon.png" type="image/x-icon" />
 	</h:head>
 	<h:body>
 		<!--<h:outputStylesheet name="style.css" library="css" />-->
 		<h:form id="formMaster">
 			<div style="border: 1px solid black; width: 80%;">
-				<div id="leftPanel"
-					style="float: left; border: 1px solid black; width: 30%;">
+				<div id="leftPanel" style="float: none; border: 1px solid black; width: 100%;">
+					<a href="../j_spring_security_logout">Logout</a>
+				</div>
+				<div id="leftPanel" style="float: left; border: 1px solid black; width: 30%;">
 					<h:outputText value="Left Panel" />
 				</div>
-				<div id="rightPanel"
-					style="float: left; border: 1px solid black; width: 69%;">
+				<div id="rightPanel" style="float: left; border: 1px solid black; width: 69%;">
 					<h:form id="formContent">
 						<ui:insert id="rightPanelContent" name="rightPanelContent">
 							Here goes the right panel content

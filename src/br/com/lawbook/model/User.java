@@ -1,16 +1,19 @@
 package br.com.lawbook.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 19SEP2011-07 
+ * @version 24SEP2011-08 
  * 
  */
 @Entity(name="lwb_user")
@@ -25,8 +28,10 @@ public class User implements Serializable {
 	private String email;
 	@Column(length = 100)
 	private String password;
-	@Column(length = 100)
-	private String authority;
+	@OneToMany
+	@JoinTable(name="lwb_user_authority")
+	private List<Authority> authority;
+	private boolean enable;
 	@Transient
 	private static final long serialVersionUID = 1L;
 	
@@ -54,16 +59,16 @@ public class User implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getAuthority() {
+	public List<Authority> getAuthority() {
 		return authority;
 	}
-	public void setAuthority(String authority) {
+	public void setAuthority(List<Authority> authority) {
 		this.authority = authority;
 	}
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", userName=" + userName + ", email=" + email
-				+ ", password=" + password + ", authority=" + authority + "]";
+	public boolean isEnable() {
+		return enable;
 	}
-	
+	public void setEnable(boolean enable) {
+		this.enable = enable;
+	}
 }

@@ -7,7 +7,7 @@ import br.com.lawbook.model.*;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 21SEP2011-05
+ * @version 24SEP2011-06
  * 
  */
 
@@ -17,11 +17,12 @@ public class TablesGenerator {
 		
 		try {
 			Configuration cfg = new Configuration().configure("hibernate.cfg.xml");
-			cfg.addAnnotatedClass(User.class);
-			cfg.addAnnotatedClass(Profile.class);
+			cfg.addAnnotatedClass(Authority.class);
+			cfg.addAnnotatedClass(Comment.class);
 			cfg.addAnnotatedClass(Location.class);
 			cfg.addAnnotatedClass(Post.class);
-			cfg.addAnnotatedClass(Comment.class);
+			cfg.addAnnotatedClass(Profile.class);
+			cfg.addAnnotatedClass(User.class);
 			SchemaExport se = new SchemaExport(cfg);
 			se.create(true, true);
 		} catch (Throwable ex) {

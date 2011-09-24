@@ -81,6 +81,7 @@
 				<img id="banner" src="resources/images/banner.png" alt="banner" />
 				<div class="nav">
 					<a href="#" id="entrar">Entrar</a>
+					<h:outputText value="Usuário ou senha incorretos!" rendered="#{param.erro}" style="color: darkred"/>
 					<ul>
 						<li><a href="#" id="menuProjeto">Projeto</a></li>
 						<li><a href="#" id="menuObjetivo">Objetivo</a></li>
@@ -90,9 +91,11 @@
 			</div>
 			<div id="loginBlock">
 				<form action="j_spring_security_check" method="post">
-					<input name="j_username" type="text" class="login" value="${not empty login_error ? SPRING_SECURITY_LAST_USERNAME : ''}" />
-					<input name="j_password" type="password" class="senha" />
-					<h:commandButton value="Entrar" type="submit" />
+					<h:outputLabel for="j_username" value="Username:" />
+                    <h:inputText id="j_username" required="true"/>
+                    <h:outputLabel for="j_password" value="Password:"/> 
+                    <h:inputSecret id="j_password" required="true"/>
+                    <h:commandButton value="Login" type="submit"/>
 				</form>
 			</div>
 		</div>
