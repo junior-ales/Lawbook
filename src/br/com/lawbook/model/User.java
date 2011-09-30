@@ -8,12 +8,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 24SEP2011-08 
+ * @version 30SEP2011-09 
  * 
  */
 @Entity(name="lwb_user")
@@ -28,7 +28,7 @@ public class User implements Serializable {
 	private String email;
 	@Column(length = 100)
 	private String password;
-	@OneToMany
+	@ManyToMany
 	@JoinTable(name="lwb_user_authority")
 	private List<Authority> authority;
 	private boolean enable;

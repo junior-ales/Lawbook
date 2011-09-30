@@ -18,7 +18,7 @@ import br.com.lawbook.model.Profile;
 public class PostBean {
 
 	private PostService service;
-	private Long profileId;
+	private Long profileId = 99L;
 
 	public PostBean() {
 		this.service = PostService.getInstance();
