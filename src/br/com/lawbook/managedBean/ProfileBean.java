@@ -1,28 +1,54 @@
 package br.com.lawbook.managedBean;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import java.util.List;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+import br.com.lawbook.business.PostService;
 import br.com.lawbook.business.ProfileService;
+import br.com.lawbook.model.Post;
 import br.com.lawbook.model.Profile;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 14SEP2011-02
+ * @version 01OCT2011-03
  */
 @ManagedBean
-@RequestScoped
+@SessionScoped
 public class ProfileBean {
 	
 	private ProfileService service;
-	@SuppressWarnings("unused")
 	private Profile profile;
 
-	public ProfileBean(Profile profile) {
+	public ProfileBean() {
 		this.service = ProfileService.getInstance();
-		setProfile(profile);
+		Profile profile = new Profile();
+        SecurityContext context = SecurityContextHolder.getContext();
+        if (context instanceof SecurityContext){
+            Authentication authentication = context.getAuthentication();
+            if (authentication instanceof Authentication){
+            	String username = ((org.springframework.security.core.userdetails.User)authentication.getPrincipal()).getUsername();
+				profile = this.service.getProfileBy(username);
+            }
+        }
+    	setProfile(profile);
 	}
 	
+	public List<Post> getStream() {
+		PostService postService = PostService.getInstance();
+		return postService.getStream(this.profile.getFriendsList());
+	}
+	
+	public List<Post> getProfileWall() {
+		PostService postService = PostService.getInstance();
+		return postService.getWall(this.profile.getId());
+	}
+
 	private void setProfile(Profile profile) {
 		if (!this.service.checkIfExist(profile.getId())) {
 			throw new IllegalArgumentException("Profile doesn't exist, please create one to use this feature");

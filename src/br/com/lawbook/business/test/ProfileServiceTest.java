@@ -6,12 +6,11 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import br.com.lawbook.business.ProfileService;
-import br.com.lawbook.managedBean.ProfileBean;
 import br.com.lawbook.model.Profile;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 14SEP2011-03
+ * @version 01OCT2011-04
  * 
  */
 
@@ -29,9 +28,5 @@ public class ProfileServiceTest {
 		assertTrue(service.getProfileById(id).equals(p));
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
-	public void nullProfileTest() {
-		new ProfileBean(new Profile());
-	}
 	
 }

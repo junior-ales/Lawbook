@@ -6,7 +6,7 @@ import br.com.lawbook.model.User;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 15SEP2011-01
+ * @version 01OCT2011-02
  *  
  */
 
@@ -45,8 +45,7 @@ public class UserService  {
 	public User getUserById(Long userId) {
 		FactoryDAO factory = FactoryDAO.getFactoryDAO();
 		UserDAO dao = factory.getUserDAO();
-		User user = dao.getById(userId);
-		return user;
+		return dao.getById(userId);
 	}
 
 	private void save(User user) {
@@ -55,5 +54,11 @@ public class UserService  {
 		factory.beginTx();
 		dao.save(user);
 		factory.shutTx();
+	}
+
+	public User getUserBy(String userName) {
+		FactoryDAO factory = FactoryDAO.getFactoryDAO();
+		UserDAO dao = factory.getUserDAO();
+		return dao.getByUserName(userName);
 	}
 }

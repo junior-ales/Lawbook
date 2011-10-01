@@ -3,10 +3,11 @@ package br.com.lawbook.business;
 import br.com.lawbook.DAO.FactoryDAO;
 import br.com.lawbook.DAO.ProfileDAO;
 import br.com.lawbook.model.Profile;
+import br.com.lawbook.model.User;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 15SEP2011-03 
+ * @version 01OCT2011-04 
  */
 
 public class ProfileService {
@@ -26,9 +27,7 @@ public class ProfileService {
 	public Profile getProfileById(Long id) {
 		FactoryDAO factory = FactoryDAO.getFactoryDAO();
 		ProfileDAO dao = factory.getProfileDAO();
-		factory.beginTx();
-		Profile profile = dao.getById(id);
-		return profile;
+		return dao.getById(id);
 	}
 
 	public void save(Profile profile) {
@@ -41,6 +40,18 @@ public class ProfileService {
 
 	public boolean checkIfExist(Long profileId) {
 		return getProfileById(profileId) == null ? false : true;
+	}
+
+	public Profile getProfileBy(String userName) {
+		UserService userService = UserService.getInstance();
+		User user = userService.getUserBy(userName);
+		return this.getProfileBy(user.getId());
+	}
+
+	private Profile getProfileBy(Long userId) {
+		FactoryDAO factory = FactoryDAO.getFactoryDAO();
+		ProfileDAO dao = factory.getProfileDAO();
+		return dao.getProfileBy(userId);
 	}
 	
 }
