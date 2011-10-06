@@ -1,0 +1,16 @@
+<div xmlns:ui="http://java.sun.com/jsf/facelets"
+	 xmlns:p="http://primefaces.prime.com.tr/ui"
+	 xmlns:f="http://java.sun.com/jsf/core"
+	 xmlns:h="http://java.sun.com/jsf/html">
+	 
+	<p>
+		<p:dataTable var="pst" value="#{profileBean.profileWall}">
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="Content" />
+				</f:facet>
+				<h:outputText value="#{pst.content}" />
+			</p:column>
+		</p:dataTable>
+	</p>
+</div>

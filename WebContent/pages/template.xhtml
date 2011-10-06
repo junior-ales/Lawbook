@@ -14,19 +14,22 @@
 	<h:body>
 		<!--<h:outputStylesheet name="style.css" library="css" />-->
 		<h:form id="formMaster">
-			<div style="border: 1px solid black; width: 80%;">
-				<div id="leftPanel" style="float: none; border: 1px solid black; width: 100%;">
-					<h:outputLink value="#{facesContext.externalContext.requestContextPath}/j_spring_security_logout">
-						<h:outputText value="Logout" />
-					</h:outputLink>
+			<div style="width: 900px; margin-left: 20px;">
+				<div id="topPanel" style="background-color: white; float: none; width: 100%;">
+					<div id="menuBar_" style="float: right; width: 257px;">
+						<p:menubar>
+							<p:menuitem value="Home" url="home.jsf" />
+							<p:menuitem value="Profile" url="profile.jsf" />
+							<p:submenu label="Settings">
+								<p:menuitem value="Logout" url="#{facesContext.externalContext.requestContextPath}/j_spring_security_logout" />
+							</p:submenu>
+						</p:menubar>
+					</div>
 				</div>
-				<div id="leftPanel" style="float: left; border: 1px solid black; width: 30%;">
-					<h:outputText value="Left Panel" />
-				</div>
-				<div id="rightPanel" style="float: left; border: 1px solid black; width: 69%;">
+				<div id="bottomPanel" style="float: left; width: 100%;">
 					<h:form id="formContent">
-						<ui:insert id="rightPanelContent" name="rightPanelContent">
-							Here goes the right panel content
+						<ui:insert id="contentPanel" name="contentPanel">
+							Here goes the content panel
 						</ui:insert>
 					</h:form>
 				</div>

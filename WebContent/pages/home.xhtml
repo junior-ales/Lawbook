@@ -3,10 +3,18 @@
 				xmlns:p="http://primefaces.prime.com.tr/ui"
 				xmlns:f="http://java.sun.com/jsf/core"
 				xmlns:h="http://java.sun.com/jsf/html">
-	<ui:define name="rightPanelContent">
-		<p>LOGOU!!!</p>
-		<hr />
-		<h:outputLink value="profile.jsf">Profile</h:outputLink>
+	<ui:define name="contentPanel">
+		<p:layout style="width:899px;height:100%">  
+		    <p:layoutUnit position="left" width="300">  
+		        <h:form id="homeOptionsForm">
+					<ui:include src="/pages/parts/homeOptions.xhtml" />
+				</h:form>
+		    </p:layoutUnit>  
+		    <p:layoutUnit position="center">  
+		        <h:form id="homeContentForm">
+					<ui:include src="/pages/parts/homeContent.xhtml"/> 
+				</h:form>
+		    </p:layoutUnit>  
+		</p:layout>  
 	</ui:define>
-
 </ui:composition>
