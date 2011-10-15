@@ -3,5 +3,14 @@
 	 xmlns:f="http://java.sun.com/jsf/core"
 	 xmlns:h="http://java.sun.com/jsf/html">
 	 
-	<h:outputText value="Home Content" />
+	<p>
+		<p:dataTable var="pst" value="#{profileBean.stream}">
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="Content" />
+				</f:facet>
+				<h:outputText value="#{pst.content}" />
+			</p:column>
+		</p:dataTable>
+	</p>
 </div>

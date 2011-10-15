@@ -9,7 +9,7 @@ import br.com.lawbook.model.Profile;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 14SEP2011-01
+ * @version 15OCT2011-02
  * 
  */
 public class PostService {
@@ -42,10 +42,10 @@ public class PostService {
 		factory.shutTx();
 	}
 
-	public List<Post> getStream(List<Profile> friendsList) {
+	public List<Post> getStream(Profile profile) {
 		FactoryDAO factory = FactoryDAO.getFactoryDAO();
 		PostDAO dao = factory.getPostDAO();
-		List<Post> streamPosts = dao.getStreamPosts(friendsList);
+		List<Post> streamPosts = dao.getStreamPosts(profile);
 		return streamPosts;
 	}
 

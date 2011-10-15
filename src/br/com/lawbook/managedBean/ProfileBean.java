@@ -16,7 +16,7 @@ import br.com.lawbook.model.Profile;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 06OCT2011-04
+ * @version 15OCT2011-05
  */
 @ManagedBean
 @SessionScoped
@@ -41,7 +41,7 @@ public class ProfileBean {
 	
 	public List<Post> getStream() {
 		PostService postService = PostService.getInstance();
-		return postService.getStream(this.profile.getFriendsList());
+		return postService.getStream(this.profile);
 	}
 	
 	public List<Post> getProfileWall() {
