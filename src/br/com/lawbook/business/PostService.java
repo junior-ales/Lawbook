@@ -1,15 +1,15 @@
 package br.com.lawbook.business;
 
+import java.util.HashMap;
 import java.util.List;
 
 import br.com.lawbook.DAO.FactoryDAO;
 import br.com.lawbook.DAO.PostDAO;
 import br.com.lawbook.model.Post;
-import br.com.lawbook.model.Profile;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 15OCT2011-02
+ * @version 18OCT2011-03
  * 
  */
 public class PostService {
@@ -42,10 +42,10 @@ public class PostService {
 		factory.shutTx();
 	}
 
-	public List<Post> getStream(Profile profile) {
+	public List<Post> getStream(HashMap<String,Object> attributes) {
 		FactoryDAO factory = FactoryDAO.getFactoryDAO();
 		PostDAO dao = factory.getPostDAO();
-		List<Post> streamPosts = dao.getStreamPosts(profile);
+		List<Post> streamPosts = dao.getStreamPosts(attributes);
 		return streamPosts;
 	}
 
@@ -54,5 +54,11 @@ public class PostService {
 		PostDAO dao = factory.getPostDAO();
 		List<Post> profileWall = dao.getProfileWall(profileId);
 		return profileWall;
+	}
+	
+	public int getPostsCount() {
+		FactoryDAO factory = FactoryDAO.getFactoryDAO();
+		PostDAO dao = factory.getPostDAO();
+		return Integer.parseInt(dao.getPostsCount().toString());
 	}
 }

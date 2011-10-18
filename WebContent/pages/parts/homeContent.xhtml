@@ -4,11 +4,9 @@
 	 xmlns:h="http://java.sun.com/jsf/html">
 	 
 	<p>
-		<p:dataTable var="pst" value="#{profileBean.stream}">
+		<p:dataTable var="pst" value="#{profileBean.stream}" lazy="true" 
+					 dynamic="true" rows="8" rowsPerPageTemplate="8,16,24">
 			<p:column>
-				<f:facet name="header">
-					<h:outputText value="Content" />
-				</f:facet>
 				<h:outputText value="#{pst.content}" />
 			</p:column>
 		</p:dataTable>

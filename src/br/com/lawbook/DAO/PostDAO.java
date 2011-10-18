@@ -1,20 +1,22 @@
 package br.com.lawbook.DAO;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 
 import br.com.lawbook.model.Post;
-import br.com.lawbook.model.Profile;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 15OCT2011-02
+ * @version 18OCT2011-03
  * 
  */
 
 public interface PostDAO extends GenericDAO<Post> {
 
-	List<Post> getStreamPosts(Profile profile);
+	List<Post> getStreamPosts(HashMap<String,Object> attributes);
 	
 	List<Post> getProfileWall(Serializable profileId);
+
+	Long getPostsCount();
 }

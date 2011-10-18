@@ -2,6 +2,8 @@ package br.com.lawbook.business.test;
 
 import static org.junit.Assert.*;
 
+import java.util.HashMap;
+
 import org.junit.Test;
 
 import br.com.lawbook.business.PostService;
@@ -10,7 +12,7 @@ import br.com.lawbook.model.Profile;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 15OUT2011-02
+ * @version 18OUT2011-03
  * 
  */
 
@@ -21,7 +23,9 @@ public class PostServiceTest {
 		ProfileService pfs = ProfileService.getInstance();
 		PostService ps = PostService.getInstance(); 
 		Profile profile = pfs.getProfileBy("jrales");
-		assertNotNull(ps.getStream(profile));
+		HashMap<String, Object> attributes = new HashMap<String, Object>();
+		attributes.put("profile", profile);
+		assertNotNull(ps.getStream(attributes));
 	}
 	
 }

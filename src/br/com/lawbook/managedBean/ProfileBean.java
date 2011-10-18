@@ -1,10 +1,14 @@
 package br.com.lawbook.managedBean;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+import org.primefaces.model.LazyDataModel;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,13 +20,15 @@ import br.com.lawbook.model.Profile;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 15OCT2011-05
+ * @version 18OCT2011-03
  */
 @ManagedBean
 @SessionScoped
 public class ProfileBean {
 	
+	private LazyDataModel<Post> stream;
 	private ProfileService service;
+	private PostService postService = PostService.getInstance();
 	private Profile profile;
 
 	public ProfileBean() {
@@ -39,9 +45,30 @@ public class ProfileBean {
     	setProfile(profile);
 	}
 	
-	public List<Post> getStream() {
-		PostService postService = PostService.getInstance();
-		return postService.getStream(this.profile);
+	@PostConstruct
+	public void loadLazyStream() {
+		if (this.stream == null) {
+			this.service = ProfileService.getInstance();
+			this.postService = PostService.getInstance();
+			this.stream = new LazyDataModel<Post>() {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public List<Post> load(int first, int pageSize, String sortField, boolean sortOrder, Map<String, String> filters) {
+					HashMap<String, Object> attributes = new HashMap<String, Object>();
+					attributes.put("profile", profile);
+					attributes.put("first", new Integer(first));
+					attributes.put("pageSize", new Integer(pageSize));
+					List<Post> posts = postService.getStream(attributes);
+					return posts;
+				}
+			};
+			this.stream.setRowCount(this.postService.getPostsCount());
+		}
+	}
+	
+	public LazyDataModel<Post> getStream() {
+		return this.stream;
 	}
 	
 	public List<Post> getProfileWall() {

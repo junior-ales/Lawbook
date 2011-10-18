@@ -2,11 +2,13 @@ package br.com.lawbook.DAO.hibernate;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Projections;
 
 import br.com.lawbook.DAO.PostDAO;
 import br.com.lawbook.model.Post;
@@ -14,7 +16,7 @@ import br.com.lawbook.model.Profile;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 15OUT2011-02 
+ * @version 18OUT2011-03 
  * 
  */
 
@@ -26,7 +28,12 @@ public class HibernatePostDAO extends HibernateGenericDAO<Post> implements PostD
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Post> getStreamPosts(Profile profile) {
+	public List<Post> getStreamPosts(HashMap<String,Object> attributes) {
+		
+		Profile profile = (Profile) attributes.get("profile");
+		Integer first = (Integer) attributes.get("first");
+		Integer pageSize = (Integer) attributes.get("pageSize");
+		
 		
 		List<Long> sendersId = new ArrayList<Long>();
 		for (Profile p : profile.getFriendsList()) {
@@ -37,7 +44,15 @@ public class HibernatePostDAO extends HibernateGenericDAO<Post> implements PostD
 		String stringQuery = "select p from lwb_post p where sender_id in :sendersId";
 		Query query = this.getSession().createQuery(stringQuery);
 		query.setParameterList("sendersId", sendersId);
-		query.setMaxResults(8);
+		
+		if (first == null || pageSize == null) {
+			query.setMaxResults(8);
+		}
+		else {
+			query.setFirstResult(first);
+			query.setMaxResults(pageSize);
+		}
+		
 		return (List<Post>) query.list();
 	}
 
@@ -49,6 +64,13 @@ public class HibernatePostDAO extends HibernateGenericDAO<Post> implements PostD
         query.setMaxResults(8);
         return (List<Post>) query.list();
 		
+	}
+
+	@Override
+	public Long getPostsCount() {
+		Criteria crit = this.getSession().createCriteria(Post.class);
+		crit.setProjection(Projections.rowCount());
+		return (Long) crit.list().get(0);	
 	}
 }
 
