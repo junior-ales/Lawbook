@@ -1,7 +1,6 @@
 package br.com.lawbook.model;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
@@ -17,7 +16,7 @@ import javax.persistence.Transient;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 19SEP2011-08 
+ * @version 19OCT2011-09 
  *
  */
 
@@ -40,20 +39,8 @@ public class Post implements Serializable {
 	@JoinTable(name="lwb_post_comments")
 	public List<Comment> comments;
 	@Transient
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 497092916483761201L;
 
-	public Post(Long id, Profile sender, Profile receiver, String content, Calendar dateTime, List<Comment> comments) {
-		this.id = id;
-		this.sender = sender;
-		this.receiver = receiver;
-		this.content = content;
-		this.dateTime = dateTime;
-		this.comments = comments;
-	}
-	
-	public Post() {
-	}
-	
 	public Long getId() {
 		return id;
 	}
@@ -83,7 +70,7 @@ public class Post implements Serializable {
 	}
 	public void setDateTime(Calendar dateTime) {
 		if (Calendar.getInstance().compareTo(dateTime) < 0) {
-			throw new IllegalArgumentException("A data e hora da mensagem deve ser menor que a de agora");
+			throw new IllegalArgumentException("Datetime parameter cannot be a future datetime");
 		}
 		this.dateTime = dateTime;
 	}
@@ -94,17 +81,4 @@ public class Post implements Serializable {
 		this.comments = comments;
 	}
 	
-	@Override
-	public String toString() {
-		String comments = "";
-		if (this.comments != null) {
-			for (Comment c : this.comments) {
-				comments += c.getContent();
-			}
-		}
-		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-		return "Post [id=" + id + ", senderId=" + sender.getId() + ", receiver="
-				+ receiver.getId() + ", content=" + content + ", dateTime="
-				+ df.format(dateTime.getTime()) + ", comments=" + comments + "]";
-	}
 }

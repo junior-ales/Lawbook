@@ -10,7 +10,7 @@ import javax.persistence.Transient;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 14SEP2011-04 
+ * @version 19OCT2011-05 
  */
 
 @Entity(name="lwb_location")
@@ -34,7 +34,7 @@ public class Location implements Serializable {
 	@Column(length = 9, name="sec_address_zipcode")
 	private String secAddZipCode;
 	@Transient
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 6916990507563022210L;
 	
 	public Long getId() {
 		return id;
@@ -83,12 +83,5 @@ public class Location implements Serializable {
 	}
 	public void setSecAddZipCode(String secAddZipCode) {
 		this.secAddZipCode = secAddZipCode;
-	}
-	@Override
-	public String toString() {
-		return "Location [id=" + id + ", country=" + country + ", state="
-				+ state + ", city=" + city + ", mainAdd=" + mainAdd
-				+ ", mainZipCode=" + mainZipCode + ", secAdd=" + secAdd
-				+ ", secAddZipCode=" + secAddZipCode + "]";
 	}
 }

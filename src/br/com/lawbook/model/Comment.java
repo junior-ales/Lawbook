@@ -1,7 +1,6 @@
 package br.com.lawbook.model;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import javax.persistence.Column;
@@ -34,7 +33,7 @@ public class Comment implements Serializable {
 	public String content;
 	public Calendar dateTime;
 	@Transient
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 4292348627560767987L;
 	
 	public Long getId() {
 		return id;
@@ -62,11 +61,5 @@ public class Comment implements Serializable {
 			throw new IllegalArgumentException("Datetime parameter cannot be a future datetime");
 		}
 		this.dateTime = dateTime;
-	}
-	@Override
-	public String toString() {
-		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-		return "Comment [id=" + id + ", senderId=" + sender.getId() + ", content="
-				+ content + ", dateTime=" + df.format(dateTime.getTime()) + "]";
 	}
 }

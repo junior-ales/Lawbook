@@ -17,7 +17,7 @@ import javax.persistence.Transient;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 18SEP2011-12
+ * @version 19OCT2011-13
  */
 
 @Entity(name = "lwb_user_profile")
@@ -45,7 +45,7 @@ public class Profile implements Serializable {
 	@Column(length = 255)
 	private String avatar;
 	@Transient
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1156277173284535028L;
 	
 	public Long getId() {
 		return id;

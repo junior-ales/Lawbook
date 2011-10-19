@@ -13,7 +13,7 @@ import javax.persistence.Transient;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 30SEP2011-09 
+ * @version 19OCT2011-10 
  * 
  */
 @Entity(name="lwb_user")
@@ -33,7 +33,7 @@ public class User implements Serializable {
 	private List<Authority> authority;
 	private boolean enable;
 	@Transient
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -6082705591536638755L;
 	
 	public Long getId() {
 		return id;

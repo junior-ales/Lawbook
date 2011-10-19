@@ -10,7 +10,7 @@ import javax.persistence.Transient;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 24SEP2011-01 
+ * @version 19OCT2011-02 
  * 
  */
 @Entity(name="lwb_authority")
@@ -22,7 +22,7 @@ public class Authority implements Serializable {
 	@Column(length = 100)
 	public String name;
 	@Transient
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2493487525173846223L;
 	
 	public Long getId() {
 		return id;
