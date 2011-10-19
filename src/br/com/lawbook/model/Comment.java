@@ -7,14 +7,16 @@ import java.util.Calendar;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 14SEP2011-05 
+ * @version 19OCT2011-06 
  * 
  */
 
@@ -22,7 +24,8 @@ import javax.persistence.Transient;
 public class Comment implements Serializable {
 	
 	@Id
-	@GeneratedValue
+	@SequenceGenerator(name="lwb_comment_seq_id", sequenceName="lwb_comment_seq_id",allocationSize=1,initialValue=1)
+    @GeneratedValue(generator="lwb_comment_seq_id", strategy= GenerationType.SEQUENCE)
 	public Long id;
 	@ManyToOne
 	@JoinColumn(name="sender_id")
@@ -56,7 +59,7 @@ public class Comment implements Serializable {
 	}
 	public void setDateTime(Calendar dateTime) {
 		if (Calendar.getInstance().compareTo(dateTime) < 0) {
-			throw new IllegalArgumentException("A data e hora do comentario deve ser menor que a de agora");
+			throw new IllegalArgumentException("Datetime parameter cannot be a future datetime");
 		}
 		this.dateTime = dateTime;
 	}
