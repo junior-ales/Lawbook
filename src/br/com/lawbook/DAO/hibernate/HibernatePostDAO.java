@@ -16,7 +16,7 @@ import br.com.lawbook.model.Profile;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 18OUT2011-03 
+ * @version 19OUT2011-04 
  * 
  */
 
@@ -34,16 +34,24 @@ public class HibernatePostDAO extends HibernateGenericDAO<Post> implements PostD
 		Integer first = (Integer) attributes.get("first");
 		Integer pageSize = (Integer) attributes.get("pageSize");
 		
-		
 		List<Long> sendersId = new ArrayList<Long>();
 		for (Profile p : profile.getFriendsList()) {
 			sendersId.add(p.getId());
 		}
-		sendersId.add(profile.getId());
 		
-		String stringQuery = "select p from lwb_post p where sender_id in :sendersId";
-		Query query = this.getSession().createQuery(stringQuery);
-		query.setParameterList("sendersId", sendersId);
+		StringBuilder stringQuery = new StringBuilder("select p from lwb_post p where "); 
+		
+		if (!sendersId.isEmpty()) {
+			stringQuery.append("(sender_id in :sendersId and receiver_id = 0) or ");
+		}
+		stringQuery.append("sender_id = :myId or receiver_id = :myId order by datetime desc");
+		
+		Query query = this.getSession().createQuery(stringQuery.toString());
+		query.setParameter("myId", profile.getId());
+		
+		if (!sendersId.isEmpty()) {
+			query.setParameterList("sendersId", sendersId);
+		}
 		
 		if (first == null || pageSize == null) {
 			query.setMaxResults(8);
@@ -61,7 +69,7 @@ public class HibernatePostDAO extends HibernateGenericDAO<Post> implements PostD
 	public List<Post> getProfileWall(Serializable profileId) {
 		Query query = this.getSession().createQuery("from lwb_post where sender_id = :profileId and receiver_id = 0");
         query.setParameter("profileId", profileId);
-        query.setMaxResults(8);
+        query.setMaxResults(10);
         return (List<Post>) query.list();
 		
 	}

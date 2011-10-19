@@ -4,10 +4,15 @@
 	 xmlns:h="http://java.sun.com/jsf/html">
 	 
 	<p>
-		<p:dataTable var="pst" value="#{profileBean.stream}" lazy="true" 
-					 dynamic="true" rows="8" rowsPerPageTemplate="8,16,24">
-			<p:column>
-				<h:outputText value="#{pst.content}" />
+		<p:dataTable var="pst" value="#{profileBean.stream}" lazy="true" height="500" 
+					 paginator="true" paginatorTemplate="{PreviousPageLink} {NextPageLink}" 
+					 rows="8" paginatorPosition="bottom" rowsPerPageTemplate="4,8,12">
+			<p:column style="padding: 10px; width: 580px;">
+				<img alt="" src="#{pst.sender.avatar}" />
+				<h:outputText value="#{pst.content}" style="font-size: larger;" />
+				<h:outputText value="#{pst.dateTime.time}" style="font-size: small;">
+					<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+				</h:outputText>
 			</p:column>
 		</p:dataTable>
 	</p>

@@ -4,17 +4,18 @@
 				xmlns:f="http://java.sun.com/jsf/core"
 				xmlns:h="http://java.sun.com/jsf/html">
 	<ui:define name="contentPanel">
-		<p:layout style="width:899px; height:400px;">  
-		    <p:layoutUnit position="left" width="300" >  
+		<div style="border: 1px solid black; display: table; width: 100%;">
+			<div style="border: 1px solid black; float: left; width: 300px;">
 		        <h:form id="homeOptionsForm">
 					<ui:include src="/pages/parts/homeOptions.xhtml" />
 				</h:form>
-		    </p:layoutUnit>  
-		    <p:layoutUnit position="center" >  
+			</div>
+			<div style="border: 1px solid black; margin-left: 301px;">
 		        <h:form id="homeContentForm">
 					<ui:include src="/pages/parts/homeContent.xhtml"/> 
 				</h:form>
-		    </p:layoutUnit>  
-		</p:layout>  
+			</div>
+		</div>
+		<div style="clear: both;"></div>
 	</ui:define>
 </ui:composition>

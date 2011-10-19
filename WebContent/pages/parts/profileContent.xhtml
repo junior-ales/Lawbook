@@ -4,12 +4,23 @@
 	 xmlns:h="http://java.sun.com/jsf/html">
 	 
 	<p>
-		<p:dataTable var="pst" value="#{profileBean.profileWall}">
-			<p:column>
-				<f:facet name="header">
-					<h:outputText value="Content" />
-				</f:facet>
-				<h:outputText value="#{pst.content}" />
+		<p:ajaxStatus style="width:16px;height:16px;position: relative; left: 40px; top: -10px;">  
+		    <f:facet name="start">  
+		        <h:graphicImage library="images" value="icon.png" />
+		    </f:facet>  
+		    <f:facet name="complete">  
+		        <h:outputText value="" />  
+		    </f:facet>  
+		</p:ajaxStatus>
+		
+		<p:dataTable var="pst" value="#{profileBean.profileWall}" rows="8"
+					 scrollable="true" liveScroll="true" height="500">
+			<p:column style="padding: 10px; width: 580px;">
+				<img alt="" src="#{profileBean.profile.avatar}" />
+				<h:outputText value="#{pst.content}" style="font-size: larger;" />
+				<h:outputText value="#{pst.dateTime.time}" style="font-size: small;">
+					<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+				</h:outputText>
 			</p:column>
 		</p:dataTable>
 	</p>
