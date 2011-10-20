@@ -1,6 +1,5 @@
 package br.com.lawbook.DAO.hibernate;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +15,7 @@ import br.com.lawbook.model.Profile;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 19OUT2011-04 
+ * @version 20OUT2011-05 
  * 
  */
 
@@ -33,43 +32,45 @@ public class HibernatePostDAO extends HibernateGenericDAO<Post> implements PostD
 		Profile profile = (Profile) attributes.get("profile");
 		Integer first = (Integer) attributes.get("first");
 		Integer pageSize = (Integer) attributes.get("pageSize");
-		
 		List<Long> sendersId = new ArrayList<Long>();
+		
 		for (Profile p : profile.getFriendsList()) {
 			sendersId.add(p.getId());
 		}
+		Query query;
+		String stringQuery = "select p from lwb_post p where ";
 		
-		StringBuilder stringQuery = new StringBuilder("select p from lwb_post p where "); 
-		
-		if (!sendersId.isEmpty()) {
-			stringQuery.append("(sender_id in :sendersId and receiver_id = 0) or ");
+		if (sendersId.isEmpty()) {
+			stringQuery += "sender_id = :myId or receiver_id = :myId order by datetime desc";
+			query = this.getSession().createQuery(stringQuery);
 		}
-		stringQuery.append("sender_id = :myId or receiver_id = :myId order by datetime desc");
-		
-		Query query = this.getSession().createQuery(stringQuery.toString());
-		query.setParameter("myId", profile.getId());
-		
-		if (!sendersId.isEmpty()) {
+		else {
+			stringQuery += "(sender_id in :sendersId and receiver_id = 0) or sender_id = :myId or receiver_id = :myId order by datetime desc";
+			query = this.getSession().createQuery(stringQuery);
 			query.setParameterList("sendersId", sendersId);
 		}
 		
-		if (first == null || pageSize == null) {
-			query.setMaxResults(8);
-		}
-		else {
-			query.setFirstResult(first);
-			query.setMaxResults(pageSize);
-		}
+		query.setParameter("myId", profile.getId());
+		query.setFirstResult(first);
+		query.setMaxResults(pageSize);
 		
 		return (List<Post>) query.list();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Post> getProfileWall(Serializable profileId) {
-		Query query = this.getSession().createQuery("from lwb_post where sender_id = :profileId and receiver_id = 0");
+	public List<Post> getProfileWall(HashMap<String,Object> attributes) {
+		
+		Long profileId = (Long) attributes.get("profileId");
+		Integer first = (Integer) attributes.get("first");
+		Integer pageSize = (Integer) attributes.get("pageSize");
+		
+		Query query = this.getSession().createQuery("from lwb_post where sender_id = :profileId and receiver_id = 0 order by datetime desc");
         query.setParameter("profileId", profileId);
-        query.setMaxResults(10);
+        
+		query.setFirstResult(first);
+		query.setMaxResults(pageSize);
+        
         return (List<Post>) query.list();
 		
 	}

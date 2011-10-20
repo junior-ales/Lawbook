@@ -4,23 +4,30 @@
 	 xmlns:h="http://java.sun.com/jsf/html">
 	 
 	<p>
-		<p:ajaxStatus style="width:16px;height:16px;position: relative; left: 40px; top: -10px;">  
-		    <f:facet name="start">  
-		        <h:graphicImage library="images" value="icon.png" />
-		    </f:facet>  
-		    <f:facet name="complete">  
-		        <h:outputText value="" />  
-		    </f:facet>  
-		</p:ajaxStatus>
-		
-		<p:dataTable var="pst" value="#{profileBean.profileWall}" rows="8"
-					 scrollable="true" liveScroll="true" height="500">
+		<p:dataTable var="pst" value="#{profileBean.wall}" lazy="true" height="500" 
+					 paginator="true" paginatorTemplate="{PreviousPageLink} {NextPageLink}" 
+					 rows="8" paginatorPosition="bottom" rowsPerPageTemplate="4,8,12">
 			<p:column style="padding: 10px; width: 580px;">
-				<img alt="" src="#{profileBean.profile.avatar}" />
-				<h:outputText value="#{pst.content}" style="font-size: larger;" />
-				<h:outputText value="#{pst.dateTime.time}" style="font-size: small;">
-					<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
-				</h:outputText>
+				<div style="border: 1px solid black; display: table; width: 100%;">
+					<div style="border: 1px solid black; float: left; width: 130px;">
+						<h:graphicImage value="#{pst.sender.avatar}" width="75" height="75" style="margin-left: 25px;" />
+					</div>
+					<div style="border: 1px solid black; margin-left: 131px;">
+						<div style="border: 1px solid black;">
+							<h:outputText value="#{pst.sender.firstName} #{pst.sender.lastName} " />
+							<h:outputText value="#{pst.dateTime.time}" style="font-size: small;">
+								<f:convertDateTime timeZone="America/Sao_Paulo" locale="pt_BR" pattern="HH:mm dd/MMM/yyyy"/>
+							</h:outputText>
+						</div>
+						<div style="border: 1px solid black;">
+							<h:outputText value="#{pst.content}" style="font-size: larger;" />
+						</div>
+						<div style="border: 1px solid black;">
+							
+						</div>
+					</div>
+				</div>
+				<div style="clear: both;"></div>
 			</p:column>
 		</p:dataTable>
 	</p>

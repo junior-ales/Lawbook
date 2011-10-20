@@ -1,5 +1,6 @@
 package br.com.lawbook.business;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
@@ -9,12 +10,13 @@ import br.com.lawbook.model.Post;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 18OCT2011-03
+ * @version 19OCT2011-04
  * 
  */
-public class PostService {
+public class PostService implements Serializable{
 	
 	private static PostService instance;
+	private static final long serialVersionUID = 5170825358674011787L;
 
 	private PostService() {
 	}
@@ -45,15 +47,13 @@ public class PostService {
 	public List<Post> getStream(HashMap<String,Object> attributes) {
 		FactoryDAO factory = FactoryDAO.getFactoryDAO();
 		PostDAO dao = factory.getPostDAO();
-		List<Post> streamPosts = dao.getStreamPosts(attributes);
-		return streamPosts;
+		return dao.getStreamPosts(attributes);
 	}
 
-	public List<Post> getWall(Long profileId) {
+	public List<Post> getWall(HashMap<String,Object> attributes) {
 		FactoryDAO factory = FactoryDAO.getFactoryDAO();
 		PostDAO dao = factory.getPostDAO();
-		List<Post> profileWall = dao.getProfileWall(profileId);
-		return profileWall;
+		return dao.getProfileWall(attributes);
 	}
 	
 	public int getPostsCount() {

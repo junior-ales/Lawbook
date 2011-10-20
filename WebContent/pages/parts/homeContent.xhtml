@@ -4,15 +4,49 @@
 	 xmlns:h="http://java.sun.com/jsf/html">
 	 
 	<p>
-		<p:dataTable var="pst" value="#{profileBean.stream}" lazy="true" height="500" 
+		<p:dataTable var="post" value="#{homeBean.stream}" lazy="true" height="500" 
 					 paginator="true" paginatorTemplate="{PreviousPageLink} {NextPageLink}" 
 					 rows="8" paginatorPosition="bottom" rowsPerPageTemplate="4,8,12">
 			<p:column style="padding: 10px; width: 580px;">
-				<img alt="" src="#{pst.sender.avatar}" />
-				<h:outputText value="#{pst.content}" style="font-size: larger;" />
-				<h:outputText value="#{pst.dateTime.time}" style="font-size: small;">
-					<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
-				</h:outputText>
+				<div style="border: 1px solid black; display: table; width: 100%;">
+					<div style="border: 1px solid black; float: left; width: 130px;">
+						<h:graphicImage value="#{post.sender.avatar}" width="75" height="75" style="margin-left: 25px;" />
+					</div>
+					<div style="border: 1px solid black; margin-left: 131px;">
+						<div style="border: 1px solid black;">
+							<h:outputText value="#{post.sender.firstName} #{post.sender.lastName} " />
+							<h:outputText value="#{post.dateTime.time}" style="font-size: small;">
+								<f:convertDateTime timeZone="America/Sao_Paulo" locale="pt_BR" pattern="HH:mm dd/MMM/yyyy"/>
+							</h:outputText>
+						</div>
+						<div style="border: 1px solid black;">
+							<h:outputText value="#{post.content}" style="font-size: large;" />
+						</div>
+						<div style="border: 1px solid black;">
+							<p:dataTable var="postComment" value="#{post.comments}" emptyMessage="">
+								<p:column>
+									<div style="border: 1px solid black; display: table; width: 100%;">
+										<div style="border: 1px solid black; float: left; width: 70px;">
+											<h:graphicImage value="#{postComment.sender.avatar}" width="50" height="50" style="margin-left: 10px;" />
+										</div>
+										<div style="border: 1px solid black; margin-left: 71px;">
+											<div style="border: 1px solid black;">
+												<h:outputText value="#{postComment.sender.firstName} #{postComment.sender.lastName} " style="font-weight: bold; font-size: small;" />
+												<h:outputText value="#{postComment.dateTime.time}" style="font-size: small;">
+													<f:convertDateTime timeZone="America/Sao_Paulo" locale="pt_BR" pattern="HH:mm dd/MMM/yyyy" />
+												</h:outputText>
+											</div>
+											<div style="border: 1px solid black;">
+												<h:outputText value="#{postComment.content}" style="font-weight: bold; font-size: small;" />
+											</div>
+										</div>
+									</div>
+								</p:column>
+							</p:dataTable>
+						</div>
+					</div>
+				</div>
+				<div style="clear: both;"></div>
 			</p:column>
 		</p:dataTable>
 	</p>

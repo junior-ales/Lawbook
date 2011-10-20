@@ -21,19 +21,19 @@ import br.com.lawbook.model.Profile;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 19OCT2011-04
+ * @version 19OCT2011-01
  */
 @ManagedBean
 @ViewScoped
-public class ProfileBean implements Serializable {
+public class HomeBean implements Serializable {
 	
 	private Profile profile;
-	private LazyDataModel<Post> wall;
+	private LazyDataModel<Post> stream;
 	private ProfileService service;
 	private PostService postService;
-	private static final long serialVersionUID = 5494870990228898461L;
+	private static final long serialVersionUID = 928727904018740163L;
 
-	public ProfileBean() {
+	public HomeBean() {
 		this.service = ProfileService.getInstance();
 		Profile profile = new Profile();
         SecurityContext context = SecurityContextHolder.getContext();
@@ -48,29 +48,29 @@ public class ProfileBean implements Serializable {
 	}
 	
 	@PostConstruct
-	public void loadLazyWall() {
-		if (this.wall == null) {
+	public void loadLazyStream() {
+		if (this.stream == null) {
 			this.service = ProfileService.getInstance();
 			this.postService = PostService.getInstance();
-			this.wall = new LazyDataModel<Post>() {
+			this.stream = new LazyDataModel<Post>() {
 				private static final long serialVersionUID = -4238038748234463347L;
 
 				@Override
 				public List<Post> load(int first, int pageSize, String sortField, boolean sortOrder, Map<String, String> filters) {
 					HashMap<String, Object> attributes = new HashMap<String, Object>();
-					attributes.put("profileId", profile.getId());
+					attributes.put("profile", profile);
 					attributes.put("first", new Integer(first));
 					attributes.put("pageSize", new Integer(pageSize));
-					List<Post> posts = postService.getWall(attributes);
+					List<Post> posts = postService.getStream(attributes);
 					return posts;
 				}
 			};
-			this.wall.setRowCount(this.postService.getPostsCount());
+			this.stream.setRowCount(this.postService.getPostsCount());
 		}
 	}
 	
-	public LazyDataModel<Post> getWall() {
-		return this.wall;
+	public LazyDataModel<Post> getStream() {
+		return this.stream;
 	}
 
 	public Profile getProfile() {

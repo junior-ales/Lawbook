@@ -1,5 +1,7 @@
 package br.com.lawbook.business;
 
+import java.io.Serializable;
+
 import br.com.lawbook.DAO.FactoryDAO;
 import br.com.lawbook.DAO.ProfileDAO;
 import br.com.lawbook.model.Profile;
@@ -7,11 +9,12 @@ import br.com.lawbook.model.User;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 01OCT2011-04 
+ * @version 20OCT2011-05 
  */
 
-public class ProfileService {
+public class ProfileService implements Serializable {
 	
+	private static final long serialVersionUID = 6539523356391364471L;
 	private static ProfileService instance;
 
 	private ProfileService() {
