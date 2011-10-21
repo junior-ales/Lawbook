@@ -7,16 +7,18 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 19OCT2011-09 
+ * @version 20OCT2011-10 
  *
  */
 
@@ -24,7 +26,8 @@ import javax.persistence.Transient;
 public class Post implements Serializable {
 	
 	@Id
-	@GeneratedValue
+	@SequenceGenerator(name="lwb_post_seq_id", sequenceName="lwb_post_seq_id",allocationSize=1,initialValue=1)
+    @GeneratedValue(generator="lwb_post_seq_id", strategy= GenerationType.SEQUENCE)
 	public Long id;
 	@ManyToOne
 	@JoinColumn(name="sender_id")

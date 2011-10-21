@@ -8,10 +8,9 @@ import br.com.lawbook.util.HibernateUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 16SEP2011-04 
+ * @version 20OCT2011-05
  * 
  */
-
 public class HibernateFactoryDAO extends FactoryDAO {
 
     private Session session;
@@ -34,10 +33,9 @@ public class HibernateFactoryDAO extends FactoryDAO {
 
     @Override
     public void shutTx() {
-        if (this.tx != null) {
+    	if (this.tx != null) {
             this.tx.commit();
         }
-        this.session.close();
     }
 
 	@Override
@@ -64,4 +62,10 @@ public class HibernateFactoryDAO extends FactoryDAO {
 	public CommentDAO getCommentDAO() {
 		return new HibernateCommentDAO(this.session);
 	}
+
+	@Override
+	public AuthorityDAO getAuthorityDAO() {
+		return new HibernateAuthorityDAO(this.session);
+	}
+	
 }

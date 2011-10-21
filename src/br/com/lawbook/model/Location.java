@@ -5,19 +5,22 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 19OCT2011-05 
+ * @version 20OCT2011-06 
  */
 
 @Entity(name="lwb_location")
 public class Location implements Serializable {
 
 	@Id
-	@GeneratedValue
+	@SequenceGenerator(name="lwb_location_seq_id", sequenceName="lwb_location_seq_id",allocationSize=1,initialValue=1)
+    @GeneratedValue(generator="lwb_location_seq_id", strategy= GenerationType.SEQUENCE)
 	private Long id;
 	@Column(length = 50)
 	private String country;

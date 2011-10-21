@@ -6,21 +6,24 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 19OCT2011-10 
+ * @version 20OCT2011-11 
  * 
  */
 @Entity(name="lwb_user")
 public class User implements Serializable {
 	
 	@Id
-	@GeneratedValue
+	@SequenceGenerator(name="lwb_user_seq_id", sequenceName="lwb_user_seq_id",allocationSize=1,initialValue=1)
+    @GeneratedValue(generator="lwb_user_seq_id", strategy= GenerationType.SEQUENCE)
 	private Long id;
 	@Column(length = 100)
 	private String userName;
@@ -28,7 +31,7 @@ public class User implements Serializable {
 	private String email;
 	@Column(length = 100)
 	private String password;
-	@ManyToMany
+	@OneToMany
 	@JoinTable(name="lwb_user_authority")
 	private List<Authority> authority;
 	private boolean enable;

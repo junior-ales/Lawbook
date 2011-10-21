@@ -7,7 +7,7 @@ import br.com.lawbook.business.UserService;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 16SEP2011-02
+ * @version 21OCT2011-03
  *  
  */
 @ManagedBean
@@ -64,13 +64,12 @@ public class UserBean {
 		this.email = email;
 	}
 	
-	public boolean createUser() {
+	public void createUser() {
 		if (userName == null || password == null || passwordConfirmation == null || email == null) {
-			if (!password.equals(passwordConfirmation)) {
-				return service.createUser(userName, password, email);
+			if (password.equals(passwordConfirmation)) {
+				service.create(userName, password, email);
 			}
 		}
-		return false;
 	}
 	
 }

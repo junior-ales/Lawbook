@@ -7,7 +7,6 @@ import br.com.lawbook.model.Comment;
  * @version 16SEP2011-01 
  * 
  */
-
 public interface CommentDAO extends GenericDAO<Comment>{ 
 
 }

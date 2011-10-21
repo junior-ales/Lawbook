@@ -1,15 +1,16 @@
 package br.com.lawbook.business;
 
+import org.hibernate.HibernateException;
+
 import br.com.lawbook.DAO.FactoryDAO;
 import br.com.lawbook.DAO.UserDAO;
 import br.com.lawbook.model.User;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 01OCT2011-02
+ * @version 20OCT2011-03
  *  
  */
-
 public class UserService  {
 
 	private static UserService instance;
@@ -23,23 +24,17 @@ public class UserService  {
 		}
 		return instance;
 	}
-
-	public boolean userExist(String email, String userName) {
-		FactoryDAO factory = FactoryDAO.getFactoryDAO();
-		UserDAO dao = factory.getUserDAO();
-		return dao.checkIfExist(email, userName);
-	}
-
-	public boolean createUser(String userName, String password, String email) {
-		if (userExist(email, userName)) return false;
-		
+	
+	public void create(String userName, String password, String email) {
 		User user = new User();
 		user.setUserName(userName);
 		user.setPassword(password);
 		user.setEmail(email);
+		create(user);
+	}
+	
+	public void create(User user) {
 		this.save(user);
-		
-		return true;
 	}
 	
 	public User getUserById(Long userId) {
@@ -48,12 +43,24 @@ public class UserService  {
 		return dao.getById(userId);
 	}
 
-	private void save(User user) {
+	private void save(User user) throws IllegalArgumentException, HibernateException {
 		FactoryDAO factory = FactoryDAO.getFactoryDAO();
 		UserDAO dao = factory.getUserDAO();
+		if (dao.checkIfExist(user.getEmail(), user.getUserName())) {
+			throw new IllegalArgumentException("Username or email already exist");
+		}
 		factory.beginTx();
 		dao.save(user);
 		factory.shutTx();
+	}
+	
+	public User update(User user) throws HibernateException {
+		FactoryDAO factory = FactoryDAO.getFactoryDAO();
+		UserDAO dao = factory.getUserDAO();
+		factory.beginTx();
+		User aux = dao.update(user);
+		factory.shutTx();
+		return aux;
 	}
 
 	public User getUserBy(String userName) {
@@ -61,4 +68,5 @@ public class UserService  {
 		UserDAO dao = factory.getUserDAO();
 		return dao.getByUserName(userName);
 	}
+
 }

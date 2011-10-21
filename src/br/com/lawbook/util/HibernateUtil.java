@@ -13,6 +13,7 @@ import org.hibernate.cfg.Configuration;
 public class HibernateUtil {
 	
 	private static final SessionFactory sessionFactory;
+	private static Session session;
 
     static {
         try {
@@ -23,7 +24,10 @@ public class HibernateUtil {
     }
 
     public static Session getSession() {
-        return sessionFactory.openSession();
+    	if (session == null || !session.isOpen()) {
+    		session = sessionFactory.openSession();
+    	}
+        return session;
     }
 	
 }
