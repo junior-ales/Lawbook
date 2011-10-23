@@ -8,7 +8,7 @@ import br.com.lawbook.model.User;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 20OCT2011-03
+ * @version 23OCT2011-04
  *  
  */
 public class UserService  {
@@ -25,33 +25,32 @@ public class UserService  {
 		return instance;
 	}
 	
-	public void create(String userName, String password, String email) {
+	public User create(String userName, String password, String email) {
 		User user = new User();
 		user.setUserName(userName);
 		user.setPassword(password);
 		user.setEmail(email);
-		create(user);
+		return create(user);
 	}
 	
-	public void create(User user) {
-		this.save(user);
+	public User create(User user) throws IllegalArgumentException {
+		FactoryDAO factory = FactoryDAO.getFactoryDAO();
+		UserDAO dao = factory.getUserDAO();
+		try {
+			factory.beginTx();
+			User u = dao.create(user);
+			factory.shutTx();
+			return u;
+		} catch (Exception e) {
+			factory.cancelTx();
+			throw new HibernateException(e.getMessage());
+		} 
 	}
 	
 	public User getUserById(Long userId) {
 		FactoryDAO factory = FactoryDAO.getFactoryDAO();
 		UserDAO dao = factory.getUserDAO();
 		return dao.getById(userId);
-	}
-
-	private void save(User user) throws IllegalArgumentException, HibernateException {
-		FactoryDAO factory = FactoryDAO.getFactoryDAO();
-		UserDAO dao = factory.getUserDAO();
-		if (dao.checkIfExist(user.getEmail(), user.getUserName())) {
-			throw new IllegalArgumentException("Username or email already exist");
-		}
-		factory.beginTx();
-		dao.save(user);
-		factory.shutTx();
 	}
 	
 	public User update(User user) throws HibernateException {

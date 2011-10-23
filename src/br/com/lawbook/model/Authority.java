@@ -12,7 +12,7 @@ import javax.persistence.Transient;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 20OCT2011-03 
+ * @version 23OCT2011-04 
  * 
  */
 @Entity(name="lwb_authority")
@@ -21,11 +21,12 @@ public class Authority implements Serializable {
 	@Id
 	@SequenceGenerator(name="lwb_authority_seq_id", sequenceName="lwb_authority_seq_id",allocationSize=1,initialValue=1)
     @GeneratedValue(generator="lwb_authority_seq_id", strategy= GenerationType.SEQUENCE)
+	@Column(name="authority_id")
 	private Long id;
-	@Column(length = 100, unique=true)
+	@Column(length = 100, unique=true, nullable=false)
 	private String name;
 	@Transient
-	private static final long serialVersionUID = 2493487525173846223L;
+	private static final long serialVersionUID = -4276113882849947964L;
 	
 	public Long getId() {
 		return id;
@@ -34,7 +35,7 @@ public class Authority implements Serializable {
 		this.id = id;
 	}
 	public String getName() {
-		return name;
+		return this.name;
 	}
 	public void setName(String name) {
 		this.name = name;

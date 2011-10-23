@@ -1,18 +1,16 @@
 package br.com.lawbook.business.test;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import org.hibernate.HibernateException;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import br.com.lawbook.DAO.AuthorityDAO;
-import br.com.lawbook.DAO.FactoryDAO;
-import br.com.lawbook.DAO.UserDAO;
 import br.com.lawbook.business.AuthorityService;
 import br.com.lawbook.business.UserService;
 import br.com.lawbook.model.Authority;
@@ -20,80 +18,42 @@ import br.com.lawbook.model.User;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 20OCT2011-01 
+ * @version 23OCT2011-03 
  * 
  */
 public class UserServiceTest {
 
-	private static Logger LOG = LoggerFactory.getLogger(UserServiceTest.class);
+	private static Logger LOG = Logger.getLogger("UserServiceTest");
 	
 	@Test
-	public void test() {
+	public void create() {
 		User user = new User();
-		Authority authority = new Authority();
-		authority.setName("ROLE_USER");
-		Authority authority2 = new Authority();
-		authority2.setName("ROLE_ADMIN");
-		user.setEmail("jr@hotmail.com");
+		
+		user.setEmail("jrales");
 		user.setEnable(true);
 		user.setPassword("12345");
-		user.setUserName("jrales");
-		FactoryDAO factory = FactoryDAO.getFactoryDAO();
-		AuthorityDAO authDAO = factory.getAuthorityDAO();
-		UserDAO userDAO = factory.getUserDAO();
-		
-		
-		saveAuth(authority);
-		saveAuth(authority2);
-		saveUser(user);
-		
-		List<Authority> auths1 = authDAO.getAll();
-		
-		for (Authority a : auths1) {
-			assertNotNull(a.getId());
-		}
-		
-		User u = userDAO.getByUserName("jrales");
-		
-		assertNotNull(u.getId());
-		assertEquals(user.getEmail(), u.getEmail());
+		user.setUserName("jrales@lawbook.com.br");
 		
 		List<Authority> auths = new ArrayList<Authority>();
-		auths.add(authority);
-		auths.add(authority2);
-		u.setAuthority(auths);
-		updateUser(u);
+		auths.add(AuthorityService.getInstance().getByName("USER"));
+		user.setAuthority(auths);
 		
+		saveUser(user);
 	}
 
-	private void saveAuth(Authority authority) {
+	private User saveUser(User user) {
 		try {
-			AuthorityService authorityService = AuthorityService.getInstance();
-			authorityService.save(authority);
-			LOG.info("Authority " + authority.getName() + " create successfully");
-		} catch (IllegalArgumentException e) {
-			LOG.error(e.getMessage());
-		}
-	}
-	
-	private void saveUser(User user) {
-		try {
-			UserService userService = UserService.getInstance();
-			userService.create(user);
+			User u = UserService.getInstance().create(user);
 			LOG.info("User " + user.getUserName() + " create successfully");
+			assertNotNull(user.getId());
+			return u;
 		} catch (IllegalArgumentException e) {
-			LOG.error(e.getMessage());
+			LOG.log(Level.WARNING, e.getMessage());
+		} catch (HibernateException e) {
+			LOG.log(Level.SEVERE, "Error saving new user: " + user.getUserName() + "\n" + e.getMessage());
+			fail(e.getMessage());
 		}
-	}
-	
-	private void updateUser(User user) {
-		try {
-			UserService userService = UserService.getInstance();
-			userService.update(user);
-			LOG.info("User " + user.getUserName() + " updated successfully");
-		} catch (IllegalArgumentException e) {
-			LOG.error(e.getMessage());
-		}
+		return user;
 	}
 
 }

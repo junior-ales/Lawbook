@@ -3,19 +3,21 @@ package br.com.lawbook.model;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 20OCT2011-11 
+ * @version 23OCT2011-12 
  * 
  */
 @Entity(name="lwb_user")
@@ -24,15 +26,16 @@ public class User implements Serializable {
 	@Id
 	@SequenceGenerator(name="lwb_user_seq_id", sequenceName="lwb_user_seq_id",allocationSize=1,initialValue=1)
     @GeneratedValue(generator="lwb_user_seq_id", strategy= GenerationType.SEQUENCE)
+	@Column(name="user_id")
 	private Long id;
-	@Column(length = 100)
+	@Column(length = 100, nullable=false)
 	private String userName;
-	@Column(length = 100)
+	@Column(length = 100, nullable=false)
 	private String email;
-	@Column(length = 100)
+	@Column(length = 100, nullable=false)
 	private String password;
-	@OneToMany
-	@JoinTable(name="lwb_user_authority")
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name="lwb_user_authority", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "authority_id") })
 	private List<Authority> authority;
 	private boolean enable;
 	@Transient

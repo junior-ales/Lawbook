@@ -1,6 +1,6 @@
 package br.com.lawbook.business;
 
-import java.util.List;
+import org.hibernate.HibernateException;
 
 import br.com.lawbook.DAO.AuthorityDAO;
 import br.com.lawbook.DAO.FactoryDAO;
@@ -8,7 +8,7 @@ import br.com.lawbook.model.Authority;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 20OCT2011-01
+ * @version 23OCT2011-02
  *  
  */
 public class AuthorityService {
@@ -25,23 +25,28 @@ public class AuthorityService {
 		return instance;
 	}
 	
-	public void save(Authority authority) {
+	public Authority create(String authorityName) throws IllegalArgumentException {
 		FactoryDAO factory = FactoryDAO.getFactoryDAO();
 		AuthorityDAO dao = factory.getAuthorityDAO();
-		for (Authority a : this.getAll()) {
-			if (authority.getName().equals(a.getName())) {
-				throw new IllegalArgumentException("Authority name " + authority.getName() + " already exist");
-			}
+		try {
+			factory.beginTx();
+			Authority a = dao.create(authorityName);
+			factory.shutTx();
+			return a;
+		} catch (Exception e) {
+			factory.cancelTx();
+			throw new HibernateException(e.getMessage());
 		} 
-		factory.beginTx();
-		dao.save(authority);
-		factory.shutTx();
 	}
 
-	private List<Authority> getAll() {
+	public Authority getByName(String name) {
 		FactoryDAO factory = FactoryDAO.getFactoryDAO();
 		AuthorityDAO dao = factory.getAuthorityDAO();
-		return dao.getAll();
+		try {
+			return dao.getByName(name);
+		} catch (HibernateException e) {
+			throw new HibernateException(e.getMessage());
+		} 
 	}
 	
 }

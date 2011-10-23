@@ -23,7 +23,7 @@ public class ProfileServiceTest {
 		Profile p = new Profile();
 		Long id = 15L;
 		p.setId(id);
-		service.save(p);
+		service.create(p);
 		service.getProfileById(id);
 		assertTrue(service.getProfileById(id).equals(p));
 	}

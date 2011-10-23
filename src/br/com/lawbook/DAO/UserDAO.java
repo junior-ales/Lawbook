@@ -1,17 +1,20 @@
 package br.com.lawbook.DAO;
 
+import org.hibernate.HibernateException;
+
 import br.com.lawbook.model.User;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 01OCT2011-02
+ * @version 23OCT2011-03
  *  
  */
-
 public interface UserDAO extends GenericDAO<User>{
 
-	boolean checkIfExist(String email, String userName);
+	User checkIfExist(String email, String userName);
 
 	User getByUserName(String userName);
+
+	User create(User user) throws IllegalArgumentException, HibernateException;
 
 }

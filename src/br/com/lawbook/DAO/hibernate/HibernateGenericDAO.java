@@ -3,26 +3,24 @@ package br.com.lawbook.DAO.hibernate;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import br.com.lawbook.DAO.GenericDAO;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 21OCT2011-02
+ * @version 23OCT2011-03
  * 
  */
-
 @SuppressWarnings("unchecked")
 public class HibernateGenericDAO<T> implements GenericDAO<T> {
 
     private Class<T> persistentClass;
     private Session session;
-    private static Logger LOG = LoggerFactory.getLogger(HibernateGenericDAO.class);
+    private static Logger LOG = Logger.getLogger("HibernateGenericDAO");
 
 	public HibernateGenericDAO(Session session) {
         this.session = session;
@@ -49,18 +47,19 @@ public class HibernateGenericDAO<T> implements GenericDAO<T> {
 		try {
 			this.session.save(entity);
 			return entity;
-		} catch (HibernateException e) {
-			LOG.error(e.getMessage());
+		} catch (Exception e) {
+			LOG.severe(e.getMessage());
 			throw new HibernateException("Problem saving new register: " + e.getMessage());
 		}
     }
     
+    @Override
     public T update(T entity) {
     	try {
 			this.session.update(entity);
 			return entity;
-		} catch (HibernateException e) {
-			LOG.error(e.getMessage());
+		} catch (Exception e) {
+			LOG.severe(e.getMessage());
 			throw new HibernateException("Problem updating new register: " + e.getMessage());
 		}
     }

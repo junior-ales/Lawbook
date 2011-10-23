@@ -2,6 +2,8 @@ package br.com.lawbook.business;
 
 import java.io.Serializable;
 
+import org.hibernate.HibernateException;
+
 import br.com.lawbook.DAO.FactoryDAO;
 import br.com.lawbook.DAO.ProfileDAO;
 import br.com.lawbook.model.Profile;
@@ -9,12 +11,12 @@ import br.com.lawbook.model.User;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 20OCT2011-05 
+ * @version 23OCT2011-06 
  */
 
 public class ProfileService implements Serializable {
 	
-	private static final long serialVersionUID = 6539523356391364471L;
+	private static final long serialVersionUID = -7975898388328234855L;
 	private static ProfileService instance;
 
 	private ProfileService() {
@@ -33,12 +35,18 @@ public class ProfileService implements Serializable {
 		return dao.getById(id);
 	}
 
-	public void save(Profile profile) {
+	public Profile create(Profile profile) throws IllegalArgumentException {
 		FactoryDAO factory = FactoryDAO.getFactoryDAO();
 		ProfileDAO dao = factory.getProfileDAO();
-		factory.beginTx();
-		dao.save(profile);
-		factory.shutTx();
+		try {
+			factory.beginTx();
+			Profile p = dao.create(profile);
+			factory.shutTx();
+			return p;
+		} catch (Exception e) {
+			factory.cancelTx();
+			throw new HibernateException(e.getMessage());
+		} 
 	}
 
 	public boolean checkIfExist(Long profileId) {
@@ -54,7 +62,7 @@ public class ProfileService implements Serializable {
 	private Profile getProfileBy(Long userId) {
 		FactoryDAO factory = FactoryDAO.getFactoryDAO();
 		ProfileDAO dao = factory.getProfileDAO();
-		return dao.getProfileBy(userId);
+		return dao.getProfileByUser(userId);
 	}
 	
 }

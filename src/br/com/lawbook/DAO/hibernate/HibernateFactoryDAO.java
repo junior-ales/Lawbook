@@ -8,21 +8,20 @@ import br.com.lawbook.util.HibernateUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 20OCT2011-05
+ * @version 22OCT2011-06
  * 
  */
 public class HibernateFactoryDAO extends FactoryDAO {
 
-    private Session session;
     private Transaction tx;
 
-    public HibernateFactoryDAO() {
-        this.session = HibernateUtil.getSession();
-    }
+    public Session getSession() {
+		return HibernateUtil.getSession();
+	}
 
-    @Override
+	@Override
     public void beginTx() {
-        this.tx = this.session.beginTransaction();
+        this.tx = this.getSession().beginTransaction();
     }
 
     @Override
@@ -40,32 +39,32 @@ public class HibernateFactoryDAO extends FactoryDAO {
 
 	@Override
 	public ProfileDAO getProfileDAO() {
-		return new HibernateProfileDAO(this.session);
+		return new HibernateProfileDAO(this.getSession());
 	}
 
 	@Override
 	public PostDAO getPostDAO() {
-		return new HibernatePostDAO(this.session);
+		return new HibernatePostDAO(this.getSession());
 	}
 
 	@Override
 	public UserDAO getUserDAO() {
-		return new HibernateUserDAO(this.session);
+		return new HibernateUserDAO(this.getSession());
 	}
 
 	@Override
 	public LocationDAO getLocationDAO() {
-		return new HibernateLocationDAO(this.session);
+		return new HibernateLocationDAO(this.getSession());
 	}
 
 	@Override
 	public CommentDAO getCommentDAO() {
-		return new HibernateCommentDAO(this.session);
+		return new HibernateCommentDAO(this.getSession());
 	}
 
 	@Override
 	public AuthorityDAO getAuthorityDAO() {
-		return new HibernateAuthorityDAO(this.session);
+		return new HibernateAuthorityDAO(this.getSession());
 	}
 	
 }
