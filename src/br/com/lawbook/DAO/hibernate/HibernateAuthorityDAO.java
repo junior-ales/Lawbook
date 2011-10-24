@@ -1,15 +1,16 @@
 package br.com.lawbook.DAO.hibernate;
 
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 import br.com.lawbook.DAO.AuthorityDAO;
 import br.com.lawbook.model.Authority;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 23OCT2011-02
+ * @version 24OCT2011-03
  * 
  */
 public class HibernateAuthorityDAO extends HibernateGenericDAO<Authority> implements AuthorityDAO {
@@ -22,7 +23,7 @@ public class HibernateAuthorityDAO extends HibernateGenericDAO<Authority> implem
 	public Authority create(String authName) throws HibernateException {
 		Authority auth = this.checkIfExist(authName);
 		if (auth != null) {
-			throw new IllegalArgumentException("Authority name already exist");
+			throw new IllegalArgumentException("Authority name " + authName + " already exist");
 		}
 		auth = new Authority();
 		auth.setName(authName);
@@ -31,9 +32,9 @@ public class HibernateAuthorityDAO extends HibernateGenericDAO<Authority> implem
 	
 	@Override
 	public Authority checkIfExist(String name) {
-		Query query = this.getSession().createQuery("from lwb_authority a where a.name = :name");
-		query.setParameter("name", name);
-		return (Authority) query.uniqueResult();
+		Criteria crit = this.getSession().createCriteria(Authority.class);
+		crit.add(Restrictions.eq("name", name));
+		return (Authority) crit.uniqueResult();
 	}
 
 	@Override

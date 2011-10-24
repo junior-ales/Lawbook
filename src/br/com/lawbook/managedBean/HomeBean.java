@@ -21,7 +21,7 @@ import br.com.lawbook.model.Profile;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 23OCT2011-02
+ * @version 24OCT2011-03
  */
 @ManagedBean
 @ViewScoped
@@ -41,16 +41,12 @@ public class HomeBean implements Serializable {
             Authentication authentication = context.getAuthentication();
             if (authentication instanceof Authentication){
             	String username = ((org.springframework.security.core.userdetails.User)authentication.getPrincipal()).getUsername();
-				profile = getUserProfile(username);
+				profile = this.service.getProfileByUserName(username);
             }
         }
     	setProfile(profile);
 	}
 	
-	private Profile getUserProfile(String username) {
-		return this.service.getProfileBy(username);
-	}
-
 	@PostConstruct
 	public void loadLazyStream() {
 		if (this.stream == null) {

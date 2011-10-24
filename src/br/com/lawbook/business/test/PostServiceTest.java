@@ -22,7 +22,7 @@ public class PostServiceTest {
 	public void getStreamTest() {
 		ProfileService pfs = ProfileService.getInstance();
 		PostService ps = PostService.getInstance(); 
-		Profile profile = pfs.getProfileBy("jrales");
+		Profile profile = pfs.getProfileByUserName("jrales");
 		HashMap<String, Object> attributes = new HashMap<String, Object>();
 		attributes.put("profile", profile);
 		assertNotNull(ps.getStream(attributes));

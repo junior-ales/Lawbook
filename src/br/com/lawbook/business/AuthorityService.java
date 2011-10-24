@@ -8,7 +8,7 @@ import br.com.lawbook.model.Authority;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 23OCT2011-02
+ * @version 24OCT2011-03
  *  
  */
 public class AuthorityService {
@@ -33,8 +33,9 @@ public class AuthorityService {
 			Authority a = dao.create(authorityName);
 			factory.shutTx();
 			return a;
-		} catch (Exception e) {
+		} catch (HibernateException e) {
 			factory.cancelTx();
+			e.printStackTrace();
 			throw new HibernateException(e.getMessage());
 		} 
 	}

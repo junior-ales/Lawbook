@@ -18,7 +18,7 @@ import br.com.lawbook.model.User;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 23OCT2011-03 
+ * @version 24OCT2011-04 
  * 
  */
 public class UserServiceTest {
@@ -29,10 +29,10 @@ public class UserServiceTest {
 	public void create() {
 		User user = new User();
 		
-		user.setEmail("jrales");
+		user.setEmail("willian@lawbook.com.br");
 		user.setEnable(true);
 		user.setPassword("12345");
-		user.setUserName("jrales@lawbook.com.br");
+		user.setUserName("willian");
 		
 		List<Authority> auths = new ArrayList<Authority>();
 		auths.add(AuthorityService.getInstance().getByName("USER"));

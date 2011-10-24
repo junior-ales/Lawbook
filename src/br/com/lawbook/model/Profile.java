@@ -19,7 +19,7 @@ import javax.persistence.Transient;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 20OCT2011-14
+ * @version 24OCT2011-15
  */
 
 @Entity(name = "lwb_user_profile")
@@ -30,7 +30,7 @@ public class Profile implements Serializable {
     @GeneratedValue(generator="lwb_user_profile_seq_id", strategy= GenerationType.SEQUENCE)
 	private Long id;
 	@OneToOne
-	@JoinColumn(name="user_id")
+	@JoinColumn(name="user_id", unique=true, nullable=false)
 	private User userOwner;
 	@Column(length = 50)
 	private String firstName;

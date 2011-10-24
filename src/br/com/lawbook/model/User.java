@@ -17,7 +17,7 @@ import javax.persistence.Transient;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 23OCT2011-12 
+ * @version 24OCT2011-13 
  * 
  */
 @Entity(name="lwb_user")
@@ -28,9 +28,9 @@ public class User implements Serializable {
     @GeneratedValue(generator="lwb_user_seq_id", strategy= GenerationType.SEQUENCE)
 	@Column(name="user_id")
 	private Long id;
-	@Column(length = 100, nullable=false)
+	@Column(length = 100, unique=true, nullable=false)
 	private String userName;
-	@Column(length = 100, nullable=false)
+	@Column(length = 100, unique=true, nullable=false)
 	private String email;
 	@Column(length = 100, nullable=false)
 	private String password;

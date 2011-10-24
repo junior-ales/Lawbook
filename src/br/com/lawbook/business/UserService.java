@@ -8,7 +8,7 @@ import br.com.lawbook.model.User;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 23OCT2011-04
+ * @version 24OCT2011-05
  *  
  */
 public class UserService  {
@@ -41,16 +41,11 @@ public class UserService  {
 			User u = dao.create(user);
 			factory.shutTx();
 			return u;
-		} catch (Exception e) {
+		} catch (HibernateException e) {
 			factory.cancelTx();
+			e.printStackTrace();
 			throw new HibernateException(e.getMessage());
 		} 
-	}
-	
-	public User getUserById(Long userId) {
-		FactoryDAO factory = FactoryDAO.getFactoryDAO();
-		UserDAO dao = factory.getUserDAO();
-		return dao.getById(userId);
 	}
 	
 	public User update(User user) throws HibernateException {
@@ -61,8 +56,14 @@ public class UserService  {
 		factory.shutTx();
 		return aux;
 	}
+	
+	public User getUserById(Long userId) {
+		FactoryDAO factory = FactoryDAO.getFactoryDAO();
+		UserDAO dao = factory.getUserDAO();
+		return dao.getById(userId);
+	}
 
-	public User getUserBy(String userName) {
+	public User getUserByUserName(String userName) {
 		FactoryDAO factory = FactoryDAO.getFactoryDAO();
 		UserDAO dao = factory.getUserDAO();
 		return dao.getByUserName(userName);

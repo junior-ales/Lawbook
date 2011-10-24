@@ -16,7 +16,7 @@ import br.com.lawbook.model.Authority;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 23OCT2011-01
+ * @version 24OCT2011-02
  * 
  */
 public class AuthorityServiceTest {
@@ -29,19 +29,19 @@ public class AuthorityServiceTest {
 		List<String> auths = new ArrayList<String>();
 		auths.add("ADMIN");
 		auths.add("USER");
-		
-		Authority authority;
+		auths.add("MANAGER");
 		
 		for (String auth : auths) {
-			authority = saveAuth(auth);
-			assertNotNull(authority.getId());
-			LOG.info("Authority " + authority.getName() + " create successfully");
+			saveAuth(auth);
 		}
 	}
 	
 	private Authority saveAuth(String authorityName) {
 		try {
-			return AuthorityService.getInstance().create(authorityName);
+			Authority authority = AuthorityService.getInstance().create(authorityName);
+			assertNotNull(authority.getId());
+			LOG.info("Authority " + authority.getName() + " create successfully");
+			return authority;
 		} catch (IllegalArgumentException e) {
 			LOG.log(Level.WARNING, e.getMessage());
 		} catch (HibernateException e) {

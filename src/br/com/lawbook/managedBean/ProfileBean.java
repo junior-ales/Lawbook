@@ -41,7 +41,7 @@ public class ProfileBean implements Serializable {
             Authentication authentication = context.getAuthentication();
             if (authentication instanceof Authentication){
             	String username = ((org.springframework.security.core.userdetails.User)authentication.getPrincipal()).getUsername();
-				profile = this.service.getProfileBy(username);
+				profile = this.service.getProfileByUserName(username);
             }
         }
     	setProfile(profile);

@@ -9,7 +9,7 @@ import br.com.lawbook.model.User;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 23OCT2011-03
+ * @version 24OCT2011-04
  *  
  */
 
@@ -17,6 +17,16 @@ public class HibernateUserDAO extends HibernateGenericDAO<User> implements UserD
 
 	public HibernateUserDAO(Session session) {
 		super(session);
+	}
+	
+	@Override
+	public User create(User user) throws HibernateException {
+		User u = this.checkIfExist(user.getEmail(), user.getUserName());
+		if (u != null) {
+			String msg = "Username (" + user.getUserName() + ") or email (" + user.getEmail() + ") already exist";
+			throw new IllegalArgumentException(msg);
+		}
+		return save(user);
 	}
 
 	@Override
@@ -32,14 +42,5 @@ public class HibernateUserDAO extends HibernateGenericDAO<User> implements UserD
         return checkIfExist(userName, userName);
 	}
 
-	@Override
-	public User create(User user) throws HibernateException {
-		
-		if (this.checkIfExist(user.getEmail(), user.getUserName()) != null) {
-			String msg = "Username (" + user.getUserName() + ") or email (" + user.getEmail() + ") already exist";
-			throw new IllegalArgumentException(msg);
-		}
-		return save(user);
-	}
 
 }
