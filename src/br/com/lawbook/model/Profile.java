@@ -17,11 +17,13 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.ForeignKey;
+
 /**
  * @author Edilson Luiz Ales Junior
- * @version 24OCT2011-15
+ * @version 25OCT2011-16
+ * 
  */
-
 @Entity(name = "lwb_user_profile")
 public class Profile implements Serializable {
 
@@ -29,7 +31,7 @@ public class Profile implements Serializable {
 	@SequenceGenerator(name="lwb_user_profile_seq_id", sequenceName="lwb_user_profile_seq_id",allocationSize=1,initialValue=1)
     @GeneratedValue(generator="lwb_user_profile_seq_id", strategy= GenerationType.SEQUENCE)
 	private Long id;
-	@OneToOne
+	@OneToOne @ForeignKey(name="FK_USER_PROFILE_USER")
 	@JoinColumn(name="user_id", unique=true, nullable=false)
 	private User userOwner;
 	@Column(length = 50)
@@ -37,14 +39,14 @@ public class Profile implements Serializable {
 	@Column(length = 50)
 	private String lastName;
 	private Calendar birth;
-	@ManyToOne
+	@ManyToOne @ForeignKey(name="FK_USER_PROFILE_LOCATION")
 	@JoinColumn(name = "location_id")
 	private Location location;
 	@Column(length = 255, name = "about_me")
 	private String aboutMe;
-	@ManyToMany
-	@JoinTable(name="lwb_friends_list")
-	private List<Profile> friendsList;
+	@ManyToMany @ForeignKey(name="FK_USER_PROFILE_FRIEND_LIST", inverseName="FK_FRIEND_LIST_USER_PROFILE")
+	@JoinTable(name="lwb_friends", joinColumns = { @JoinColumn(name = "user_profile_id") }, inverseJoinColumns = { @JoinColumn(name = "friend_id") })
+	private List<Profile> friends;
 	@Column(length = 255)
 	private String avatar;
 	@Transient
@@ -109,12 +111,12 @@ public class Profile implements Serializable {
 		this.aboutMe = aboutMe;
 	}
 
-	public List<Profile> getFriendsList() {
-		return friendsList;
+	public List<Profile> getFriends() {
+		return friends;
 	}
 
-	public void setFriendsList(List<Profile> friendsList) {
-		this.friendsList = friendsList;
+	public void setFriends(List<Profile> friends) {
+		this.friends = friends;
 	}
 
 	public String getAvatar() {

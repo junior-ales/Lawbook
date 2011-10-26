@@ -16,12 +16,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.ForeignKey;
+
 /**
  * @author Edilson Luiz Ales Junior
- * @version 20OCT2011-10 
+ * @version 25OCT2011-11 
  *
  */
-
 @Entity(name="lwb_post")
 public class Post implements Serializable {
 	
@@ -29,17 +30,17 @@ public class Post implements Serializable {
 	@SequenceGenerator(name="lwb_post_seq_id", sequenceName="lwb_post_seq_id",allocationSize=1,initialValue=1)
     @GeneratedValue(generator="lwb_post_seq_id", strategy= GenerationType.SEQUENCE)
 	public Long id;
-	@ManyToOne
+	@ManyToOne @ForeignKey(name="FK_POST_PROFILE_SENDER")
 	@JoinColumn(name="sender_id")
 	public Profile sender;
-	@ManyToOne
+	@ManyToOne @ForeignKey(name="FK_POST_PROFILE_RECEIVER")
 	@JoinColumn(name="receiver_id")
 	public Profile receiver;
 	@Column(length = 255)
 	public String content;
 	public Calendar dateTime;
-	@OneToMany
-	@JoinTable(name="lwb_post_comments")
+	@OneToMany @ForeignKey(name="FK_POST_COMMENT", inverseName="FK_COMMENT_POST")
+	@JoinTable(name="lwb_post_comments", joinColumns = { @JoinColumn(name = "post_id") }, inverseJoinColumns = { @JoinColumn(name = "comment_id") })
 	public List<Comment> comments;
 	@Transient
 	private static final long serialVersionUID = 497092916483761201L;

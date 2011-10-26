@@ -7,10 +7,9 @@ import br.com.lawbook.model.*;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 24SEP2011-06
+ * @version 25OCT2011-07
  * 
  */
-
 public class TablesGenerator {
 
 	public static void main(String[] args) {
@@ -19,7 +18,10 @@ public class TablesGenerator {
 			Configuration cfg = new Configuration().configure("hibernate.cfg.xml");
 			cfg.addAnnotatedClass(Authority.class);
 			cfg.addAnnotatedClass(Comment.class);
+			cfg.addAnnotatedClass(Company.class);
+			cfg.addAnnotatedClass(Customer.class);
 			cfg.addAnnotatedClass(Location.class);
+			cfg.addAnnotatedClass(Person.class);
 			cfg.addAnnotatedClass(Post.class);
 			cfg.addAnnotatedClass(Profile.class);
 			cfg.addAnnotatedClass(User.class);

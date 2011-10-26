@@ -18,7 +18,7 @@ import br.com.lawbook.model.User;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 24OCT2011-04 
+ * @version 26OCT2011-05 
  * 
  */
 public class UserServiceTest {
@@ -29,13 +29,13 @@ public class UserServiceTest {
 	public void create() {
 		User user = new User();
 		
-		user.setEmail("willian@lawbook.com.br");
+		user.setEmail("admin@lawbook.com.br");
 		user.setEnable(true);
 		user.setPassword("12345");
-		user.setUserName("willian");
+		user.setUserName("admin");
 		
 		List<Authority> auths = new ArrayList<Authority>();
-		auths.add(AuthorityService.getInstance().getByName("USER"));
+		auths.add(AuthorityService.getInstance().getByName("ADMIN"));
 		user.setAuthority(auths);
 		
 		saveUser(user);
@@ -44,8 +44,8 @@ public class UserServiceTest {
 	private User saveUser(User user) {
 		try {
 			User u = UserService.getInstance().create(user);
-			LOG.info("User " + user.getUserName() + " create successfully");
 			assertNotNull(user.getId());
+			LOG.info("User " + user.getUserName() + " create successfully");
 			return u;
 		} catch (IllegalArgumentException e) {
 			LOG.log(Level.WARNING, e.getMessage());

@@ -15,9 +15,11 @@ import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.ForeignKey;
+
 /**
  * @author Edilson Luiz Ales Junior
- * @version 24OCT2011-13 
+ * @version 25OCT2011-14 
  * 
  */
 @Entity(name="lwb_user")
@@ -34,7 +36,7 @@ public class User implements Serializable {
 	private String email;
 	@Column(length = 100, nullable=false)
 	private String password;
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.ALL) @ForeignKey(name="FK_USER_AUTHORITY", inverseName="FK_AUTHORITY_USER")
 	@JoinTable(name="lwb_user_authority", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "authority_id") })
 	private List<Authority> authority;
 	private boolean enable;

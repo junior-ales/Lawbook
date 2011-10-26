@@ -40,11 +40,11 @@ public class ProfileTest {
 		buddy.setFirstName("Darlei");
 		
 		friendsListMe.add(buddy);
-		me.setFriendsList(friendsListMe);
+		me.setFriends(friendsListMe);
 		
 		friendsListBuddy.add(me);
-		buddy.setFriendsList(friendsListBuddy);
+		buddy.setFriends(friendsListBuddy);
 
-		assertTrue(me.getFriendsList().contains(buddy) && buddy.getFriendsList().contains(me));
+		assertTrue(me.getFriends().contains(buddy) && buddy.getFriends().contains(me));
 	}
 }

@@ -34,7 +34,7 @@ public class HibernatePostDAO extends HibernateGenericDAO<Post> implements PostD
 		Integer pageSize = (Integer) attributes.get("pageSize");
 		List<Long> sendersId = new ArrayList<Long>();
 		
-		for (Profile p : profile.getFriendsList()) {
+		for (Profile p : profile.getFriends()) {
 			sendersId.add(p.getId());
 		}
 		Query query;

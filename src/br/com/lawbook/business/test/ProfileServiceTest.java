@@ -1,7 +1,6 @@
 package br.com.lawbook.business.test;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.text.ParseException;
@@ -11,7 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.hibernate.HibernateException;
-import org.junit.Ignore;
+import org.junit.Before;
 import org.junit.Test;
 
 import br.com.lawbook.business.ProfileService;
@@ -20,19 +19,18 @@ import br.com.lawbook.model.Profile;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 24OCT2011-05
+ * @version 26OCT2011-06
  * 
  */
-
 public class ProfileServiceTest {
 
 	private static Logger LOG = Logger.getLogger("ProfileServiceTest");
 	
-	@Test
+	@Before
 	public void create() {
 		Profile profile = new Profile();
 		profile.setAboutMe("Lawbook Administrator account");
-		profile.setAvatar("http://bit.ly/q7IyX9");
+		profile.setAvatar("http://bit.ly/t456JJ");
 		profile.setBirth(getDate("01/01/2011"));
 		profile.setFirstName("Admin");
 		profile.setLastName("");
@@ -46,7 +44,14 @@ public class ProfileServiceTest {
 	public void getProfileByUserName() {
 		Profile p = ProfileService.getInstance().getProfileByUserName("admin");
 		assertNotNull(p);
-		LOG.info("Profile " + p.getFirstName() + " " + p.getLastName() + " fetched successfully");
+		LOG.info("Profile " + p.getFirstName() + " " + p.getLastName() + " fetched by user name successfully");
+	}
+	
+	@Test
+	public void getProfileByIdTest() {
+		Profile p = ProfileService.getInstance().getProfileByUserId(1L);
+		assertNotNull(p);
+		LOG.info("Profile " + p.getFirstName() + " " + p.getLastName() + " fetched by user id successfully");
 	}
 	
 	private Calendar getDate(String dateString) {
@@ -63,8 +68,8 @@ public class ProfileServiceTest {
 	private Profile saveProfile(Profile profile) {
 		try {
 			Profile p = ProfileService.getInstance().create(profile);
-			LOG.info("Profile " + p.getFirstName() + " " + p.getLastName() + " created successfully");
 			assertNotNull(profile.getId());
+			LOG.info("Profile " + p.getFirstName() + " " + p.getLastName() + " created successfully");
 			return p;
 		} catch (IllegalArgumentException e) {
 			LOG.log(Level.WARNING, e.getMessage());
@@ -73,18 +78,6 @@ public class ProfileServiceTest {
 			fail(e.getMessage());
 		}
 		return profile;
-	}
-	
-	@Ignore
-	@Test
-	public void getProfileByIdTest() {
-		ProfileService service = ProfileService.getInstance();
-		Profile p = new Profile();
-		Long id = 15L;
-		p.setId(id);
-		service.create(p);
-		service.getProfileById(id);
-		assertTrue(service.getProfileById(id).equals(p));
 	}
 	
 }
