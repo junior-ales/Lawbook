@@ -8,7 +8,7 @@ import br.com.lawbook.model.User;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 24OCT2011-05
+ * @version 27OCT2011-06
  *  
  */
 public class UserService  {
@@ -25,15 +25,14 @@ public class UserService  {
 		return instance;
 	}
 	
-	public User create(String userName, String password, String email) {
-		User user = new User();
-		user.setUserName(userName);
-		user.setPassword(password);
-		user.setEmail(email);
+	public User create(User user, String passConfirmation) throws IllegalArgumentException, HibernateException {
+		if(!user.getPassword().equals(passConfirmation)) 
+			throw new IllegalArgumentException("Password confirmation doesn't match");
+
 		return create(user);
 	}
 	
-	public User create(User user) throws IllegalArgumentException {
+	private User create(User user) throws IllegalArgumentException {
 		FactoryDAO factory = FactoryDAO.getFactoryDAO();
 		UserDAO dao = factory.getUserDAO();
 		try {

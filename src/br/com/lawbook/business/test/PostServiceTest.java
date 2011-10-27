@@ -2,6 +2,7 @@ package br.com.lawbook.business.test;
 
 import java.util.Calendar;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import br.com.lawbook.business.ProfileService;
@@ -14,6 +15,7 @@ import br.com.lawbook.model.Post;
  */
 public class PostServiceTest {
 	
+	@Ignore
 	@Test
 	public void getStreamTest() {
 		ProfileService profileService = ProfileService.getInstance();
@@ -22,5 +24,6 @@ public class PostServiceTest {
 		post.setDateTime(Calendar.getInstance());
 		post.setReceiver(profileService.getProfileById(0L));
 		post.setSender(profileService.getProfileByUserName("admin"));
+		
 	}
 }

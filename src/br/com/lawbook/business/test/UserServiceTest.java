@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.hibernate.HibernateException;
+import org.junit.Before;
 import org.junit.Test;
 
 import br.com.lawbook.business.AuthorityService;
@@ -25,7 +26,7 @@ public class UserServiceTest {
 
 	private static Logger LOG = Logger.getLogger("UserServiceTest");
 	
-	@Test
+	@Before
 	public void create() {
 		
 		User publicUser = new User();
@@ -44,13 +45,20 @@ public class UserServiceTest {
 		auths.add(AuthorityService.getInstance().getByName("ADMIN"));
 		user.setAuthority(auths);
 		
-		saveUser(publicUser);
-		saveUser(user);
+		saveUser(publicUser, "");
+		saveUser(user, "12345");
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void passConfirmationTest() {
+		User user = new User();
+		user.setPassword("123");
+		UserService.getInstance().create(user, "321");
 	}
 
-	private User saveUser(User user) {
+	private User saveUser(User user, String passConfirmation) {
 		try {
-			User u = UserService.getInstance().create(user);
+			User u = UserService.getInstance().create(user, passConfirmation);
 			assertNotNull(user.getId());
 			LOG.info("User " + user.getUserName() + " create successfully");
 			return u;
