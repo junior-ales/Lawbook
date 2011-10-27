@@ -20,7 +20,7 @@ import org.hibernate.annotations.ForeignKey;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 25OCT2011-11 
+ * @version 26OCT2011-12 
  *
  */
 @Entity(name="lwb_post")
@@ -29,19 +29,19 @@ public class Post implements Serializable {
 	@Id
 	@SequenceGenerator(name="lwb_post_seq_id", sequenceName="lwb_post_seq_id",allocationSize=1,initialValue=1)
     @GeneratedValue(generator="lwb_post_seq_id", strategy= GenerationType.SEQUENCE)
-	public Long id;
+	private Long id;
 	@ManyToOne @ForeignKey(name="FK_POST_PROFILE_SENDER")
 	@JoinColumn(name="sender_id")
-	public Profile sender;
+	private Profile sender;
 	@ManyToOne @ForeignKey(name="FK_POST_PROFILE_RECEIVER")
 	@JoinColumn(name="receiver_id")
-	public Profile receiver;
+	private Profile receiver;
 	@Column(length = 255)
-	public String content;
-	public Calendar dateTime;
+	private String content;
+	private Calendar dateTime;
 	@OneToMany @ForeignKey(name="FK_POST_COMMENT", inverseName="FK_COMMENT_POST")
 	@JoinTable(name="lwb_post_comments", joinColumns = { @JoinColumn(name = "post_id") }, inverseJoinColumns = { @JoinColumn(name = "comment_id") })
-	public List<Comment> comments;
+	private List<Comment> comments;
 	@Transient
 	private static final long serialVersionUID = 497092916483761201L;
 

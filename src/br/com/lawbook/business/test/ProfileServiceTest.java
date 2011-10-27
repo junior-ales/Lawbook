@@ -19,7 +19,7 @@ import br.com.lawbook.model.Profile;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 26OCT2011-06
+ * @version 26OCT2011-07
  * 
  */
 public class ProfileServiceTest {
@@ -28,14 +28,24 @@ public class ProfileServiceTest {
 	
 	@Before
 	public void create() {
+		
+		UserService userService = UserService.getInstance();
+		
+		Profile publicProfile = new Profile();
+		publicProfile.setId(0L);
+		publicProfile.setFirstName("Public Profile");
+		publicProfile.setLastName("");
+		publicProfile.setUserOwner(userService.getUserByUserName("public"));
+		
 		Profile profile = new Profile();
 		profile.setAboutMe("Lawbook Administrator account");
 		profile.setAvatar("http://bit.ly/t456JJ");
 		profile.setBirth(getDate("01/01/2011"));
 		profile.setFirstName("Admin");
 		profile.setLastName("");
-		profile.setUserOwner(UserService.getInstance().getUserByUserName("admin"));
+		profile.setUserOwner(userService.getUserByUserName("admin"));
 		
+		saveProfile(publicProfile);
 		saveProfile(profile);
 		
 	}
