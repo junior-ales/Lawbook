@@ -18,10 +18,7 @@ public class TablesGenerator {
 			Configuration cfg = new Configuration().configure("hibernate.cfg.xml");
 			cfg.addAnnotatedClass(Authority.class);
 			cfg.addAnnotatedClass(Comment.class);
-			cfg.addAnnotatedClass(Company.class);
-			cfg.addAnnotatedClass(Customer.class);
 			cfg.addAnnotatedClass(Location.class);
-			cfg.addAnnotatedClass(Person.class);
 			cfg.addAnnotatedClass(Post.class);
 			cfg.addAnnotatedClass(Profile.class);
 			cfg.addAnnotatedClass(User.class);
