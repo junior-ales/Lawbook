@@ -1,4 +1,4 @@
-package br.com.lawbook.DAO;
+package br.com.lawbook.dao;
 
 import br.com.lawbook.model.Comment;
 

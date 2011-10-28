@@ -1,8 +1,8 @@
-package br.com.lawbook.DAO.hibernate;
+package br.com.lawbook.dao.hibernate;
 
 import org.hibernate.Session;
 
-import br.com.lawbook.DAO.LocationDAO;
+import br.com.lawbook.dao.LocationDAO;
 import br.com.lawbook.model.Location;
 
 /**

@@ -1,9 +1,7 @@
-package br.com.lawbook.managedBean;
+package br.com.lawbook.managedbean;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-
-import br.com.lawbook.business.PostService;
 
 /**
  * @author Edilson Luiz Ales Junior
@@ -13,10 +11,4 @@ import br.com.lawbook.business.PostService;
 @SessionScoped
 public class PostBean {
 
-	@SuppressWarnings("unused")
-	private PostService service;
-
-	public PostBean() {
-		this.service = PostService.getInstance();
-	}
 }

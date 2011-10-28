@@ -1,4 +1,4 @@
-package br.com.lawbook.managedBean;
+package br.com.lawbook.managedbean;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -10,18 +10,16 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import org.primefaces.model.LazyDataModel;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import br.com.lawbook.business.PostService;
 import br.com.lawbook.business.ProfileService;
 import br.com.lawbook.model.Post;
 import br.com.lawbook.model.Profile;
+import br.com.lawbook.util.FacesUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 19OCT2011-04
+ * @version 28OCT2011-05
  */
 @ManagedBean
 @ViewScoped
@@ -29,28 +27,23 @@ public class ProfileBean implements Serializable {
 	
 	private Profile profile;
 	private LazyDataModel<Post> wall;
-	private ProfileService service;
+	private ProfileService profileService;
 	private PostService postService;
 	private static final long serialVersionUID = 5494870990228898461L;
 
 	public ProfileBean() {
-		this.service = ProfileService.getInstance();
-		Profile profile = new Profile();
-        SecurityContext context = SecurityContextHolder.getContext();
-        if (context instanceof SecurityContext){
-            Authentication authentication = context.getAuthentication();
-            if (authentication instanceof Authentication){
-            	String username = ((org.springframework.security.core.userdetails.User)authentication.getPrincipal()).getUsername();
-				profile = this.service.getProfileByUserName(username);
-            }
-        }
-    	setProfile(profile);
+		this.profileService = ProfileService.getInstance();
+		try {
+			setProfile(this.profileService.getAuthorizedUserProfile());
+		} catch (Exception e) {
+			FacesUtil.errorMessage("Authentication Error", "Problem with authentication process: " + e.getMessage());
+		}
 	}
-	
+
 	@PostConstruct
 	public void loadLazyWall() {
 		if (this.wall == null) {
-			this.service = ProfileService.getInstance();
+			this.profileService = ProfileService.getInstance();
 			this.postService = PostService.getInstance();
 			this.wall = new LazyDataModel<Post>() {
 				private static final long serialVersionUID = -4238038748234463347L;
@@ -59,8 +52,8 @@ public class ProfileBean implements Serializable {
 				public List<Post> load(int first, int pageSize, String sortField, boolean sortOrder, Map<String, String> filters) {
 					HashMap<String, Object> attributes = new HashMap<String, Object>();
 					attributes.put("profileId", profile.getId());
-					attributes.put("first", new Integer(first));
-					attributes.put("pageSize", new Integer(pageSize));
+					attributes.put("first", Integer.valueOf(first));
+					attributes.put("pageSize", Integer.valueOf(pageSize));
 					List<Post> posts = postService.getWall(attributes);
 					return posts;
 				}

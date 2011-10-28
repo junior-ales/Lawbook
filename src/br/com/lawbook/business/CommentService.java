@@ -2,8 +2,8 @@ package br.com.lawbook.business;
 
 import java.util.Calendar;
 
-import br.com.lawbook.DAO.CommentDAO;
-import br.com.lawbook.DAO.FactoryDAO;
+import br.com.lawbook.dao.CommentDAO;
+import br.com.lawbook.dao.FactoryDAO;
 import br.com.lawbook.model.Comment;
 
 /**
@@ -12,7 +12,7 @@ import br.com.lawbook.model.Comment;
  *  
  */
 
-public class CommentService {
+public final class CommentService {
 
 	private static CommentService instance;
 	public Long senderId;

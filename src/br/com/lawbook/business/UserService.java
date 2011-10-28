@@ -2,16 +2,16 @@ package br.com.lawbook.business;
 
 import org.hibernate.HibernateException;
 
-import br.com.lawbook.DAO.FactoryDAO;
-import br.com.lawbook.DAO.UserDAO;
+import br.com.lawbook.dao.FactoryDAO;
+import br.com.lawbook.dao.UserDAO;
 import br.com.lawbook.model.User;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 27OCT2011-06
+ * @version 28OCT2011-07
  *  
  */
-public class UserService  {
+public final class UserService  {
 
 	private static UserService instance;
 

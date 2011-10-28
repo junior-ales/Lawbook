@@ -1,7 +1,7 @@
 package br.com.lawbook.business;
 
-import br.com.lawbook.DAO.FactoryDAO;
-import br.com.lawbook.DAO.LocationDAO;
+import br.com.lawbook.dao.FactoryDAO;
+import br.com.lawbook.dao.LocationDAO;
 import br.com.lawbook.model.Location;
 
 /**
@@ -10,7 +10,7 @@ import br.com.lawbook.model.Location;
  * 
  */
 
-public class LocationService {
+public final class LocationService {
 
 	private static LocationService instance;
 	

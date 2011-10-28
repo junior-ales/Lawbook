@@ -1,4 +1,4 @@
-package br.com.lawbook.managedBean;
+package br.com.lawbook.managedbean;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;

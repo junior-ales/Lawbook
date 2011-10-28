@@ -1,4 +1,6 @@
-package br.com.lawbook.managedBean;
+package br.com.lawbook.managedbean;
+
+import java.io.Serializable;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -7,18 +9,19 @@ import br.com.lawbook.business.UserService;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 27OCT2011-04
+ * @version 28OCT2011-05
  *  
  */
 @ManagedBean
 @RequestScoped
-public class UserBean {
+public class UserBean implements Serializable {
 
 	private UserService service;
 	private String userName;
 	private String password;
-	private String passwordConfirmation;
+	private String passConfirmation;
 	private String email;
+	private static final long serialVersionUID = -234802806543778170L;
 
 	public UserBean() {
 		this.service = UserService.getInstance();
@@ -49,11 +52,11 @@ public class UserBean {
 	}
 
 	public String getPasswordConfirmation() {
-		return passwordConfirmation;
+		return passConfirmation;
 	}
 
 	public void setPasswordConfirmation(String passwordConfirmation) {
-		this.passwordConfirmation = passwordConfirmation;
+		this.passConfirmation = passwordConfirmation;
 	}
 
 	public String getEmail() {

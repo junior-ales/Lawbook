@@ -1,4 +1,4 @@
-package br.com.lawbook.DAO.hibernate;
+package br.com.lawbook.dao.hibernate;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
@@ -8,11 +8,11 @@ import java.util.logging.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
-import br.com.lawbook.DAO.GenericDAO;
+import br.com.lawbook.dao.GenericDAO;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 23OCT2011-03
+ * @version 28OCT2011-04
  * 
  */
 @SuppressWarnings("unchecked")
@@ -20,7 +20,7 @@ public class HibernateGenericDAO<T> implements GenericDAO<T> {
 
     private Class<T> persistentClass;
     private Session session;
-    private static Logger LOG = Logger.getLogger("HibernateGenericDAO");
+    private final static Logger LOG = Logger.getLogger("HibernateGenericDAO");
 
 	public HibernateGenericDAO(Session session) {
         this.session = session;

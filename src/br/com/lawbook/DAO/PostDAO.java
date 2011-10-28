@@ -1,21 +1,21 @@
-package br.com.lawbook.DAO;
+package br.com.lawbook.dao;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import br.com.lawbook.model.Post;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 19OCT2011-04
+ * @version 28OCT2011-05
  * 
  */
 
 public interface PostDAO extends GenericDAO<Post> {
 
-	List<Post> getStreamPosts(HashMap<String,Object> attributes);
+	List<Post> getStreamPosts(Map<String,Object> attributes);
 	
-	List<Post> getProfileWall(HashMap<String,Object> attributes);
+	List<Post> getProfileWall(Map<String,Object> attributes);
 
 	Long getPostsCount();
 }

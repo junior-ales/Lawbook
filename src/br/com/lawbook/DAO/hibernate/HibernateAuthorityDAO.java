@@ -1,11 +1,11 @@
-package br.com.lawbook.DAO.hibernate;
+package br.com.lawbook.dao.hibernate;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import br.com.lawbook.DAO.AuthorityDAO;
+import br.com.lawbook.dao.AuthorityDAO;
 import br.com.lawbook.model.Authority;
 
 /**

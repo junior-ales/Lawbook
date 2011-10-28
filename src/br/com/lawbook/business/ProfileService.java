@@ -3,17 +3,20 @@ package br.com.lawbook.business;
 import java.io.Serializable;
 
 import org.hibernate.HibernateException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 
-import br.com.lawbook.DAO.FactoryDAO;
-import br.com.lawbook.DAO.ProfileDAO;
+import br.com.lawbook.dao.FactoryDAO;
+import br.com.lawbook.dao.ProfileDAO;
 import br.com.lawbook.model.Profile;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 24OCT2011-07 
+ * @version 28OCT2011-08 
  */
 
-public class ProfileService implements Serializable {
+public final class ProfileService implements Serializable {
 	
 	private static final long serialVersionUID = -7975898388328234855L;
 	private static ProfileService instance;
@@ -39,8 +42,19 @@ public class ProfileService implements Serializable {
 		} catch (HibernateException e) {
 			factory.cancelTx();
 			e.printStackTrace();
-			throw new HibernateException(e.getMessage());
+			throw new HibernateException(e);
 		} 
+	}
+	
+	public Profile getAuthorizedUserProfile() throws Exception {
+		SecurityContext context = SecurityContextHolder.getContext();
+		if (context == null) throw new Exception("SecurityContext is null");
+        
+		Authentication authentication = context.getAuthentication();
+        if (authentication == null) throw new Exception("Authentication is null");
+    	
+        String username = ((org.springframework.security.core.userdetails.User)authentication.getPrincipal()).getUsername();
+        return this.getProfileByUserName(username);
 	}
 
 	public boolean checkIfExist(Long profileId) {

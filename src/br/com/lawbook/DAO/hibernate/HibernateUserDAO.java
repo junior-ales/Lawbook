@@ -1,10 +1,10 @@
-package br.com.lawbook.DAO.hibernate;
+package br.com.lawbook.dao.hibernate;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import br.com.lawbook.DAO.UserDAO;
+import br.com.lawbook.dao.UserDAO;
 import br.com.lawbook.model.User;
 
 /**

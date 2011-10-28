@@ -1,6 +1,6 @@
-package br.com.lawbook.DAO;
+package br.com.lawbook.dao;
 
-import br.com.lawbook.DAO.hibernate.HibernateFactoryDAO;
+import br.com.lawbook.dao.hibernate.HibernateFactoryDAO;
 
 /**
  * @author Edilson Luiz Ales Junior

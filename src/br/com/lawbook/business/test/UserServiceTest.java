@@ -24,7 +24,7 @@ import br.com.lawbook.model.User;
  */
 public class UserServiceTest {
 
-	private static Logger LOG = Logger.getLogger("UserServiceTest");
+	private final static Logger LOG = Logger.getLogger("UserServiceTest");
 	
 	@Before
 	public void create() {

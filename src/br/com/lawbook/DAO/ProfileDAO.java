@@ -1,10 +1,10 @@
-package br.com.lawbook.DAO;
+package br.com.lawbook.dao;
 
 import br.com.lawbook.model.Profile;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 24OCT2011-04
+ * @version 28OCT2011-05
  * 
  */
 public interface ProfileDAO extends GenericDAO<Profile> {

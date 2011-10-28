@@ -1,8 +1,8 @@
-package br.com.lawbook.DAO.hibernate;
+package br.com.lawbook.dao.hibernate;
 
 import org.hibernate.Session;
 
-import br.com.lawbook.DAO.CommentDAO;
+import br.com.lawbook.dao.CommentDAO;
 import br.com.lawbook.model.Comment;
 
 /**

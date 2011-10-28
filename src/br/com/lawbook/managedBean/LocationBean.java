@@ -1,9 +1,7 @@
-package br.com.lawbook.managedBean;
+package br.com.lawbook.managedbean;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-
-import br.com.lawbook.business.LocationService;
 
 /**
  * @author Edilson Luiz Ales Junior
@@ -13,5 +11,4 @@ import br.com.lawbook.business.LocationService;
 @RequestScoped
 public class LocationBean {
 	
-	LocationService service = LocationService.getInstance(); 
 }

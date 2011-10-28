@@ -1,19 +1,19 @@
 package br.com.lawbook.business;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import br.com.lawbook.DAO.FactoryDAO;
-import br.com.lawbook.DAO.PostDAO;
+import br.com.lawbook.dao.FactoryDAO;
+import br.com.lawbook.dao.PostDAO;
 import br.com.lawbook.model.Post;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 19OCT2011-04
+ * @version 28OCT2011-05
  * 
  */
-public class PostService implements Serializable{
+public final class PostService implements Serializable{
 	
 	private static PostService instance;
 	private static final long serialVersionUID = 5170825358674011787L;
@@ -44,13 +44,13 @@ public class PostService implements Serializable{
 		factory.shutTx();
 	}
 
-	public List<Post> getStream(HashMap<String,Object> attributes) {
+	public List<Post> getStream(Map<String,Object> attributes) {
 		FactoryDAO factory = FactoryDAO.getFactoryDAO();
 		PostDAO dao = factory.getPostDAO();
 		return dao.getStreamPosts(attributes);
 	}
 
-	public List<Post> getWall(HashMap<String,Object> attributes) {
+	public List<Post> getWall(Map<String,Object> attributes) {
 		FactoryDAO factory = FactoryDAO.getFactoryDAO();
 		PostDAO dao = factory.getPostDAO();
 		return dao.getProfileWall(attributes);

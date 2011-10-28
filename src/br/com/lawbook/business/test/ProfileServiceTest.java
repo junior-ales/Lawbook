@@ -24,7 +24,7 @@ import br.com.lawbook.model.Profile;
  */
 public class ProfileServiceTest {
 
-	private static Logger LOG = Logger.getLogger("ProfileServiceTest");
+	private final static Logger LOG = Logger.getLogger("ProfileServiceTest");
 	
 	@Before
 	public void create() {

@@ -1,9 +1,9 @@
-package br.com.lawbook.DAO.hibernate;
+package br.com.lawbook.dao.hibernate;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import br.com.lawbook.DAO.ProfileDAO;
+import br.com.lawbook.dao.ProfileDAO;
 import br.com.lawbook.model.Profile;
 
 /**

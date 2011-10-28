@@ -1,4 +1,4 @@
-package br.com.lawbook.DAO.hibernate.test;
+package br.com.lawbook.dao.hibernate.test;
 
 import org.junit.Test;
 

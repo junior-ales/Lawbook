@@ -1,24 +1,23 @@
-package br.com.lawbook.DAO.hibernate;
+package br.com.lawbook.dao.hibernate;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
 
-import br.com.lawbook.DAO.PostDAO;
+import br.com.lawbook.dao.PostDAO;
 import br.com.lawbook.model.Post;
 import br.com.lawbook.model.Profile;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 20OUT2011-05 
+ * @version 28OUT2011-06 
  * 
  */
-
 public class HibernatePostDAO extends HibernateGenericDAO<Post> implements PostDAO {
 
 	public HibernatePostDAO(Session session) {
@@ -27,7 +26,7 @@ public class HibernatePostDAO extends HibernateGenericDAO<Post> implements PostD
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Post> getStreamPosts(HashMap<String,Object> attributes) {
+	public List<Post> getStreamPosts(final Map<String,Object> attributes){
 		
 		Profile profile = (Profile) attributes.get("profile");
 		Integer first = (Integer) attributes.get("first");
@@ -59,7 +58,7 @@ public class HibernatePostDAO extends HibernateGenericDAO<Post> implements PostD
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Post> getProfileWall(HashMap<String,Object> attributes) {
+	public List<Post> getProfileWall(final Map<String,Object> attributes) {
 		
 		Long profileId = (Long) attributes.get("profileId");
 		Integer first = (Integer) attributes.get("first");

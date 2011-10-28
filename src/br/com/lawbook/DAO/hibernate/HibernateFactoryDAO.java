@@ -1,9 +1,9 @@
-package br.com.lawbook.DAO.hibernate;
+package br.com.lawbook.dao.hibernate;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import br.com.lawbook.DAO.*;
+import br.com.lawbook.dao.*;
 import br.com.lawbook.util.HibernateUtil;
 
 /**

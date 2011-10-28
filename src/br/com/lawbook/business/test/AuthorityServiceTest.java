@@ -21,7 +21,7 @@ import br.com.lawbook.model.Authority;
  */
 public class AuthorityServiceTest {
 	
-	private static Logger LOG = Logger.getLogger("AuthorityServiceTest");
+	private final static Logger LOG = Logger.getLogger("AuthorityServiceTest");
 
 	@Test
 	public void create() {

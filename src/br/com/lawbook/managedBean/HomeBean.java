@@ -1,4 +1,4 @@
-package br.com.lawbook.managedBean;
+package br.com.lawbook.managedbean;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -12,9 +12,6 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.event.ActionEvent;
 
 import org.primefaces.model.LazyDataModel;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import br.com.lawbook.business.PostService;
 import br.com.lawbook.business.ProfileService;
@@ -24,35 +21,31 @@ import br.com.lawbook.util.FacesUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 27OCT2011-04
+ * @version 28OCT2011-05
  */
 @ManagedBean
 @SessionScoped
 public class HomeBean implements Serializable {
 	
 	private Profile profile;
-	private Profile public_;
+	private final transient Profile publicProfile; 
 	private Post post;
-	private LazyDataModel<Post> stream;
-	private ProfileService profileService;
-	private PostService postService;
+	private transient LazyDataModel<Post> stream;
+	private final transient ProfileService profileService;
+	private final transient PostService postService;
 	private static final long serialVersionUID = 928727904018740163L;
 
 	public HomeBean() {
 		this.profileService = ProfileService.getInstance();
 		this.postService = PostService.getInstance();
 		this.post = new Post();
-		this.public_ = this.profileService.getProfileByUserName("public");
-		Profile profile = new Profile();
-        SecurityContext context = SecurityContextHolder.getContext();
-        if (context instanceof SecurityContext){
-            Authentication authentication = context.getAuthentication();
-            if (authentication instanceof Authentication){
-            	String username = ((org.springframework.security.core.userdetails.User)authentication.getPrincipal()).getUsername();
-				profile = this.profileService.getProfileByUserName(username);
-            }
-        }
-    	setProfile(profile);
+		this.publicProfile = this.profileService.getProfileByUserName("public");
+		try {
+			setProfile(this.profileService.getAuthorizedUserProfile());
+		} catch (Exception e) {
+			e.printStackTrace();
+			FacesUtil.errorMessage("Authentication Error", "Problem with authentication process: " + e.getMessage());
+		}
 	}
 	
 	public LazyDataModel<Post> getStream() {
@@ -62,19 +55,16 @@ public class HomeBean implements Serializable {
 	@PostConstruct
 	public void loadLazyStream() {
 		if (this.stream == null) {
-			this.profileService = ProfileService.getInstance();
-			this.postService = PostService.getInstance();
 			this.stream = new LazyDataModel<Post>() {
 				private static final long serialVersionUID = -4238038748234463347L;
 
 				@Override
 				public List<Post> load(int first, int pageSize, String sortField, boolean sortOrder, Map<String, String> filters) {
-					HashMap<String, Object> attributes = new HashMap<String, Object>();
+					final Map<String, Object> attributes = new HashMap<String, Object>();
 					attributes.put("profile", profile);
-					attributes.put("first", new Integer(first));
-					attributes.put("pageSize", new Integer(pageSize));
-					List<Post> posts = postService.getStream(attributes);
-					return posts;
+					attributes.put("first", Integer.valueOf(first));
+					attributes.put("pageSize", Integer.valueOf(pageSize));
+					return postService.getStream(attributes);
 				}
 			};
 			this.stream.setRowCount(this.postService.getPostsCount());
@@ -84,7 +74,7 @@ public class HomeBean implements Serializable {
 	public void savePost(ActionEvent event) {
 		this.post.setDateTime(Calendar.getInstance());
 		this.post.setSender(this.profile);
-		this.post.setReceiver(this.public_);
+		this.post.setReceiver(this.publicProfile);
 		this.postService.save(this.post);
 		FacesUtil.successMessage("", "Posted");
 	}
