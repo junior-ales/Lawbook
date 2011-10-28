@@ -7,12 +7,15 @@
 		<div style="border: 1px solid black; display: table; width: 100%;">
 			<div style="border: 1px solid black; float: left; width: 300px;">  
 				<h:form id="profileOptionsForm">
-					<ui:include src="/pages/parts/profileOptions.xhtml" />
+					<ui:include src="/pages/parts/profile/options.xhtml" />
 				</h:form>
 			</div>
 			<div style="border: 1px solid black; margin-left: 301px;">
+				<h:form id="profileDataEntryForm">
+					<ui:include src="/pages/parts/profile/dataEntry.xhtml"/>
+				</h:form>
 				<h:form id="profileContentForm">
-					<ui:include src="/pages/parts/profileContent.xhtml"/> 
+					<ui:include src="/pages/parts/profile/content.xhtml"/> 
 				</h:form>
 			</div>
 		</div>

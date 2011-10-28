@@ -4,7 +4,7 @@
 	 xmlns:h="http://java.sun.com/jsf/html">
 	 
 	<div>
-		<img alt="" src="#{profileBean.profile.avatar}" />
+		<h:graphicImage value="#{profileBean.profile.avatar}" width="75" height="75" style="margin-left: 25px;" />
 		<h:outputText value="#{profileBean.profile.firstName}" />
 	</div>
 </div>

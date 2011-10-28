@@ -1,0 +1,9 @@
+<div xmlns:ui="http://java.sun.com/jsf/facelets"
+	 xmlns:p="http://primefaces.prime.com.tr/ui"
+	 xmlns:f="http://java.sun.com/jsf/core"
+	 xmlns:h="http://java.sun.com/jsf/html">
+	
+	<p:inputTextarea id="newpost" value="#{homeBean.post.content}" style="width:583px; height:60px; margin-bottom: 25px;" />
+    <p:watermark for="newpost" value="You can write a post here" />  
+    <p:commandButton update="formMaster:growl homeStream" actionListener="#{homeBean.savePost}" value="Post"/> 
+</div>

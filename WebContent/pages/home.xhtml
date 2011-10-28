@@ -7,12 +7,15 @@
 		<div style="border: 1px solid black; display: table; width: 100%;">
 			<div style="border: 1px solid black; float: left; width: 300px; padding-top: 25px; padding-bottom: 25px;">
 		        <h:form id="homeOptionsForm">
-					<ui:include src="/pages/parts/homeOptions.xhtml" />
+					<ui:include src="/pages/parts/home/options.xhtml" />
 				</h:form>
 			</div>
 			<div style="border: 1px solid black; margin-left: 301px; padding-top: 25px; padding-bottom: 25px;">
+		        <h:form id="homeDataEntryForm">
+					<ui:include src="/pages/parts/home/dataEntry.xhtml"/>
+				</h:form>
 		        <h:form id="homeContentForm">
-					<ui:include src="/pages/parts/homeContent.xhtml"/> 
+					<ui:include src="/pages/parts/home/content.xhtml"/> 
 				</h:form>
 			</div>
 		</div>
