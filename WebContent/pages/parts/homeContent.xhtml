@@ -4,9 +4,9 @@
 	 xmlns:h="http://java.sun.com/jsf/html">
 	 
 	<p>
-		<p:dataTable var="post" value="#{homeBean.stream}" lazy="true" height="500" 
-					 paginator="true" paginatorTemplate="{PreviousPageLink} {NextPageLink}" 
-					 rows="8" paginatorPosition="bottom" rowsPerPageTemplate="4,8,12">
+		<p:dataTable var="post" value="#{homeBean.stream}" lazy="true" height="500" rows="8"  
+					 paginator="true" paginatorTemplate="{PreviousPageLink} {NextPageLink}" paginatorPosition="bottom"  
+					 rowsPerPageTemplate="4,8,12" emptyMessage="No posts until now, what about create one?">
 			<p:column style="padding: 10px; width: 580px;">
 				<div style="border: 1px solid black; display: table; width: 100%;">
 					<div style="border: 1px solid black; float: left; width: 130px;">
