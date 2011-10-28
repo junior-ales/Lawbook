@@ -12,7 +12,7 @@ import org.hibernate.cfg.Configuration;
 
 public class HibernateUtil {
 	
-	private static final SessionFactory SESSION_FACTORY;
+	private static SessionFactory SESSION_FACTORY;
 	private static Session session;
 
     static {
@@ -22,6 +22,18 @@ public class HibernateUtil {
             throw new ExceptionInInitializerError(ex);
         }
     }
+    
+	public static SessionFactory getSessionFactory() {
+    	if (SESSION_FACTORY == null) {
+	    	try {
+	    		SESSION_FACTORY = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
+	    	} catch (Throwable ex) {
+		    	System.err.println("Initial SessionFactory creation failed." + ex);
+		    	throw new ExceptionInInitializerError(ex);
+	    	}
+    	}
+    	return SESSION_FACTORY;
+	}
 
     public static Session getSession() {
     	if (session == null || !session.isOpen()) {

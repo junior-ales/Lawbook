@@ -48,11 +48,6 @@ public class HibernateFactoryDAO extends FactoryDAO {
 	}
 
 	@Override
-	public UserDAO getUserDAO() {
-		return new HibernateUserDAO(this.getSession());
-	}
-
-	@Override
 	public LocationDAO getLocationDAO() {
 		return new HibernateLocationDAO(this.getSession());
 	}

@@ -1,7 +1,6 @@
 package br.com.lawbook.business.test;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +18,7 @@ import br.com.lawbook.model.User;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 26OCT2011-06
+ * @version 28OCT2011-07
  * 
  */
 public class UserServiceTest {
@@ -30,14 +29,14 @@ public class UserServiceTest {
 	public void create() {
 		
 		User publicUser = new User();
-		publicUser.setId(0L);
+		publicUser.setId(1L);
 		publicUser.setEmail("");
 		publicUser.setEnable(false);
 		publicUser.setPassword("");
 		publicUser.setUserName("public");
 		
 		User user = new User();
-		user.setEmail("admin@lawbook.com.br");
+		user.setEmail("wrongAdminEmail@lawbook.com.br"); // it will be changed on test "update" below
 		user.setEnable(true);
 		user.setPassword("12345");
 		user.setUserName("admin");
@@ -49,13 +48,6 @@ public class UserServiceTest {
 		saveUser(user, "12345");
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
-	public void passConfirmationTest() {
-		User user = new User();
-		user.setPassword("123");
-		UserService.getInstance().create(user, "321");
-	}
-
 	private User saveUser(User user, String passConfirmation) {
 		try {
 			User u = UserService.getInstance().create(user, passConfirmation);
@@ -69,6 +61,33 @@ public class UserServiceTest {
 			fail(e.getMessage());
 		}
 		return user;
+	}
+	
+	@Test
+	public void getUserById() {
+		Long id = 1L;
+		User u = UserService.getInstance().getUserById(id);
+		assertEquals(u.getId(), id);
+	}
+	
+	@Test
+	public void update() {
+		User u = UserService.getInstance().getUserById(2L);
+		assertEquals("wrongAdminEmail@lawbook.com.br", u.getEmail());
+		
+		u.setEmail("admin@lawbook.com.br");
+		UserService.getInstance().update(u);
+		
+		User u2 = UserService.getInstance().getUserById(2L);
+		assertEquals("admin@lawbook.com.br", u2.getEmail());
+		LOG.info("User " + u2.getUserName() + " updated successfully");
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void passConfirmationTest() {
+		User user = new User();
+		user.setPassword("123");
+		UserService.getInstance().create(user, "321");
 	}
 
 }

@@ -2,8 +2,8 @@ package br.com.lawbook.business;
 
 import org.hibernate.HibernateException;
 
-import br.com.lawbook.dao.FactoryDAO;
 import br.com.lawbook.dao.UserDAO;
+import br.com.lawbook.dao.hibernate.HibernateUserDAO;
 import br.com.lawbook.model.User;
 
 /**
@@ -32,40 +32,24 @@ public final class UserService  {
 		return create(user);
 	}
 	
-	private User create(User user) throws IllegalArgumentException {
-		FactoryDAO factory = FactoryDAO.getFactoryDAO();
-		UserDAO dao = factory.getUserDAO();
-		try {
-			factory.beginTx();
-			User u = dao.create(user);
-			factory.shutTx();
-			return u;
-		} catch (HibernateException e) {
-			factory.cancelTx();
-			e.printStackTrace();
-			throw new HibernateException(e.getMessage());
-		} 
+	private User create(User user) throws IllegalArgumentException, HibernateException {
+		UserDAO dao = new HibernateUserDAO();
+		return dao.create(user);
 	}
 	
 	public User update(User user) throws HibernateException {
-		FactoryDAO factory = FactoryDAO.getFactoryDAO();
-		UserDAO dao = factory.getUserDAO();
-		factory.beginTx();
-		User aux = dao.update(user);
-		factory.shutTx();
-		return aux;
+		UserDAO dao = new HibernateUserDAO();
+		return dao.update(user);
 	}
 	
 	public User getUserById(Long userId) {
-		FactoryDAO factory = FactoryDAO.getFactoryDAO();
-		UserDAO dao = factory.getUserDAO();
-		return dao.getById(userId);
+		UserDAO dao = new HibernateUserDAO();
+		return dao.getUserById(userId);
 	}
 
 	public User getUserByUserName(String userName) {
-		FactoryDAO factory = FactoryDAO.getFactoryDAO();
-		UserDAO dao = factory.getUserDAO();
-		return dao.getByUserName(userName);
+		UserDAO dao = new HibernateUserDAO();
+		return dao.getUserByUserName(userName);
 	}
 
 }
