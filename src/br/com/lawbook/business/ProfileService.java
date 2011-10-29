@@ -16,11 +16,10 @@ import br.com.lawbook.util.JavaUtil;
  * @author Edilson Luiz Ales Junior
  * @version 28OCT2011-08 
  */
-
 public final class ProfileService implements Serializable {
 	
-	private static final long serialVersionUID = -7975898388328234855L;
 	private static ProfileService instance;
+	private static final long serialVersionUID = -7975898388328234855L;
 
 	private ProfileService() {
 	}

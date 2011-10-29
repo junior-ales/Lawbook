@@ -1,16 +1,19 @@
 package br.com.lawbook.business;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import br.com.lawbook.dao.FactoryDAO;
+import org.hibernate.HibernateException;
+
 import br.com.lawbook.dao.PostDAO;
+import br.com.lawbook.dao.impl.PostDAOImpl;
 import br.com.lawbook.model.Post;
+import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 28OCT2011-05
+ * @version 29OCT2011-06
  * 
  */
 public final class PostService implements Serializable{
@@ -28,37 +31,32 @@ public final class PostService implements Serializable{
 		return instance;
 	}
 	
-	public void save(Post post) {
-		FactoryDAO factory = FactoryDAO.getFactoryDAO();
-		PostDAO dao = factory.getPostDAO();
-		factory.beginTx();
-		dao.save(post);
-		factory.shutTx();
+	public void save(Post post) throws HibernateException, IllegalArgumentException {
+		JavaUtil.validateParameter(post);
+		PostDAO dao = new PostDAOImpl();
+		dao.create(post);
 	}
 	
-	public void delete(Post post) {
-		FactoryDAO factory = FactoryDAO.getFactoryDAO();
-		PostDAO dao = factory.getPostDAO();
-		factory.beginTx();
+	public void delete(Post post) throws HibernateException, IllegalArgumentException {
+		JavaUtil.validateParameter(post);
+		PostDAO dao = new PostDAOImpl();
 		dao.delete(post);
-		factory.shutTx();
 	}
 
-	public List<Post> getStream(Map<String,Object> attributes) {
-		FactoryDAO factory = FactoryDAO.getFactoryDAO();
-		PostDAO dao = factory.getPostDAO();
+	public List<Post> getStream(HashMap<String,Object> attributes) throws HibernateException, IllegalArgumentException {
+		JavaUtil.validateParameter(attributes);
+		PostDAO dao = new PostDAOImpl();
 		return dao.getStreamPosts(attributes);
 	}
 
-	public List<Post> getWall(Map<String,Object> attributes) {
-		FactoryDAO factory = FactoryDAO.getFactoryDAO();
-		PostDAO dao = factory.getPostDAO();
+	public List<Post> getWall(HashMap<String,Object> attributes) throws HibernateException, IllegalArgumentException {
+		JavaUtil.validateParameter(attributes);
+		PostDAO dao = new PostDAOImpl();
 		return dao.getProfileWall(attributes);
 	}
 	
-	public int getPostsCount() {
-		FactoryDAO factory = FactoryDAO.getFactoryDAO();
-		PostDAO dao = factory.getPostDAO();
+	public int getPostsCount() throws HibernateException {
+		PostDAO dao = new PostDAOImpl();
 		return Integer.parseInt(dao.getPostsCount().toString());
 	}
 }

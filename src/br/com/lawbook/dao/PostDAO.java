@@ -1,21 +1,27 @@
 package br.com.lawbook.dao;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import org.hibernate.HibernateException;
 
 import br.com.lawbook.model.Post;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 28OCT2011-05
+ * @version 29OCT2011-06
  * 
  */
-
-public interface PostDAO extends GenericDAO<Post> {
-
-	List<Post> getStreamPosts(Map<String,Object> attributes);
+public interface PostDAO {
 	
-	List<Post> getProfileWall(Map<String,Object> attributes);
+	void create(Post post);
+	
+	void delete(Post post);
 
-	Long getPostsCount();
+	List<Post> getStreamPosts(HashMap<String,Object> attributes) throws HibernateException ;
+	
+	List<Post> getProfileWall(HashMap<String,Object> attributes) throws HibernateException ;
+
+	Long getPostsCount() throws HibernateException ;
+
 }

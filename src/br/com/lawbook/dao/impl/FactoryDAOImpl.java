@@ -8,7 +8,7 @@ import br.com.lawbook.util.HibernateUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 22OCT2011-06
+ * @version 29OCT2011-07
  * 
  */
 public class FactoryDAOImpl extends FactoryDAO {
@@ -36,11 +36,6 @@ public class FactoryDAOImpl extends FactoryDAO {
             this.tx.commit();
         }
     }
-
-	@Override
-	public PostDAO getPostDAO() {
-		return new PostDAOImpl(this.getSession());
-	}
 
 	@Override
 	public LocationDAO getLocationDAO() {

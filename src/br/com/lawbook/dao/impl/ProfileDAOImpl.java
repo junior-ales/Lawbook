@@ -18,7 +18,7 @@ import br.com.lawbook.util.HibernateUtil;
  */
 public class ProfileDAOImpl implements ProfileDAO {
 	
-	private final static Logger LOG = Logger.getLogger("HibernateProfileDAO");
+	private final static Logger LOG = Logger.getLogger("ProfileDAOImpl");
 
 	@Override
 	public Profile create(Profile profile) throws IllegalArgumentException, HibernateException {

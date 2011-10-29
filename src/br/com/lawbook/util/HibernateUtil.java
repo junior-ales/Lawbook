@@ -40,7 +40,7 @@ public class HibernateUtil {
 
     public static Session getSession() {
     	if (session == null || !session.isOpen()) {
-    		session = sessionFactory.openSession();
+    		session = getSessionFactory().openSession();
     	}
         return session;
     }

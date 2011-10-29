@@ -4,10 +4,9 @@ import br.com.lawbook.dao.impl.FactoryDAOImpl;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 20OCT2011-05 
+ * @version 29OCT2011-06 
  * 
  */
-
 public abstract class FactoryDAO {
 
     public static FactoryDAO getFactoryDAO() {
@@ -20,8 +19,6 @@ public abstract class FactoryDAO {
 
     public abstract void shutTx();
 
-	public abstract PostDAO getPostDAO();
-	
 	public abstract LocationDAO getLocationDAO();
 
 	public abstract CommentDAO getCommentDAO();
