@@ -2,7 +2,6 @@ package br.com.lawbook.business;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -33,26 +32,22 @@ public final class PostService implements Serializable{
 		return instance;
 	}
 	
-	public void save(Post post) throws HibernateException, IllegalArgumentException {
-		JavaUtil.validateParameter(post);
+	public void create(Post post) throws HibernateException, IllegalArgumentException {
+		JavaUtil.validateParameter(post, "PostService: save: post");
 		PostDAO dao = new PostDAOImpl();
 		dao.create(post);
 	}
 	
 	public void delete(Post post) throws HibernateException, IllegalArgumentException {
-		JavaUtil.validateParameter(post);
+		JavaUtil.validateParameter(post, "PostService: delete: post");
 		PostDAO dao = new PostDAOImpl();
 		dao.delete(post);
 	}
 
-	public List<Post> getStream(HashMap<String,Object> attributes) throws HibernateException, IllegalArgumentException {
-		JavaUtil.validateParameter(attributes);
-		Profile profile = (Profile) attributes.get("profile");
-		Integer first = (Integer) attributes.get("first");
-		Integer pageSize = (Integer) attributes.get("pageSize");
-		JavaUtil.validateParameter(profile);
-		JavaUtil.validateParameter(first);
-		JavaUtil.validateParameter(pageSize);
+	public List<Post> getStream(Profile profile, int first, int pageSize) throws HibernateException, IllegalArgumentException {
+		JavaUtil.validateParameter(profile, "PostService: getStream: profile");
+		JavaUtil.validateParameter(first, "PostService: getStream: first");
+		JavaUtil.validateParameter(pageSize, "PostService: getStream: pageSize");
 		
 		List<Long> sendersId = new ArrayList<Long>();
 		for (Profile p : profile.getFriends()) sendersId.add(p.getId());
@@ -61,14 +56,10 @@ public final class PostService implements Serializable{
 		return dao.getStreamPosts(profile.getId(), sendersId, first, pageSize);
 	}
 
-	public List<Post> getWall(HashMap<String,Object> attributes) throws HibernateException, IllegalArgumentException {
-		JavaUtil.validateParameter(attributes);
-		Profile profile = (Profile) attributes.get("profile");
-		Integer first = (Integer) attributes.get("first");
-		Integer pageSize = (Integer) attributes.get("pageSize");
-		JavaUtil.validateParameter(profile);
-		JavaUtil.validateParameter(first);
-		JavaUtil.validateParameter(pageSize);
+	public List<Post> getWall(Profile profile, int first, int pageSize) throws HibernateException, IllegalArgumentException {
+		JavaUtil.validateParameter(profile, "PostService: getWall: profile");
+		JavaUtil.validateParameter(first, "PostService: getWall: first");
+		JavaUtil.validateParameter(pageSize, "PostService: getWall: pageSize");
 		
 		List<Long> sendersId = new ArrayList<Long>();
 		for (Profile p : profile.getFriends()) sendersId.add(p.getId());

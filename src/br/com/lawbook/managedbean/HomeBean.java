@@ -2,7 +2,6 @@ package br.com.lawbook.managedbean;
 
 import java.io.Serializable;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -61,11 +60,7 @@ public class HomeBean implements Serializable {
 
 				@Override
 				public List<Post> load(int first, int pageSize, String sortField, boolean sortOrder, Map<String, String> filters) {
-					HashMap<String, Object> attributes = new HashMap<String, Object>();
-					attributes.put("profile", profile);
-					attributes.put("first", Integer.valueOf(first));
-					attributes.put("pageSize", Integer.valueOf(pageSize));
-					List<Post> st = postService.getStream(attributes);
+					List<Post> st = postService.getStream(profile, first, pageSize);
 					return st;
 				}
 			};
@@ -77,7 +72,7 @@ public class HomeBean implements Serializable {
 		this.post.setDateTime(Calendar.getInstance());
 		this.post.setSender(this.profile);
 		this.post.setReceiver(this.publicProfile);
-		this.postService.save(this.post);
+		this.postService.create(this.post);
 		FacesUtil.successMessage("", "Posted");
 	}
 	

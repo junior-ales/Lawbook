@@ -38,7 +38,6 @@ public class PostDAOImpl implements PostDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Post> getStreamPosts(Long streamOwnerId, List<Long> sendersId, int first, int pageSize) throws HibernateException {
-
 		Session session = HibernateUtil.getSession();
 		LOG.info("Hibernate Session opened");
 		Transaction tx = session.beginTransaction();
@@ -77,7 +76,6 @@ public class PostDAOImpl implements PostDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Post> getProfileWall(Long wallOwnerId, int first, int pageSize) throws HibernateException {
-
 		Session session = HibernateUtil.getSession();
 		LOG.info("Hibernate Session opened");
 		Transaction tx = session.beginTransaction();

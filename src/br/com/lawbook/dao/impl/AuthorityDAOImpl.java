@@ -33,12 +33,12 @@ public class AuthorityDAOImpl implements AuthorityDAO {
 	}
 	
 	@Override
-	public Authority checkIfExist(String name) throws HibernateException {
+	public Authority checkIfExist(String authName) throws HibernateException {
 		Session session = HibernateUtil.getSession();
 		LOG.info("Hibernate Session opened");
 		try {
 			Criteria crit = session.createCriteria(Authority.class);
-			crit.add(Restrictions.eq("name", name));
+			crit.add(Restrictions.eq("name", authName));
 			return (Authority) crit.uniqueResult();
 		} catch (Exception e) {
 			LOG.severe(e.getMessage());
@@ -50,8 +50,8 @@ public class AuthorityDAOImpl implements AuthorityDAO {
 	}
 
 	@Override
-	public Authority getByName(String name) throws HibernateException {
-		return this.checkIfExist(name);
+	public Authority getByName(String authName) throws HibernateException {
+		return this.checkIfExist(authName);
 	}
 	
 	private Authority save(Authority auth) throws HibernateException {

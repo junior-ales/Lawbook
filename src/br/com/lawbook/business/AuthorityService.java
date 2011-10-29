@@ -27,15 +27,15 @@ public final class AuthorityService {
 	}
 	
 	public Authority create(String authorityName) throws HibernateException, IllegalArgumentException {
-		JavaUtil.validateParameter(authorityName);
+		JavaUtil.validateParameter(authorityName, "AuthorityService: create: authorityName");
 		AuthorityDAO dao = new AuthorityDAOImpl();
 		return dao.create(authorityName);
 	}
 
-	public Authority getByName(String name) throws HibernateException, IllegalArgumentException {
-		JavaUtil.validateParameter(name);
+	public Authority getByName(String authorityName) throws HibernateException, IllegalArgumentException {
+		JavaUtil.validateParameter(authorityName, "AuthorityService: getByName: authorityName");
 		AuthorityDAO dao = new AuthorityDAOImpl();
-		return dao.getByName(name);
+		return dao.getByName(authorityName);
 	}
 	
 }

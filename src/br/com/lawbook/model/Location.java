@@ -14,7 +14,6 @@ import javax.persistence.Transient;
  * @author Edilson Luiz Ales Junior
  * @version 20OCT2011-06 
  */
-
 @Entity(name="lwb_location")
 public class Location implements Serializable {
 

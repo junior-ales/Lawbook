@@ -1,7 +1,6 @@
 package br.com.lawbook.managedbean;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -50,11 +49,7 @@ public class ProfileBean implements Serializable {
 
 				@Override
 				public List<Post> load(int first, int pageSize, String sortField, boolean sortOrder, Map<String, String> filters) {
-					HashMap<String, Object> attributes = new HashMap<String, Object>();
-					attributes.put("profileId", profile.getId());
-					attributes.put("first", Integer.valueOf(first));
-					attributes.put("pageSize", Integer.valueOf(pageSize));
-					List<Post> posts = postService.getWall(attributes);
+					List<Post> posts = postService.getWall(profile, first, pageSize);
 					return posts;
 				}
 			};

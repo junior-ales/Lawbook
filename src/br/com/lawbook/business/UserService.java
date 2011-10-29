@@ -9,7 +9,7 @@ import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 28OCT2011-07
+ * @version 29OCT2011-08
  *  
  */
 public final class UserService  {
@@ -27,8 +27,7 @@ public final class UserService  {
 	}
 	
 	public User create(User user, String passConfirmation) throws IllegalArgumentException, HibernateException {
-		JavaUtil.validateParameter(user);
-		JavaUtil.validateParameter(passConfirmation);
+		JavaUtil.validateParameter(user, "UserService: create(user, passConfirmation): user");
 		
 		if(!user.getPassword().equals(passConfirmation)) 
 			throw new IllegalArgumentException("Password confirmation doesn't match");
@@ -37,25 +36,25 @@ public final class UserService  {
 	}
 	
 	private User create(User user) throws IllegalArgumentException, HibernateException {
-		JavaUtil.validateParameter(user);
+		JavaUtil.validateParameter(user, "UserService: create(user): user");
 		UserDAO dao = new UserDAOImpl();
 		return dao.create(user);
 	}
 	
 	public User update(User user) throws IllegalArgumentException, HibernateException {
-		JavaUtil.validateParameter(user);
+		JavaUtil.validateParameter(user, "UserService: update: user");
 		UserDAO dao = new UserDAOImpl();
 		return dao.update(user);
 	}
 	
 	public User getUserById(Long userId) throws IllegalArgumentException, HibernateException {
-		JavaUtil.validateParameter(userId);
+		JavaUtil.validateParameter(userId, "UserService: getUserById: userId");
 		UserDAO dao = new UserDAOImpl();
 		return dao.getUserById(userId);
 	}
 
 	public User getUserByUserName(String userName) throws IllegalArgumentException, HibernateException {
-		JavaUtil.validateParameter(userName);
+		JavaUtil.validateParameter(userName, "UserService: getUserByUserName: userName");
 		UserDAO dao = new UserDAOImpl();
 		return dao.getUserByUserName(userName);
 	}

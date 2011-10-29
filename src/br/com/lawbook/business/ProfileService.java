@@ -14,7 +14,7 @@ import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 28OCT2011-08 
+ * @version 29OCT2011-09 
  */
 public final class ProfileService implements Serializable {
 	
@@ -32,7 +32,7 @@ public final class ProfileService implements Serializable {
 	}
 
 	public void create(Profile profile) throws IllegalArgumentException, HibernateException  {
-		JavaUtil.validateParameter(profile);
+		JavaUtil.validateParameter(profile, "ProfileService: create: profile");
 		ProfileDAO dao = new ProfileDAOImpl();
 		try {
 			dao.create(profile);
@@ -43,7 +43,7 @@ public final class ProfileService implements Serializable {
 	}
 	
 	public void update(Profile profile) throws IllegalArgumentException, HibernateException {
-		JavaUtil.validateParameter(profile);
+		JavaUtil.validateParameter(profile, "ProfileService: update: profile");
 		ProfileDAO dao = new ProfileDAOImpl();
 		dao.update(profile);
 	}
@@ -60,24 +60,24 @@ public final class ProfileService implements Serializable {
 	}
 
 	public boolean checkIfExist(Long profileId) throws IllegalArgumentException, HibernateException {
-		JavaUtil.validateParameter(profileId);
+		JavaUtil.validateParameter(profileId, "ProfileService: checkIfExist: profileId");
 		return this.getProfileById(profileId) == null ? false : true;
 	}
 	
 	public Profile getProfileById(Long id) throws IllegalArgumentException, HibernateException {
-		JavaUtil.validateParameter(id);
+		JavaUtil.validateParameter(id, "ProfileService: getProfileById: id");
 		ProfileDAO dao = new ProfileDAOImpl();
 		return dao.getProfileById(id);
 	}
 
 	public Profile getProfileByUserName(String userName) throws IllegalArgumentException, HibernateException {
-		JavaUtil.validateParameter(userName);
+		JavaUtil.validateParameter(userName, "ProfileService: getProfileByUserName: userName");
 		ProfileDAO dao = new ProfileDAOImpl();
 		return dao.getProfileByUserName(userName);
 	}
 
 	public Profile getProfileByUserId(Long userId) throws IllegalArgumentException, HibernateException {
-		JavaUtil.validateParameter(userId);
+		JavaUtil.validateParameter(userId, "ProfileService: getProfileByUserId: userId");
 		ProfileDAO dao = new ProfileDAOImpl();
 		return dao.getProfileByUserId(userId);
 	}

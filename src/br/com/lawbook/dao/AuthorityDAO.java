@@ -13,8 +13,8 @@ public interface AuthorityDAO {
 
 	Authority create(String authorityName) throws HibernateException, IllegalArgumentException;
 	
-	Authority checkIfExist(String name) throws HibernateException;
+	Authority checkIfExist(String authorityName) throws HibernateException;
 
-	Authority getByName(String name) throws HibernateException;
+	Authority getByName(String authorityName) throws HibernateException;
 
 }
