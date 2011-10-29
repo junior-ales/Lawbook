@@ -1,6 +1,6 @@
 package br.com.lawbook.dao;
 
-import br.com.lawbook.dao.hibernate.HibernateFactoryDAO;
+import br.com.lawbook.dao.impl.FactoryDAOImpl;
 
 /**
  * @author Edilson Luiz Ales Junior
@@ -11,7 +11,7 @@ import br.com.lawbook.dao.hibernate.HibernateFactoryDAO;
 public abstract class FactoryDAO {
 
     public static FactoryDAO getFactoryDAO() {
-        return new HibernateFactoryDAO();
+        return new FactoryDAOImpl();
     }
 
     public abstract void beginTx();
@@ -19,8 +19,6 @@ public abstract class FactoryDAO {
     public abstract void cancelTx();
 
     public abstract void shutTx();
-
-	public abstract ProfileDAO getProfileDAO();
 
 	public abstract PostDAO getPostDAO();
 	

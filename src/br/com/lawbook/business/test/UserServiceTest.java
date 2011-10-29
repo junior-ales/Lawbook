@@ -30,9 +30,9 @@ public class UserServiceTest {
 		
 		User publicUser = new User();
 		publicUser.setId(1L);
-		publicUser.setEmail("");
+		publicUser.setEmail("noexist@lawbook.com.br");
 		publicUser.setEnable(false);
-		publicUser.setPassword("");
+		publicUser.setPassword("12345");
 		publicUser.setUserName("public");
 		
 		User user = new User();
@@ -44,7 +44,7 @@ public class UserServiceTest {
 		auths.add(AuthorityService.getInstance().getByName("ADMIN"));
 		user.setAuthority(auths);
 		
-		saveUser(publicUser, "");
+		saveUser(publicUser, "12345");
 		saveUser(user, "12345");
 	}
 	

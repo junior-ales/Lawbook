@@ -19,7 +19,7 @@ import br.com.lawbook.model.Profile;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 26OCT2011-07
+ * @version 29OCT2011-08
  * 
  */
 public class ProfileServiceTest {
@@ -32,7 +32,6 @@ public class ProfileServiceTest {
 		UserService userService = UserService.getInstance();
 		
 		Profile publicProfile = new Profile();
-		publicProfile.setId(0L);
 		publicProfile.setFirstName("Public Profile");
 		publicProfile.setLastName("");
 		publicProfile.setUserOwner(userService.getUserByUserName("public"));

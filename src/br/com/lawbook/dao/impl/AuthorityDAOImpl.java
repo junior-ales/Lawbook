@@ -1,4 +1,4 @@
-package br.com.lawbook.dao.hibernate;
+package br.com.lawbook.dao.impl;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -13,9 +13,9 @@ import br.com.lawbook.model.Authority;
  * @version 24OCT2011-03
  * 
  */
-public class HibernateAuthorityDAO extends HibernateGenericDAO<Authority> implements AuthorityDAO {
+public class AuthorityDAOImpl extends GenericDAOImpl<Authority> implements AuthorityDAO {
 
-	public HibernateAuthorityDAO(Session session) {
+	public AuthorityDAOImpl(Session session) {
 		super(session);
 	}
 	

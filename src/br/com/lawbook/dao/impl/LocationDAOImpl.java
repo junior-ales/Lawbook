@@ -1,4 +1,4 @@
-package br.com.lawbook.dao.hibernate;
+package br.com.lawbook.dao.impl;
 
 import org.hibernate.Session;
 
@@ -11,9 +11,9 @@ import br.com.lawbook.model.Location;
  * 
  */
 
-public class HibernateLocationDAO extends HibernateGenericDAO<Location> implements LocationDAO {
+public class LocationDAOImpl extends GenericDAOImpl<Location> implements LocationDAO {
 
-	public HibernateLocationDAO(Session session) {
+	public LocationDAOImpl(Session session) {
 		super(session);
 	}
 

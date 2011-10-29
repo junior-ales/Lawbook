@@ -1,4 +1,4 @@
-package br.com.lawbook.dao.hibernate;
+package br.com.lawbook.dao.impl;
 
 import org.hibernate.Session;
 
@@ -11,9 +11,9 @@ import br.com.lawbook.model.Comment;
  * 
  */
 
-public class HibernateCommentDAO extends HibernateGenericDAO<Comment> implements CommentDAO {
+public class CommentDAOImpl extends GenericDAOImpl<Comment> implements CommentDAO {
 
-	public HibernateCommentDAO(Session session) {
+	public CommentDAOImpl(Session session) {
 		super(session);
 	}
 }

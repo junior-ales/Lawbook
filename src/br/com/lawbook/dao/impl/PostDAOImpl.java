@@ -1,4 +1,4 @@
-package br.com.lawbook.dao.hibernate;
+package br.com.lawbook.dao.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +18,9 @@ import br.com.lawbook.model.Profile;
  * @version 28OUT2011-06 
  * 
  */
-public class HibernatePostDAO extends HibernateGenericDAO<Post> implements PostDAO {
+public class PostDAOImpl extends GenericDAOImpl<Post> implements PostDAO {
 
-	public HibernatePostDAO(Session session) {
+	public PostDAOImpl(Session session) {
 		super(session);
 	}
 	

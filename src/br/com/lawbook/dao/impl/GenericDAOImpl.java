@@ -1,4 +1,4 @@
-package br.com.lawbook.dao.hibernate;
+package br.com.lawbook.dao.impl;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
@@ -16,13 +16,13 @@ import br.com.lawbook.dao.GenericDAO;
  * 
  */
 @SuppressWarnings("unchecked")
-public class HibernateGenericDAO<T> implements GenericDAO<T> {
+public class GenericDAOImpl<T> implements GenericDAO<T> {
 
     private Class<T> persistentClass;
     private Session session;
     private final static Logger LOG = Logger.getLogger("HibernateGenericDAO");
 
-	public HibernateGenericDAO(Session session) {
+	public GenericDAOImpl(Session session) {
         this.session = session;
         this.persistentClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }

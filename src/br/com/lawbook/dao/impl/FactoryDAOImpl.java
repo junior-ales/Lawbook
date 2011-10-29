@@ -1,4 +1,4 @@
-package br.com.lawbook.dao.hibernate;
+package br.com.lawbook.dao.impl;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -11,7 +11,7 @@ import br.com.lawbook.util.HibernateUtil;
  * @version 22OCT2011-06
  * 
  */
-public class HibernateFactoryDAO extends FactoryDAO {
+public class FactoryDAOImpl extends FactoryDAO {
 
     private Transaction tx;
 
@@ -38,28 +38,23 @@ public class HibernateFactoryDAO extends FactoryDAO {
     }
 
 	@Override
-	public ProfileDAO getProfileDAO() {
-		return new HibernateProfileDAO(this.getSession());
-	}
-
-	@Override
 	public PostDAO getPostDAO() {
-		return new HibernatePostDAO(this.getSession());
+		return new PostDAOImpl(this.getSession());
 	}
 
 	@Override
 	public LocationDAO getLocationDAO() {
-		return new HibernateLocationDAO(this.getSession());
+		return new LocationDAOImpl(this.getSession());
 	}
 
 	@Override
 	public CommentDAO getCommentDAO() {
-		return new HibernateCommentDAO(this.getSession());
+		return new CommentDAOImpl(this.getSession());
 	}
 
 	@Override
 	public AuthorityDAO getAuthorityDAO() {
-		return new HibernateAuthorityDAO(this.getSession());
+		return new AuthorityDAOImpl(this.getSession());
 	}
 	
 }

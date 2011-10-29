@@ -7,9 +7,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import br.com.lawbook.dao.FactoryDAO;
 import br.com.lawbook.dao.ProfileDAO;
+import br.com.lawbook.dao.impl.ProfileDAOImpl;
 import br.com.lawbook.model.Profile;
+import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
@@ -31,22 +32,19 @@ public final class ProfileService implements Serializable {
 		return instance;
 	}
 
-	public Profile create(Profile profile) throws IllegalArgumentException {
-		FactoryDAO factory = FactoryDAO.getFactoryDAO();
-		ProfileDAO dao = factory.getProfileDAO();
+	public Profile create(Profile profile) throws IllegalArgumentException, HibernateException  {
+		JavaUtil.validateParameter(profile);
+		ProfileDAO dao = new ProfileDAOImpl();
 		try {
-			factory.beginTx();
 			Profile p = dao.create(profile);
-			factory.shutTx();
 			return p;
 		} catch (HibernateException e) {
-			factory.cancelTx();
 			e.printStackTrace();
 			throw new HibernateException(e);
 		} 
 	}
 	
-	public Profile getAuthorizedUserProfile() throws Exception {
+	public Profile getAuthorizedUserProfile() throws IllegalArgumentException, HibernateException, Exception {
 		SecurityContext context = SecurityContextHolder.getContext();
 		if (context == null) throw new Exception("SecurityContext is null");
         
@@ -57,25 +55,26 @@ public final class ProfileService implements Serializable {
         return this.getProfileByUserName(username);
 	}
 
-	public boolean checkIfExist(Long profileId) {
-		return getProfileById(profileId) == null ? false : true;
+	public boolean checkIfExist(Long profileId) throws IllegalArgumentException, HibernateException {
+		JavaUtil.validateParameter(profileId);
+		return this.getProfileById(profileId) == null ? false : true;
 	}
 	
-	public Profile getProfileById(Long id) {
-		FactoryDAO factory = FactoryDAO.getFactoryDAO();
-		ProfileDAO dao = factory.getProfileDAO();
-		return dao.getById(id);
+	public Profile getProfileById(Long id) throws IllegalArgumentException, HibernateException {
+		JavaUtil.validateParameter(id);
+		ProfileDAO dao = new ProfileDAOImpl();
+		return dao.getProfileById(id);
 	}
 
-	public Profile getProfileByUserName(String userName) {
-		FactoryDAO factory = FactoryDAO.getFactoryDAO();
-		ProfileDAO dao = factory.getProfileDAO();
+	public Profile getProfileByUserName(String userName) throws IllegalArgumentException, HibernateException {
+		JavaUtil.validateParameter(userName);
+		ProfileDAO dao = new ProfileDAOImpl();
 		return dao.getProfileByUserName(userName);
 	}
 
-	public Profile getProfileByUserId(Long userId) {
-		FactoryDAO factory = FactoryDAO.getFactoryDAO();
-		ProfileDAO dao = factory.getProfileDAO();
+	public Profile getProfileByUserId(Long userId) throws IllegalArgumentException, HibernateException {
+		JavaUtil.validateParameter(userId);
+		ProfileDAO dao = new ProfileDAOImpl();
 		return dao.getProfileByUserId(userId);
 	}
 	
