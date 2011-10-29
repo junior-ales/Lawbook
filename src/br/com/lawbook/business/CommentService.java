@@ -2,16 +2,18 @@ package br.com.lawbook.business;
 
 import java.util.Calendar;
 
+import org.hibernate.HibernateException;
+
 import br.com.lawbook.dao.CommentDAO;
-import br.com.lawbook.dao.FactoryDAO;
+import br.com.lawbook.dao.impl.CommentDAOImpl;
 import br.com.lawbook.model.Comment;
+import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 16SEP2011-01
+ * @version 29OCT2011-01
  *  
  */
-
 public final class CommentService {
 
 	private static CommentService instance;
@@ -29,12 +31,16 @@ public final class CommentService {
 		return instance;
 	}
 	
-	public void save(Comment comment) {
-		FactoryDAO factory = FactoryDAO.getFactoryDAO();
-		CommentDAO dao = factory.getCommentDAO();
-		factory.beginTx();
+	public void save(Comment comment) throws IllegalArgumentException, HibernateException {
+		JavaUtil.validateParameter(comment);
+		CommentDAO dao = new CommentDAOImpl();
 		dao.save(comment);
-		factory.shutTx();
+	}
+	
+	public void delete(Comment comment) throws IllegalArgumentException, HibernateException {
+		JavaUtil.validateParameter(comment);
+		CommentDAO dao = new CommentDAOImpl();
+		dao.delete(comment);
 	}
 	
 }

@@ -1,15 +1,17 @@
 package br.com.lawbook.business;
 
-import br.com.lawbook.dao.FactoryDAO;
+import org.hibernate.HibernateException;
+
 import br.com.lawbook.dao.LocationDAO;
+import br.com.lawbook.dao.impl.LocationDAOImpl;
 import br.com.lawbook.model.Location;
+import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 16SEP2011-01 
+ * @version 29OCT2011-01
  * 
  */
-
 public final class LocationService {
 
 	private static LocationService instance;
@@ -24,12 +26,22 @@ public final class LocationService {
 		return instance;
 	}
 	
-	public void save(Location location) {
-		FactoryDAO factory = FactoryDAO.getFactoryDAO();
-		LocationDAO dao = factory.getLocationDAO();
-		factory.beginTx();
+	public void save(Location location) throws IllegalArgumentException, HibernateException {
+		JavaUtil.validateParameter(location);
+		LocationDAO dao = new LocationDAOImpl();
 		dao.save(location);
-		factory.shutTx();
+	}
+	
+	public void update(Location location) throws IllegalArgumentException, HibernateException {
+		JavaUtil.validateParameter(location);
+		LocationDAO dao = new LocationDAOImpl();
+		dao.update(location);
+	}
+	
+	public void delete(Location location) throws IllegalArgumentException, HibernateException {
+		JavaUtil.validateParameter(location);
+		LocationDAO dao = new LocationDAOImpl();
+		dao.delete(location);
 	}
 	
 }
