@@ -21,23 +21,22 @@ public class ProfileDAOImpl implements ProfileDAO {
 	private final static Logger LOG = Logger.getLogger("ProfileDAOImpl");
 
 	@Override
-	public Profile create(Profile profile) throws IllegalArgumentException, HibernateException {
+	public void create(Profile profile) throws IllegalArgumentException, HibernateException {
 		Profile p = this.checkIfUserHasProfile(profile.getUserOwner().getId());
 		if (p != null) {
 			throw new IllegalArgumentException("User already has a profile");
 		}
-		return save(profile);
+		save(profile);
 	}
 	
 	@Override
-	public Profile update(Profile profile) throws HibernateException {
-		Session session = HibernateUtil.getSessionFactory().openSession();
+	public void update(Profile profile) throws HibernateException {
+		Session session = HibernateUtil.getSession();
 		LOG.info("Hibernate Session opened");
 		Transaction tx = session.beginTransaction();
 		try {
 			session.update(profile);
 			tx.commit();
-			return profile;
 		} catch (Exception e) {
 			LOG.severe(e.getMessage());
 			tx.rollback();
@@ -50,7 +49,7 @@ public class ProfileDAOImpl implements ProfileDAO {
 	
 	@Override
 	public Profile checkIfUserHasProfile(Long userId) throws HibernateException{
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernateUtil.getSession();
 		LOG.info("Hibernate Session opened");
 		try {
 			Query query = session.createQuery("from lwb_user_profile p where p.userOwner.id = :userId");
@@ -67,7 +66,7 @@ public class ProfileDAOImpl implements ProfileDAO {
 	
 	@Override
 	public Profile getProfileById(Long id) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernateUtil.getSession();
 		LOG.info("Hibernate Session opened");
 		try {
 			return (Profile) session.get(Profile.class, id);
@@ -87,7 +86,7 @@ public class ProfileDAOImpl implements ProfileDAO {
 
 	@Override
 	public Profile getProfileByUserName(String userName) throws HibernateException {
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernateUtil.getSession();
 		LOG.info("Hibernate Session opened");
 		try {
 			Query query = session.createQuery("from lwb_user_profile p where p.userOwner.userName = :userName");
@@ -102,14 +101,13 @@ public class ProfileDAOImpl implements ProfileDAO {
 		}
 	}
 	
-	private Profile save(Profile profile) throws HibernateException{
-		Session session = HibernateUtil.getSessionFactory().openSession();
+	private void save(Profile profile) throws HibernateException{
+		Session session = HibernateUtil.getSession();
 		LOG.info("Hibernate Session opened");
 		Transaction tx = session.beginTransaction();
 		try {
 			session.save(profile);
 			tx.commit();
-			return profile;
 		} catch (Exception e) {
 			LOG.severe(e.getMessage());
 			tx.rollback();

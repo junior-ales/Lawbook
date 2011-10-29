@@ -17,16 +17,8 @@ public class HibernateUtil {
 	private static SessionFactory sessionFactory;
 	private static Session session;
 	private final static Logger LOG = Logger.getLogger("HibernateUtil");
-
-    static {
-        try {
-            sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
-        } catch (HibernateException ex) {
-            throw new ExceptionInInitializerError(ex);
-        }
-    }
     
-	public static SessionFactory getSessionFactory() {
+	private static SessionFactory getSessionFactory() {
     	if (sessionFactory == null) {
 	    	try {
 	    		sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();

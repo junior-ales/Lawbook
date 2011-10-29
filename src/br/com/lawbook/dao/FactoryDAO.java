@@ -22,6 +22,4 @@ public abstract class FactoryDAO {
 	public abstract LocationDAO getLocationDAO();
 
 	public abstract CommentDAO getCommentDAO();
-	
-	public abstract AuthorityDAO getAuthorityDAO();
 }

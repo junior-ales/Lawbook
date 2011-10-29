@@ -46,10 +46,5 @@ public class FactoryDAOImpl extends FactoryDAO {
 	public CommentDAO getCommentDAO() {
 		return new CommentDAOImpl(this.getSession());
 	}
-
-	@Override
-	public AuthorityDAO getAuthorityDAO() {
-		return new AuthorityDAOImpl(this.getSession());
-	}
 	
 }

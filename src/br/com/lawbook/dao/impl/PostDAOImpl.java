@@ -1,7 +1,5 @@
 package br.com.lawbook.dao.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -14,12 +12,11 @@ import org.hibernate.criterion.Projections;
 
 import br.com.lawbook.dao.PostDAO;
 import br.com.lawbook.model.Post;
-import br.com.lawbook.model.Profile;
 import br.com.lawbook.util.HibernateUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 28OUT2011-06 
+ * @version 29OUT2011-07 
  * 
  */
 public class PostDAOImpl implements PostDAO {
@@ -40,33 +37,29 @@ public class PostDAOImpl implements PostDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Post> getStreamPosts(final HashMap<String, Object> attributes) throws HibernateException {
+	public List<Post> getStreamPosts(Long streamOwnerId, List<Long> sendersId, int first, int pageSize) throws HibernateException {
 
-		Profile profile = (Profile) attributes.get("profile");
-		Query query;
-		StringBuilder stringQuery = new StringBuilder("select p from lwb_post p where ");
-
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernateUtil.getSession();
 		LOG.info("Hibernate Session opened");
 		Transaction tx = session.beginTransaction();
+		
 		try {
-			if (!profile.getFriends().isEmpty()) {
+			Query query;
+			StringBuilder stringQuery = new StringBuilder("select p from lwb_post p where ");
+			
+			if (sendersId.isEmpty()) {
+				stringQuery.append("sender_id = :myId or receiver_id = :myId order by datetime desc");
+				query = session.createQuery(stringQuery.toString());
 				
-				List<Long> sendersId = new ArrayList<Long>();
-				for (Profile p : profile.getFriends()) sendersId.add(p.getId());
-						
+			} else {
 				stringQuery.append("(sender_id in :sendersId and receiver_id = 0) or sender_id = :myId or receiver_id = :myId order by datetime desc");
 				query = session.createQuery(stringQuery.toString());
 				query.setParameterList("sendersId", sendersId);
-				
-			} else {
-				stringQuery.append("sender_id = :myId or receiver_id = :myId order by datetime desc");
-				query = session.createQuery(stringQuery.toString());
 			}
 			
-			query.setParameter("myId", profile.getId());
-			query.setFirstResult((Integer) attributes.get("first"));
-			query.setMaxResults((Integer) attributes.get("pageSize"));
+			query.setParameter("myId", streamOwnerId);
+			query.setFirstResult(first);
+			query.setMaxResults(pageSize);
 			
 			List<Post> posts = (List<Post>) query.list();
 			tx.commit();
@@ -83,18 +76,16 @@ public class PostDAOImpl implements PostDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Post> getProfileWall(final HashMap<String, Object> attributes) throws HibernateException {
+	public List<Post> getProfileWall(Long wallOwnerId, int first, int pageSize) throws HibernateException {
 
-		Profile profile = (Profile) attributes.get("profile");
-
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernateUtil.getSession();
 		LOG.info("Hibernate Session opened");
 		Transaction tx = session.beginTransaction();
 		try {
 			Query query = session.createQuery("from lwb_post where sender_id = :profileId and receiver_id = 0 order by datetime desc");
-			query.setParameter("profileId", profile.getId());
-			query.setFirstResult((Integer) attributes.get("first"));
-			query.setMaxResults((Integer) attributes.get("pageSize"));
+			query.setParameter("profileId", wallOwnerId);
+			query.setFirstResult(first);
+			query.setMaxResults(pageSize);
 
 			List<Post> posts = (List<Post>) query.list();
 			tx.commit();
@@ -111,7 +102,7 @@ public class PostDAOImpl implements PostDAO {
 
 	@Override
 	public Long getPostsCount() throws HibernateException {
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernateUtil.getSession();
 		LOG.info("Hibernate Session opened");
 		Transaction tx = session.beginTransaction();
 		try {
@@ -132,7 +123,7 @@ public class PostDAOImpl implements PostDAO {
 	
 	// TODO
 //	private void save(Post profile) throws HibernateException{
-//		Session session = HibernateUtil.getSessionFactory().openSession();
+//		Session session = HibernateUtil.getSession();
 //		LOG.info("Hibernate Session opened");
 //		Transaction tx = session.beginTransaction();
 //		try {

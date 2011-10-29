@@ -1,6 +1,5 @@
 package br.com.lawbook.dao;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -18,9 +17,9 @@ public interface PostDAO {
 	
 	void delete(Post post);
 
-	List<Post> getStreamPosts(HashMap<String,Object> attributes) throws HibernateException ;
+	List<Post> getStreamPosts(Long streamOwnerId, List<Long> sendersId, int first, int pageSize) throws HibernateException ;
 	
-	List<Post> getProfileWall(HashMap<String,Object> attributes) throws HibernateException ;
+	List<Post> getProfileWall(Long wallOwnerId, int first, int pageSize) throws HibernateException ;
 
 	Long getPostsCount() throws HibernateException ;
 

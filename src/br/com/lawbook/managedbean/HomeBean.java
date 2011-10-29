@@ -30,9 +30,9 @@ public class HomeBean implements Serializable {
 	private Profile profile;
 	private final transient Profile publicProfile; 
 	private Post post;
-	private transient LazyDataModel<Post> stream;
-	private final transient ProfileService profileService;
-	private final transient PostService postService;
+	private LazyDataModel<Post> stream;
+	private ProfileService profileService;
+	private PostService postService;
 	private static final long serialVersionUID = 928727904018740163L;
 
 	public HomeBean() {
@@ -61,11 +61,12 @@ public class HomeBean implements Serializable {
 
 				@Override
 				public List<Post> load(int first, int pageSize, String sortField, boolean sortOrder, Map<String, String> filters) {
-					final Map<String, Object> attributes = new HashMap<String, Object>();
+					HashMap<String, Object> attributes = new HashMap<String, Object>();
 					attributes.put("profile", profile);
 					attributes.put("first", Integer.valueOf(first));
 					attributes.put("pageSize", Integer.valueOf(pageSize));
-					return postService.getStream(attributes);
+					List<Post> st = postService.getStream(attributes);
+					return st;
 				}
 			};
 			this.stream.setRowCount(this.postService.getPostsCount());

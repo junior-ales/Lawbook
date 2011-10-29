@@ -11,9 +11,9 @@ import br.com.lawbook.model.Profile;
  */
 public interface ProfileDAO {
 
-	Profile create(Profile profile) throws IllegalArgumentException, HibernateException;
+	void create(Profile profile) throws IllegalArgumentException, HibernateException;
 	
-	Profile update(Profile profile) throws HibernateException;
+	void update(Profile profile) throws HibernateException;
 	
 	Profile checkIfUserHasProfile(Long userId) throws HibernateException;
 	

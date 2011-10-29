@@ -7,7 +7,7 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 
 import org.primefaces.model.LazyDataModel;
 
@@ -22,7 +22,7 @@ import br.com.lawbook.util.FacesUtil;
  * @version 28OCT2011-05
  */
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class ProfileBean implements Serializable {
 	
 	private Profile profile;

@@ -35,7 +35,7 @@ public class UserDAOImpl implements UserDAO {
 	
 	@Override
 	public User update(User user) throws HibernateException {
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernateUtil.getSession();
 		LOG.info("Hibernate Session opened");
 		Transaction tx = session.beginTransaction();
 		try {
@@ -55,7 +55,7 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	public User checkIfExist(String email, String userName) throws HibernateException {
 		
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernateUtil.getSession();
 		LOG.info("Hibernate Session opened");
 		User u;
 		Criteria crit;
@@ -90,7 +90,7 @@ public class UserDAOImpl implements UserDAO {
 	
 	@Override
 	public User getUserById(Serializable id) throws HibernateException {
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernateUtil.getSession();
 		LOG.info("Hibernate Session opened");
 		try {
 			return (User) session.get(User.class, id);
@@ -109,7 +109,7 @@ public class UserDAOImpl implements UserDAO {
 	}
 	
 	private User save(User user) throws HibernateException {
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernateUtil.getSession();
 		LOG.info("Hibernate Session opened");
 		Transaction tx = session.beginTransaction();
 		try {

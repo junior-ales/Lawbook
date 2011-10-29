@@ -5,7 +5,9 @@ import static org.junit.Assert.fail;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -63,6 +65,19 @@ public class ProfileServiceTest {
 		LOG.info("Profile " + p.getFirstName() + " " + p.getLastName() + " fetched by user id successfully");
 	}
 	
+	@Test
+	public void friendship() {
+		Profile p1 = ProfileService.getInstance().getProfileByUserName("admin");
+		Profile p2 = ProfileService.getInstance().getProfileByUserName("public");
+		
+		List<Profile> friends = new ArrayList<Profile>();
+		friends.add(p2);
+		p1.setFriends(friends);
+		
+		ProfileService.getInstance().update(p1);
+		assertNotNull(p1.getFriends());
+	}
+	
 	private Calendar getDate(String dateString) {
 		Calendar c = Calendar.getInstance();
 		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
@@ -74,19 +89,17 @@ public class ProfileServiceTest {
 		return c;
 	}
 	
-	private Profile saveProfile(Profile profile) {
+	private void saveProfile(Profile profile) {
 		try {
-			Profile p = ProfileService.getInstance().create(profile);
+			ProfileService.getInstance().create(profile);
 			assertNotNull(profile.getId());
-			LOG.info("Profile " + p.getFirstName() + " " + p.getLastName() + " created successfully");
-			return p;
+			LOG.info("Profile " + profile.getFirstName() + " " + profile.getLastName() + " created successfully");
 		} catch (IllegalArgumentException e) {
 			LOG.log(Level.WARNING, e.getMessage());
 		} catch (HibernateException e) {
 			LOG.log(Level.SEVERE, "Error saving new profile: " + profile.getFirstName() + " " + profile.getLastName() + "\n" + e.getMessage());
 			fail(e.getMessage());
 		}
-		return profile;
 	}
 	
 }

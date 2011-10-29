@@ -18,10 +18,12 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.ForeignKey;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 25OCT2011-16
+ * @version 29OCT2011-17
  * 
  */
 @Entity(name = "lwb_user_profile")
@@ -44,7 +46,7 @@ public class Profile implements Serializable {
 	private Location location;
 	@Column(length = 255, name = "about_me")
 	private String aboutMe;
-	@ManyToMany @ForeignKey(name="FK_USER_PROFILE_FRIEND_LIST", inverseName="FK_FRIEND_LIST_USER_PROFILE")
+	@ManyToMany @ForeignKey(name="FK_USER_PROFILE_FRIEND_LIST", inverseName="FK_FRIEND_LIST_USER_PROFILE") @LazyCollection(LazyCollectionOption.FALSE)
 	@JoinTable(name="lwb_friends", joinColumns = { @JoinColumn(name = "user_profile_id") }, inverseJoinColumns = { @JoinColumn(name = "friend_id") })
 	private List<Profile> friends;
 	@Column(length = 255)

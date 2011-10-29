@@ -31,16 +31,21 @@ public final class ProfileService implements Serializable {
 		return instance;
 	}
 
-	public Profile create(Profile profile) throws IllegalArgumentException, HibernateException  {
+	public void create(Profile profile) throws IllegalArgumentException, HibernateException  {
 		JavaUtil.validateParameter(profile);
 		ProfileDAO dao = new ProfileDAOImpl();
 		try {
-			Profile p = dao.create(profile);
-			return p;
+			dao.create(profile);
 		} catch (HibernateException e) {
 			e.printStackTrace();
 			throw new HibernateException(e);
 		} 
+	}
+	
+	public void update(Profile profile) throws IllegalArgumentException, HibernateException {
+		JavaUtil.validateParameter(profile);
+		ProfileDAO dao = new ProfileDAOImpl();
+		dao.update(profile);
 	}
 	
 	public Profile getAuthorizedUserProfile() throws IllegalArgumentException, HibernateException, Exception {

@@ -6,15 +6,15 @@ import br.com.lawbook.model.Authority;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 23OCT2011-02
+ * @version 29OCT2011-03
  * 
  */
-public interface AuthorityDAO extends GenericDAO<Authority> {
+public interface AuthorityDAO {
 
-	Authority create(String authorityName) throws HibernateException ;
+	Authority create(String authorityName) throws HibernateException, IllegalArgumentException;
 	
-	Authority checkIfExist(String name);
+	Authority checkIfExist(String name) throws HibernateException;
 
-	Authority getByName(String name);
+	Authority getByName(String name) throws HibernateException;
 
 }
