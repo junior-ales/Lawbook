@@ -1,43 +1,46 @@
 package br.com.lawbook.util;
 
+import java.util.logging.Logger;
+
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 04SEP2011-01 
+ * @version 29OCT2011-02 
  * 
  */
-
 public class HibernateUtil {
 	
-	private static SessionFactory SESSION_FACTORY;
+	private static SessionFactory sessionFactory;
 	private static Session session;
+	private final static Logger LOG = Logger.getLogger("HibernateUtil");
 
     static {
         try {
-            SESSION_FACTORY = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
-        } catch (Throwable ex) {
+            sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
+        } catch (HibernateException ex) {
             throw new ExceptionInInitializerError(ex);
         }
     }
     
 	public static SessionFactory getSessionFactory() {
-    	if (SESSION_FACTORY == null) {
+    	if (sessionFactory == null) {
 	    	try {
-	    		SESSION_FACTORY = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
-	    	} catch (Throwable ex) {
-		    	System.err.println("Initial SessionFactory creation failed." + ex);
+	    		sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
+	    	} catch (HibernateException ex) {
+		    	LOG.severe("Initial SessionFactory creation failed." + ex);
 		    	throw new ExceptionInInitializerError(ex);
 	    	}
     	}
-    	return SESSION_FACTORY;
+    	return sessionFactory;
 	}
 
     public static Session getSession() {
     	if (session == null || !session.isOpen()) {
-    		session = SESSION_FACTORY.openSession();
+    		session = sessionFactory.openSession();
     	}
         return session;
     }
