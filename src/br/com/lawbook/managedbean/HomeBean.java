@@ -56,7 +56,8 @@ public class HomeBean implements Serializable {
 	public void loadLazyStream() {
 		if (this.stream == null) {
 			this.stream = new LazyDataModel<Post>() {
-				private static final long serialVersionUID = -4238038748234463347L;
+
+				private static final long serialVersionUID = 311055813797675620L;
 
 				@Override
 				public List<Post> load(int first, int pageSize, String sortField, boolean sortOrder, Map<String, String> filters) {

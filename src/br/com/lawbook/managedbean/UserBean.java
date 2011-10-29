@@ -16,7 +16,7 @@ import br.com.lawbook.business.UserService;
 @RequestScoped
 public class UserBean implements Serializable {
 
-	private UserService service;
+	private transient UserService service;
 	private String userName;
 	private String password;
 	private String passConfirmation;
