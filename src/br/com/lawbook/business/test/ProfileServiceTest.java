@@ -67,7 +67,7 @@ public class ProfileServiceTest {
 	@Test
 	public void friendship() {
 		Profile p1 = ProfileService.getInstance().getProfileByUserName("admin");
-		Profile p2 = ProfileService.getInstance().getProfileByUserName("public");
+		Profile p2 = ProfileService.getInstance().getPublicProfile();
 		
 		List<Profile> friends = new ArrayList<Profile>();
 		friends.add(p2);
