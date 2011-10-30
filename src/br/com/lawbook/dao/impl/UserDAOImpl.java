@@ -1,6 +1,5 @@
 package br.com.lawbook.dao.impl;
 
-import java.io.Serializable;
 import java.util.logging.Logger;
 
 import org.hibernate.Criteria;
@@ -16,12 +15,12 @@ import br.com.lawbook.util.HibernateUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 29OCT2011-06
+ * @version 30OCT2011-07
  * 
  */
 public class UserDAOImpl implements UserDAO {
 
-	private final static Logger LOG = Logger.getLogger("HibernateUserDAO");
+	private final static Logger LOG = Logger.getLogger("UserDAOImpl");
 	
 	@Override
 	public void create(User user) throws IllegalArgumentException, HibernateException {
@@ -84,7 +83,7 @@ public class UserDAOImpl implements UserDAO {
 	}
 	
 	@Override
-	public User getUserById(Serializable id) throws HibernateException {
+	public User getUserById(Long id) throws HibernateException {
 		Session session = HibernateUtil.getSession();
 		try {
 			return (User) session.get(User.class, id);

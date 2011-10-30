@@ -17,10 +17,12 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.ForeignKey;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 26OCT2011-12 
+ * @version 30OCT2011-13 
  *
  */
 @Entity(name="lwb_post")
@@ -39,7 +41,7 @@ public class Post implements Serializable {
 	@Column(length = 255)
 	private String content;
 	private Calendar dateTime;
-	@OneToMany @ForeignKey(name="FK_POST_COMMENT", inverseName="FK_COMMENT_POST")
+	@OneToMany @ForeignKey(name="FK_POST_COMMENT", inverseName="FK_COMMENT_POST") @LazyCollection(LazyCollectionOption.FALSE) 
 	@JoinTable(name="lwb_post_comments", joinColumns = { @JoinColumn(name = "post_id") }, inverseJoinColumns = { @JoinColumn(name = "comment_id") })
 	private List<Comment> comments;
 	@Transient

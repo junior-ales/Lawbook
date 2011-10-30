@@ -38,7 +38,7 @@ public class HomeBean implements Serializable {
 		this.profileService = ProfileService.getInstance();
 		this.postService = PostService.getInstance();
 		this.post = new Post();
-		this.publicProfile = this.profileService.getProfileByUserName("public");
+		this.publicProfile = this.profileService.getPublicProfile();
 		try {
 			setProfile(this.profileService.getAuthorizedUserProfile());
 		} catch (Exception e) {

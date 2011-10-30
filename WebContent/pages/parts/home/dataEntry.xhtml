@@ -3,7 +3,8 @@
 	 xmlns:f="http://java.sun.com/jsf/core"
 	 xmlns:h="http://java.sun.com/jsf/html">
 	
-	<p:inputTextarea id="newpost" value="#{homeBean.post.content}" style="width:583px; height:60px; margin-bottom: 25px;" />
-    <p:watermark for="newpost" value="You can write a post here" />  
-    <p:commandButton update="formMaster:growl homeStream" actionListener="#{homeBean.savePost}" value="Post"/> 
+	<p:inputTextarea id="newpostHome" value="#{homeBean.post.content}" style="width:588px; height:60px; margin-bottom: 25px;" />
+    <p:watermark for="newpostHome" value="Post something..." />  
+    <p:commandButton update="formMaster:growl homeStream" value="Post"  
+    				 actionListener="#{homeBean.savePost}" style="position: relative; top: -15px; left: 522px" /> 
 </div>

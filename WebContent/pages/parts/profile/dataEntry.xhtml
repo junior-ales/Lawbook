@@ -3,5 +3,8 @@
 	 xmlns:f="http://java.sun.com/jsf/core"
 	 xmlns:h="http://java.sun.com/jsf/html">
 	
-	<h:outputText value="Data Entry" />
+	<p:inputTextarea id="newpostProfile" value="" style="width:588px; height:60px; margin-bottom: 25px;" />
+    <p:watermark for="newpostProfile" value="Post something..." />  
+    <p:commandButton update="formMaster:growl" value="Post"  
+    				 style="position: relative; top: -15px; left: 522px" /> 
 </div>

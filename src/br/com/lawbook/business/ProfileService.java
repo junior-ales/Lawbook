@@ -14,11 +14,12 @@ import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 29OCT2011-09 
+ * @version 30OCT2011-10 
  */
 public final class ProfileService implements Serializable {
 	
 	private static ProfileService instance;
+	private static Profile publicProfile;
 	private static final long serialVersionUID = -7975898388328234855L;
 
 	private ProfileService() {
@@ -80,6 +81,17 @@ public final class ProfileService implements Serializable {
 		JavaUtil.validateParameter(userId, "ProfileService: getProfileByUserId: userId");
 		ProfileDAO dao = new ProfileDAOImpl();
 		return dao.getProfileByUserId(userId);
+	}
+	
+	public Profile getPublicProfile() {
+		if (publicProfile == null) {
+			try {
+				publicProfile = this.getProfileByUserName("public");
+			} catch (HibernateException e) {
+				e.printStackTrace();
+			}
+		}
+		return publicProfile;
 	}
 	
 }

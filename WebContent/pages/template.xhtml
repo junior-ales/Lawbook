@@ -28,11 +28,13 @@
 					</div>
 				</div>
 				<div id="bottomPanel" style="float: left; width: 100%;">
-					<h:form id="formContent">
-						<ui:insert id="contentPanel" name="contentPanel">
-							<!-- Here goes the content -->
-						</ui:insert>
-					</h:form>
+					<p:fieldset toggleable="false">  
+						<h:form id="formContent">
+							<ui:insert id="contentPanel" name="contentPanel">
+								<!-- Here goes the content -->
+							</ui:insert>
+						</h:form>
+					</p:fieldset>
 				</div>
 			</div>
 		</h:form>

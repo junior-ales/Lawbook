@@ -2,6 +2,7 @@ package br.com.lawbook.business;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -14,7 +15,7 @@ import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 29OCT2011-06
+ * @version 30OCT2011-07
  * 
  */
 public final class PostService implements Serializable{
@@ -34,6 +35,7 @@ public final class PostService implements Serializable{
 	
 	public void create(Post post) throws HibernateException, IllegalArgumentException {
 		JavaUtil.validateParameter(post, "PostService: save: post");
+		post.setDateTime(Calendar.getInstance()); // when creating a new post, get the current timestamp
 		PostDAO dao = new PostDAOImpl();
 		dao.create(post);
 	}
@@ -42,6 +44,12 @@ public final class PostService implements Serializable{
 		JavaUtil.validateParameter(post, "PostService: delete: post");
 		PostDAO dao = new PostDAOImpl();
 		dao.delete(post);
+	}
+	
+	public Post getPostById(Long postId) throws HibernateException, IllegalArgumentException {
+		JavaUtil.validateParameter(postId, "PostService: getPostById: postId");
+		PostDAO dao = new PostDAOImpl();
+		return dao.getPostById(postId);
 	}
 
 	public List<Post> getStream(Profile profile, int first, int pageSize) throws HibernateException, IllegalArgumentException {
