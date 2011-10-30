@@ -22,7 +22,6 @@ public class LocationDAOImpl implements LocationDAO {
 	@Override
 	public void save(Location location) throws HibernateException {
 		Session session = HibernateUtil.getSession();
-		LOG.info("Hibernate Session opened");
 		Transaction tx = session.beginTransaction();
 		try {
 			session.save(location);
@@ -40,7 +39,6 @@ public class LocationDAOImpl implements LocationDAO {
 	@Override
 	public void update(Location location) throws HibernateException {
 		Session session = HibernateUtil.getSession();
-		LOG.info("Hibernate Session opened");
 		Transaction tx = session.beginTransaction();
 		try {
 			session.update(location);
@@ -58,7 +56,6 @@ public class LocationDAOImpl implements LocationDAO {
 	@Override
 	public void delete(Location location) throws HibernateException {
 		Session session = HibernateUtil.getSession();
-		LOG.info("Hibernate Session opened");
 		Transaction tx = session.beginTransaction();
 		try {
 			session.delete(location);

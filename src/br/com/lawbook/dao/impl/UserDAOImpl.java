@@ -16,7 +16,7 @@ import br.com.lawbook.util.HibernateUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 28OCT2011-05
+ * @version 29OCT2011-06
  * 
  */
 public class UserDAOImpl implements UserDAO {
@@ -24,24 +24,40 @@ public class UserDAOImpl implements UserDAO {
 	private final static Logger LOG = Logger.getLogger("HibernateUserDAO");
 	
 	@Override
-	public User create(User user) throws IllegalArgumentException, HibernateException {
-		User u = this.checkIfExist(user.getEmail(), user.getUserName());
-		if (u != null) {
+	public void create(User user) throws IllegalArgumentException, HibernateException {
+		
+		Session session = HibernateUtil.getSession();
+		
+		if (this.checkIfExist(user, session)) {
+			session.close();
+			LOG.info("Hibernate Session closed");
 			String msg = "Username (" + user.getUserName() + ") or email ("+ user.getEmail() + ") already exist";
 			throw new IllegalArgumentException(msg);
 		}
-		return save(user);
+			
+		Transaction tx = session.beginTransaction();
+		
+		try {
+			session.save(user);
+			tx.commit();
+		} catch (Exception e) {
+			LOG.severe(e.getMessage());
+			tx.rollback();
+			throw new HibernateException(e);
+		} finally {
+			session.close();
+			LOG.info("Hibernate Session closed");
+		}
+		
 	}
-	
+
 	@Override
-	public User update(User user) throws HibernateException {
+	public void update(User user) throws HibernateException {
 		Session session = HibernateUtil.getSession();
-		LOG.info("Hibernate Session opened");
 		Transaction tx = session.beginTransaction();
 		try {
 			session.update(user);
 			tx.commit();
-			return user;
 		} catch (Exception e) {
 			LOG.severe(e.getMessage());
 			tx.rollback();
@@ -53,31 +69,10 @@ public class UserDAOImpl implements UserDAO {
 	}
 	
 	@Override
-	public User checkIfExist(String email, String userName) throws HibernateException {
-		
+	public boolean checkIfExist(User user) throws HibernateException {
 		Session session = HibernateUtil.getSession();
-		LOG.info("Hibernate Session opened");
-		User u;
-		Criteria crit;
 		try {
-			if (email != null && !email.trim().equals("")) {
-				if (userName != null && !userName.trim().equals("")) {
-					Query query = session.createQuery("from lwb_user u where u.userName = :userName or u.email = :email");
-					query.setParameter("email", email);
-					query.setParameter("userName", userName);
-					query.setMaxResults(1);
-					u = (User) query.uniqueResult();
-				} else {
-					crit = session.createCriteria(User.class);
-					crit.add(Restrictions.eq("email", email));
-					u = (User) crit.uniqueResult();
-				}
-			} else {
-				crit = session.createCriteria(User.class);
-				crit.add(Restrictions.eq("userName", userName));
-				u = (User) crit.uniqueResult();
-			}
-			return u;
+			return checkIfExist(user, session);
 		} catch (Exception e) {
 			LOG.severe(e.getMessage());
 			throw new HibernateException(e);
@@ -91,7 +86,6 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	public User getUserById(Serializable id) throws HibernateException {
 		Session session = HibernateUtil.getSession();
-		LOG.info("Hibernate Session opened");
 		try {
 			return (User) session.get(User.class, id);
 		} catch (Exception e) {
@@ -105,25 +99,46 @@ public class UserDAOImpl implements UserDAO {
 
 	@Override
 	public User getUserByUserName(String userName) throws HibernateException {
-		return checkIfExist(null, userName);
+		User user = new User();
+		user.setUserName(userName);
+		if (checkIfExist(user)) return user;
+		throw new IllegalArgumentException("Username " + userName + " doesn't exist");
 	}
 	
-	private User save(User user) throws HibernateException {
-		Session session = HibernateUtil.getSession();
-		LOG.info("Hibernate Session opened");
-		Transaction tx = session.beginTransaction();
+	/* In order to optimize the database connection usage
+	 * this method reuse sessions, that's why it isn't closed here */
+	private boolean checkIfExist(User user, Session session) throws HibernateException {
+		User userAux = new User();
+		Criteria crit;
 		try {
-			session.save(user);
-			tx.commit();
-			return user;
+			if (user.getEmail() != null && !user.getEmail().trim().equals("")) {
+				if (user.getUserName() != null && !user.getUserName().trim().equals("")) {
+					Query query = session.createQuery("from lwb_user u where u.userName = :userName or u.email = :email");
+					query.setParameter("email", user.getEmail());
+					query.setParameter("userName", user.getUserName());
+					query.setMaxResults(1);
+					userAux = (User) query.uniqueResult();
+				} else {
+					crit = session.createCriteria(User.class);
+					crit.add(Restrictions.eq("email", user.getEmail()));
+					userAux = (User) crit.uniqueResult();
+				}
+			} else {
+				crit = session.createCriteria(User.class);
+				crit.add(Restrictions.eq("userName", user.getUserName()));
+				userAux = (User) crit.uniqueResult();
+			}
+			
+			if (userAux == null) return false;
+			userAux.copyTo(user);
+			return true;
+
 		} catch (Exception e) {
-			LOG.severe(e.getMessage());
-			tx.rollback();
-			throw new HibernateException(e);
-		} finally {
 			session.close();
 			LOG.info("Hibernate Session closed");
+			LOG.severe(e.getMessage());
+			throw new HibernateException(e);
 		}
 	}
-
+	
 }

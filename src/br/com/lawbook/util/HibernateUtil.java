@@ -9,7 +9,7 @@ import org.hibernate.cfg.Configuration;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 29OCT2011-02 
+ * @version 29OCT2011-03 
  * 
  */
 public class HibernateUtil {
@@ -18,23 +18,20 @@ public class HibernateUtil {
 	private static Session session;
 	private final static Logger LOG = Logger.getLogger("HibernateUtil");
     
-	private static SessionFactory getSessionFactory() {
-    	if (sessionFactory == null) {
-	    	try {
-	    		sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
-	    	} catch (HibernateException ex) {
-		    	LOG.severe("Initial SessionFactory creation failed." + ex);
-		    	throw new ExceptionInInitializerError(ex);
-	    	}
-    	}
-    	return sessionFactory;
+	public static Session getSession() {
+		if (session == null || !session.isOpen()) {
+			if (sessionFactory == null) {
+				try {
+					sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
+				} catch (HibernateException ex) {
+					LOG.severe("Initial SessionFactory creation failed." + ex);
+					throw new ExceptionInInitializerError(ex);
+				}
+			}
+			session = sessionFactory.openSession();
+			LOG.info("Hibernate Session opened");
+		}
+		return session;
 	}
-
-    public static Session getSession() {
-    	if (session == null || !session.isOpen()) {
-    		session = getSessionFactory().openSession();
-    	}
-        return session;
-    }
 	
 }

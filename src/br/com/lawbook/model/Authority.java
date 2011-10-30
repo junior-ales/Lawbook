@@ -12,7 +12,7 @@ import javax.persistence.Transient;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 23OCT2011-04 
+ * @version 29OCT2011-06
  * 
  */
 @Entity(name="lwb_authority")
@@ -26,8 +26,14 @@ public class Authority implements Serializable {
 	@Column(length = 100, unique=true, nullable=false)
 	private String name;
 	@Transient
-	private static final long serialVersionUID = -4276113882849947964L;
+	private static final long serialVersionUID = -5214578639129265280L;
 	
+	public Authority() {
+	}
+	
+	public Authority(String name) {
+		this.name = name;
+	}
 	public Long getId() {
 		return id;
 	}
@@ -39,5 +45,10 @@ public class Authority implements Serializable {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public void copyTo(Authority auth) {
+		auth.setId(this.id);
+		auth.setName(this.name);
 	}
 }

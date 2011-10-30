@@ -1,7 +1,6 @@
 package br.com.lawbook.business.test;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,7 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.hibernate.HibernateException;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import br.com.lawbook.business.ProfileService;
@@ -28,8 +27,8 @@ public class ProfileServiceTest {
 
 	private final static Logger LOG = Logger.getLogger("ProfileServiceTest");
 	
-	@Before
-	public void create() {
+	@BeforeClass
+	public static void create() {
 		
 		UserService userService = UserService.getInstance();
 		
@@ -75,10 +74,11 @@ public class ProfileServiceTest {
 		p1.setFriends(friends);
 		
 		ProfileService.getInstance().update(p1);
-		assertNotNull(p1.getFriends());
+		assertFalse(p1.getFriends().isEmpty());
+		// TODO assertFalse(p2.getFriends().isEmpty());
 	}
 	
-	private Calendar getDate(String dateString) {
+	private static Calendar getDate(String dateString) {
 		Calendar c = Calendar.getInstance();
 		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		try {
@@ -89,7 +89,7 @@ public class ProfileServiceTest {
 		return c;
 	}
 	
-	private void saveProfile(Profile profile) {
+	private static void saveProfile(Profile profile) {
 		try {
 			ProfileService.getInstance().create(profile);
 			assertNotNull(profile.getId());

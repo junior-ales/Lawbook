@@ -26,25 +26,25 @@ public final class UserService  {
 		return instance;
 	}
 	
-	public User create(User user, String passConfirmation) throws IllegalArgumentException, HibernateException {
+	public void create(User user, String passConfirmation) throws IllegalArgumentException, HibernateException {
 		JavaUtil.validateParameter(user, "UserService: create(user, passConfirmation): user");
 		
 		if(!user.getPassword().equals(passConfirmation)) 
 			throw new IllegalArgumentException("Password confirmation doesn't match");
 
-		return create(user);
+		create(user);
 	}
 	
-	private User create(User user) throws IllegalArgumentException, HibernateException {
+	private void create(User user) throws IllegalArgumentException, HibernateException {
 		JavaUtil.validateParameter(user, "UserService: create(user): user");
 		UserDAO dao = new UserDAOImpl();
-		return dao.create(user);
+		dao.create(user);
 	}
 	
-	public User update(User user) throws IllegalArgumentException, HibernateException {
+	public void update(User user) throws IllegalArgumentException, HibernateException {
 		JavaUtil.validateParameter(user, "UserService: update: user");
 		UserDAO dao = new UserDAOImpl();
-		return dao.update(user);
+		dao.update(user);
 	}
 	
 	public User getUserById(Long userId) throws IllegalArgumentException, HibernateException {

@@ -32,7 +32,6 @@ public class ProfileDAOImpl implements ProfileDAO {
 	@Override
 	public void update(Profile profile) throws HibernateException {
 		Session session = HibernateUtil.getSession();
-		LOG.info("Hibernate Session opened");
 		Transaction tx = session.beginTransaction();
 		try {
 			session.update(profile);
@@ -50,7 +49,6 @@ public class ProfileDAOImpl implements ProfileDAO {
 	@Override
 	public Profile checkIfUserHasProfile(Long userId) throws HibernateException{
 		Session session = HibernateUtil.getSession();
-		LOG.info("Hibernate Session opened");
 		try {
 			Query query = session.createQuery("from lwb_user_profile p where p.userOwner.id = :userId");
 			query.setParameter("userId", userId);
@@ -67,7 +65,6 @@ public class ProfileDAOImpl implements ProfileDAO {
 	@Override
 	public Profile getProfileById(Long id) {
 		Session session = HibernateUtil.getSession();
-		LOG.info("Hibernate Session opened");
 		try {
 			return (Profile) session.get(Profile.class, id);
 		} catch (Exception e) {
@@ -87,7 +84,6 @@ public class ProfileDAOImpl implements ProfileDAO {
 	@Override
 	public Profile getProfileByUserName(String userName) throws HibernateException {
 		Session session = HibernateUtil.getSession();
-		LOG.info("Hibernate Session opened");
 		try {
 			Query query = session.createQuery("from lwb_user_profile p where p.userOwner.userName = :userName");
 			query.setParameter("userName", userName);
@@ -103,7 +99,6 @@ public class ProfileDAOImpl implements ProfileDAO {
 	
 	private void save(Profile profile) throws HibernateException{
 		Session session = HibernateUtil.getSession();
-		LOG.info("Hibernate Session opened");
 		Transaction tx = session.beginTransaction();
 		try {
 			session.save(profile);

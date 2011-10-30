@@ -19,7 +19,7 @@ import org.hibernate.annotations.ForeignKey;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 25OCT2011-14 
+ * @version 29OCT2011-15 
  * 
  */
 @Entity(name="lwb_user")
@@ -41,7 +41,7 @@ public class User implements Serializable {
 	private List<Authority> authority;
 	private boolean enable;
 	@Transient
-	private static final long serialVersionUID = -6082705591536638755L;
+	private static final long serialVersionUID = 2306202752913535574L;
 	
 	public Long getId() {
 		return id;
@@ -79,4 +79,15 @@ public class User implements Serializable {
 	public void setEnable(boolean enable) {
 		this.enable = enable;
 	}
+
+	public void copyTo(User user) {
+		user.setAuthority(this.authority);
+		user.setEmail(this.email);
+		user.setEnable(this.enable);
+		user.setId(this.id);
+		user.setPassword(this.password);
+		user.setUserName(this.userName);
+	}
+	
+	
 }

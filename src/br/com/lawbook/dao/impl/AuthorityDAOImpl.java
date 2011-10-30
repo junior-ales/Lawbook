@@ -22,46 +22,20 @@ public class AuthorityDAOImpl implements AuthorityDAO {
 	private final static Logger LOG = Logger.getLogger("AuthorityDAOImpl");
 	
 	@Override
-	public Authority create(String authName) throws HibernateException, IllegalArgumentException {
-		Authority auth = this.checkIfExist(authName);
-		if (auth != null) {
-			throw new IllegalArgumentException("Authority name " + authName + " already exist");
-		}
-		auth = new Authority();
-		auth.setName(authName);
-		return save(auth);
-	}
-	
-	@Override
-	public Authority checkIfExist(String authName) throws HibernateException {
+	public void create(Authority auth) throws HibernateException, IllegalArgumentException {
 		Session session = HibernateUtil.getSession();
-		LOG.info("Hibernate Session opened");
-		try {
-			Criteria crit = session.createCriteria(Authority.class);
-			crit.add(Restrictions.eq("name", authName));
-			return (Authority) crit.uniqueResult();
-		} catch (Exception e) {
-			LOG.severe(e.getMessage());
-			throw new HibernateException(e);
-		} finally {
+		
+		if (this.checkIfExist(auth, session)) {
 			session.close();
 			LOG.info("Hibernate Session closed");
+			throw new IllegalArgumentException("Authority name " + auth.getName() + " already exist");
 		}
-	}
-
-	@Override
-	public Authority getByName(String authName) throws HibernateException {
-		return this.checkIfExist(authName);
-	}
-	
-	private Authority save(Authority auth) throws HibernateException {
-		Session session = HibernateUtil.getSession();
-		LOG.info("Hibernate Session opened");
+		
 		Transaction tx = session.beginTransaction();
+		
 		try {
 			session.save(auth);
 			tx.commit();
-			return auth;
 		} catch (Exception e) {
 			LOG.severe(e.getMessage());
 			tx.rollback();
@@ -71,5 +45,37 @@ public class AuthorityDAOImpl implements AuthorityDAO {
 			LOG.info("Hibernate Session closed");
 		}
 	}
+
+	@Override
+	public Authority getByName(String authName) throws HibernateException, IllegalArgumentException {
+		Authority auth = new Authority(authName);
+		Session session = HibernateUtil.getSession();
+		boolean flag = this.checkIfExist(auth, session);
+		session.close();
+		LOG.info("Hibernate Session closed");
+		
+		if (flag) return auth;
+		
+		throw new IllegalArgumentException("Authority " + authName + " doesn't exist");
+	}
 	
+	/* In order to optimize the database connection usage
+	 * this method reuse sessions, that's why it isn't closed here */
+	private boolean checkIfExist(Authority auth, Session session) throws HibernateException {
+		try {
+			Criteria crit = session.createCriteria(Authority.class);
+			crit.add(Restrictions.eq("name", auth.getName()));
+			Authority authAux = (Authority) crit.uniqueResult();
+
+			if (authAux == null) return false;
+			
+			authAux.copyTo(auth);
+			return true;
+		} catch (Exception e) {
+			session.close();
+			LOG.info("Hibernate Session closed");
+			LOG.severe(e.getMessage());
+			throw new HibernateException(e);
+		}
+	}
 }

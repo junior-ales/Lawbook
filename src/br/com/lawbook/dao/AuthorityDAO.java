@@ -11,10 +11,8 @@ import br.com.lawbook.model.Authority;
  */
 public interface AuthorityDAO {
 
-	Authority create(String authorityName) throws HibernateException, IllegalArgumentException;
+	void create(Authority auth) throws HibernateException, IllegalArgumentException;
 	
-	Authority checkIfExist(String authorityName) throws HibernateException;
-
 	Authority getByName(String authorityName) throws HibernateException;
 
 }

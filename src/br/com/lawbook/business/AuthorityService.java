@@ -9,7 +9,7 @@ import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 29OCT2011-05
+ * @version 30OCT2011-06
  *  
  */
 public final class AuthorityService {
@@ -26,10 +26,10 @@ public final class AuthorityService {
 		return instance;
 	}
 	
-	public Authority create(String authorityName) throws HibernateException, IllegalArgumentException {
-		JavaUtil.validateParameter(authorityName, "AuthorityService: create: authorityName");
+	public void create(Authority auth) throws HibernateException, IllegalArgumentException {
+		JavaUtil.validateParameter(auth, "AuthorityService: create: auth");
 		AuthorityDAO dao = new AuthorityDAOImpl();
-		return dao.create(authorityName);
+		dao.create(auth);
 	}
 
 	public Authority getByName(String authorityName) throws HibernateException, IllegalArgumentException {

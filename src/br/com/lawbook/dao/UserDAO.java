@@ -8,16 +8,16 @@ import br.com.lawbook.model.User;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 28OCT2011-04
+ * @version 30OCT2011-05
  * 
  */
 public interface UserDAO {
 
-	User create(User user) throws IllegalArgumentException, HibernateException;
+	void create(User user) throws IllegalArgumentException, HibernateException;
 	
-	User update(User entity) throws HibernateException ;
+	void update(User user) throws HibernateException ;
 	
-	User checkIfExist(String email, String userName) throws HibernateException ;
+	boolean checkIfExist(User user) throws HibernateException ;
 	
 	User getUserById(Serializable id) throws HibernateException ;
 

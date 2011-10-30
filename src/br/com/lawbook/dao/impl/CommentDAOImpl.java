@@ -22,7 +22,6 @@ public class CommentDAOImpl implements CommentDAO {
 	@Override
 	public void save(Comment comment) throws HibernateException {
 		Session session = HibernateUtil.getSession();
-		LOG.info("Hibernate Session opened");
 		Transaction tx = session.beginTransaction();
 		try {
 			session.save(comment);
@@ -40,7 +39,6 @@ public class CommentDAOImpl implements CommentDAO {
 	@Override
 	public void delete(Comment comment) throws HibernateException {
 		Session session = HibernateUtil.getSession();
-		LOG.info("Hibernate Session opened");
 		Transaction tx = session.beginTransaction();
 		try {
 			session.delete(comment);
