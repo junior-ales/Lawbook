@@ -1,14 +1,12 @@
 package br.com.lawbook.managedbean;
 
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.event.ActionEvent;
 
 import org.primefaces.model.LazyDataModel;
 
@@ -20,15 +18,13 @@ import br.com.lawbook.util.FacesUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 28OCT2011-05
+ * @version 30OCT2011-06
  */
 @ManagedBean
 @SessionScoped
 public class HomeBean implements Serializable {
 	
 	private Profile profile;
-	private final transient Profile publicProfile; 
-	private Post post;
 	private LazyDataModel<Post> stream;
 	private ProfileService profileService;
 	private PostService postService;
@@ -37,8 +33,6 @@ public class HomeBean implements Serializable {
 	public HomeBean() {
 		this.profileService = ProfileService.getInstance();
 		this.postService = PostService.getInstance();
-		this.post = new Post();
-		this.publicProfile = this.profileService.getPublicProfile();
 		try {
 			setProfile(this.profileService.getAuthorizedUserProfile());
 		} catch (Exception e) {
@@ -66,22 +60,6 @@ public class HomeBean implements Serializable {
 			};
 			this.stream.setRowCount(this.postService.getPostsCount());
 		}
-	}
-	
-	public void savePost(ActionEvent event) {
-		this.post.setDateTime(Calendar.getInstance());
-		this.post.setSender(this.profile);
-		this.post.setReceiver(this.publicProfile);
-		this.postService.create(this.post);
-		FacesUtil.successMessage("", "Posted");
-	}
-	
-	public Post getPost() {
-		return post;
-	}
-
-	public void setPost(Post post) {
-		this.post = post;
 	}
 
 	public Profile getProfile() {
