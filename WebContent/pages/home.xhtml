@@ -3,22 +3,17 @@
 				xmlns:p="http://primefaces.prime.com.tr/ui"
 				xmlns:f="http://java.sun.com/jsf/core"
 				xmlns:h="http://java.sun.com/jsf/html">
+	<ui:define name="optionsPanel">
+		<ui:include src="/pages/parts/home/options.xhtml" />
+	</ui:define>
+	<ui:define name="postPanel">
+		<p:inputTextarea id="newpostHome" value="#{postBean.postContent}" 
+						 style="width:588px; height:60px; margin-bottom: 25px;" />
+	    <p:watermark for="newpostHome" value="Post something..." />  
+	    <p:commandButton update="homeStream growl newpostHome" value="Post" actionListener="#{postBean.savePost}" 
+	    				 style="position: relative; top: -15px; left: 522px" oncomplete="PrimeFaces.showWatermarks()" /> 
+	</ui:define>
 	<ui:define name="contentPanel">
-		<div style=" display: table; width: 100%;">
-			<div style=" float: left; width: 263px;  padding-top: 12px; padding-bottom: 12px;">
-		        <h:form id="homeOptionsForm">
-					<ui:include src="/pages/parts/home/options.xhtml" />
-				</h:form>
-			</div>
-			<div style=" margin-left: 263px;  padding-top: 12px; padding-bottom: 12px;">
-		        <h:form id="homeDataEntryForm">
-					<ui:include src="/pages/parts/home/dataEntry.xhtml"/>
-				</h:form>
-		        <h:form id="homeContentForm">
-					<ui:include src="/pages/parts/home/content.xhtml"/> 
-				</h:form>
-			</div>
-		</div>
-		<div style="clear: both;"></div>
+		<ui:include src="/pages/parts/home/content.xhtml"/>
 	</ui:define>
 </ui:composition>

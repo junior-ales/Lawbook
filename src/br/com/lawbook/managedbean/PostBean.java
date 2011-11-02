@@ -32,18 +32,19 @@ public class PostBean {
 
 	public void savePost(ActionEvent event) {
 		this.post = new Post();
-		this.post.setContent(this.postContent);
-		this.post.setReceiver(ProfileService.getInstance().getPublicProfile());
 		try {
-			this.post.setReceiver(ProfileService.getInstance().getAuthorizedUserProfile());
+			this.post.setContent(this.postContent);
+			this.post.setSender(ProfileService.getInstance().getAuthorizedUserProfile());
+			this.post.setReceiver(ProfileService.getInstance().getPublicProfile());
 			PostService.getInstance().create(post);
-			FacesUtil.successMessage("lo/", postContent);
+			FacesUtil.successMessage("LoL", postContent);
+			this.postContent = null;
 		} catch (IllegalArgumentException e) {
-			FacesUtil.errorMessage("", e.getMessage());
+			FacesUtil.errorMessage("=(", e.getMessage());
 		} catch (HibernateException e) {
-			FacesUtil.errorMessage("", e.getMessage());
+			FacesUtil.errorMessage("=(", e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.errorMessage("", e.getMessage());
+			FacesUtil.errorMessage("=(", e.getMessage());
 		}
 	}
 

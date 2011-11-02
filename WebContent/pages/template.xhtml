@@ -13,9 +13,9 @@
 	</h:head>
 	<h:body>
 		<!--<h:outputStylesheet name="style.css" library="css" />-->
-		<h:form id="formMaster">
+		<h:form id="formMaster" prependId="false">
 			<p:growl id="growl" showDetail="true" /> 
-			<div style="width: 900px; margin-left: 20px;">
+			<div id="divMaster" style="width: 900px; margin-left: 20px;">
 				<div id="topPanel" style="background-color: white; float: none; width: 100%;">
 					<div id="menuBar_" style="float: right; width: 260px;">
 						<p:menubar>
@@ -27,13 +27,18 @@
 						</p:menubar>
 					</div>
 				</div>
-				<div id="bottomPanel" style="float: left; width: 100%;">
-					<p:fieldset toggleable="false">  
-						<h:form id="formContent">
-							<ui:insert id="contentPanel" name="contentPanel">
-								<!-- Here goes the content -->
-							</ui:insert>
-						</h:form>
+				<div id="centerPanel" style="float: left; width: 100%;">
+					<p:fieldset id="fieldSetContent" toggleable="false">  
+						<div style=" display: table; width: 100%;">
+							<div style=" float: left; width: 263px;  padding-top: 12px; padding-bottom: 12px;">
+								<ui:insert id="optionsPanel" name="optionsPanel" />
+							</div>
+							<div style=" margin-left: 263px;  padding-top: 12px; padding-bottom: 12px;">
+								<ui:insert id="postPanel" name="postPanel" />
+								<ui:insert id="contentPanel" name="contentPanel" />
+							</div>
+						</div>
+						<div style="clear: both;"></div>
 					</p:fieldset>
 				</div>
 			</div>
