@@ -18,7 +18,7 @@ import br.com.lawbook.util.FacesUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 28OCT2011-05
+ * @version 02NOV2011-06
  */
 @ManagedBean
 @SessionScoped
@@ -59,6 +59,17 @@ public class ProfileBean implements Serializable {
 	
 	public LazyDataModel<Post> getWall() {
 		return this.wall;
+	}
+	
+	public String removePost() {
+		Post post = (Post) this.wall.getRowData();
+		try {
+			this.postService.delete(post);
+			FacesUtil.successMessage("=)", "Post deleted!");
+		} catch (Exception e) {
+			FacesUtil.errorMessage("=(", e.getMessage());
+		}
+		return "";
 	}
 
 	public Profile getProfile() {

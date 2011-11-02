@@ -18,7 +18,7 @@ import br.com.lawbook.util.FacesUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 30OCT2011-06
+ * @version 02NOV2011-07
  */
 @ManagedBean
 @SessionScoped
@@ -64,6 +64,21 @@ public class HomeBean implements Serializable {
 
 	public Profile getProfile() {
 		return profile;
+	}
+	
+	public String removePost() {
+		Post post = (Post) this.stream.getRowData();
+		try {
+			if (post.getSender().getUserOwner().getUserName().equals(profile.getUserOwner().getUserName())) {
+				this.postService.delete(post);
+				FacesUtil.successMessage("=)", "Post deleted!");
+			} else {
+				FacesUtil.warnMessage("=|", "You cannot delete this post");
+			}
+		} catch (Exception e) {
+			FacesUtil.errorMessage("=(", e.getMessage());
+		}
+		return "";
 	}
 
 	private void setProfile(Profile profile) {

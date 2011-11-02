@@ -9,7 +9,11 @@
 	<ui:define name="postPanel">
 		<p:inputTextarea id="newpostHome" value="#{postBean.postContent}" 
 						 style="width:588px; height:60px; margin-bottom: 25px;" />
-	    <p:watermark for="newpostHome" value="Post something..." />  
+	    <p:watermark for="newpostHome" value="Post something..." />
+	    <p:ajaxStatus style="height:10px;position: relative; top: -15px; left: 465px">
+			<f:facet name="start"><h:graphicImage library="images" name="loading.gif" /></f:facet>
+			<f:facet name="complete"><h:outputText value="" /></f:facet>
+		</p:ajaxStatus>
 	    <p:commandButton update="homeStream growl newpostHome" value="Post" actionListener="#{postBean.savePost}" 
 	    				 style="position: relative; top: -15px; left: 522px" oncomplete="PrimeFaces.showWatermarks()" /> 
 	</ui:define>
