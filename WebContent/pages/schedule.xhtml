@@ -3,59 +3,49 @@
 				xmlns:p="http://primefaces.prime.com.tr/ui"
 				xmlns:f="http://java.sun.com/jsf/core"
 				xmlns:h="http://java.sun.com/jsf/html">
+				
+	<ui:define name="optionsPanel">
+		<ui:include src="/pages/parts/schedule/options.xhtml" />
+	</ui:define>
+				
 	<ui:define name="contentPanel">
-
 		<p:ajaxStatus style="height:24px;display:block;">
 			<f:facet name="start">
 				<h:graphicImage library="images" name="loading.gif" />
 			</f:facet>
-		
 			<f:facet name="complete">
 				<h:outputText value="" />
 			</f:facet>
 		</p:ajaxStatus>
-		
-		<p:growl id="messages" showDetail="true" />
 	
-		<p:schedule value="#{scheduleController.eventModel}"
+		<p:schedule value="#{scheduleBean.eventModel}"
 	                editable="true" widgetVar="myschedule"
-	                eventSelectListener="#{scheduleController.onEventSelect}"
-	                dateSelectListener="#{scheduleController.onDateSelect}"
-	                eventMoveListener="#{scheduleController.onEventMove}"
-	                eventResizeListener="#{scheduleController.onEventResize}"
-	                onEventMoveUpdate="messages" onEventResizeUpdate="messages"
+	                eventSelectListener="#{scheduleBean.onEventSelect}"
+	                dateSelectListener="#{scheduleBean.onDateSelect}"
+	                eventMoveListener="#{scheduleBean.onEventMove}"
+	                eventResizeListener="#{scheduleBean.onEventResize}"
+	                onEventMoveUpdate="growl" onEventResizeUpdate="growl"
 	                onDateSelectUpdate="eventDetails" onDateSelectComplete="eventDialog.show()"
 	                onEventSelectUpdate="eventDetails" onEventSelectComplete="eventDialog.show()">
-	
 	    </p:schedule>
 	
-	    <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip">
+	    <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip" width="300" resizable="false">
 	        <h:panelGrid id="eventDetails" columns="2">
 	            <h:outputLabel for="title" value="Title:" />
-	            <p:inputText id="title" value="#{scheduleController.event.title}" />
-	
+	            <p:inputText id="title" value="#{scheduleBean.event.title}" />
 	            <h:outputLabel for="from" value="From:" />
-	            <p:inputMask id="from" mask="99/99/9999"
-	                value="#{scheduleController.event.startDate}" >
+	            <p:inputMask id="from" mask="99/99/9999" value="#{scheduleBean.event.startDate}" >
 	                <f:convertDateTime pattern="dd/MM/yyyy" />
 	            </p:inputMask>
-	
 	            <h:outputLabel for="to" value="To:" />
-	            <p:inputMask id="to" mask="99/99/9999"
-	                value="#{scheduleController.event.endDate}" >
+	            <p:inputMask id="to" mask="99/99/9999" value="#{scheduleBean.event.endDate}" >
 	                <f:convertDateTime pattern="dd/MM/yyyy" />
 	            </p:inputMask>
-	
 	            <h:outputLabel for="allDay" value="All Day:" />
-	            <h:selectBooleanCheckbox id="allDay"
-	                value="#{scheduleController.event.allDay}" />
-	
+	            <h:selectBooleanCheckbox id="allDay" value="#{scheduleBean.event.allDay}" />
 	            <p:commandButton type="reset" value="Reset" />
-	            <p:commandButton value="Save"
-	                oncomplete="myschedule.update();eventDialog.hide();"
-	                actionListener="#{scheduleController.addEvent}" />
+	            <p:commandButton value="Save" oncomplete="myschedule.update();eventDialog.hide();" actionListener="#{scheduleBean.addEvent}" />
 	        </h:panelGrid>
 	    </p:dialog>
-	
 	</ui:define>
 </ui:composition>

@@ -29,6 +29,10 @@ public class PostBean {
 	}
 
 	public void savePost(ActionEvent event) {
+		if (this.postContent.trim().equals("")) {
+			FacesUtil.warnMessage("=|", "Post must contain some text");
+			return;
+		}
 		this.post = new Post();
 		try {
 			this.post.setContent(this.postContent);
