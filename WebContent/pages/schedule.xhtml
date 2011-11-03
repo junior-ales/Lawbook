@@ -5,10 +5,19 @@
 				xmlns:h="http://java.sun.com/jsf/html">
 				
 	<ui:define name="optionsPanel">
-		<ui:include src="/pages/parts/schedule/options.xhtml" />
+		<div style="margin-left: 25px; border: 1px solid black; position:absolute; width: 230px;">
+			<div style="margin-left: 60px;  width: 76px; height: 76px;">
+				<h:graphicImage value="#{profileBean.profile.avatar}" width="75" height="75" />
+			</div>
+			<div style="padding-top: 10px;">
+				<h:outputText value="appointment" />
+				<br /><br /><br /><br /><br /><br />
+				<br /><br /><br /><br /><br /><br />
+			</div>
+		</div>
 	</ui:define>
 				
-	<ui:define name="contentPanel">
+	<ui:define name="postPanel">
 		<p:ajaxStatus style="height:24px;display:block;">
 			<f:facet name="start">
 				<h:graphicImage library="images" name="loading.gif" />
@@ -29,8 +38,8 @@
 	                onEventSelectUpdate="eventDetails" onEventSelectComplete="eventDialog.show()">
 	    </p:schedule>
 	
-	    <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip" width="300" resizable="false">
-	        <h:panelGrid id="eventDetails" columns="2">
+	    <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip" width="370" resizable="false">
+	        <h:panelGrid id="eventDetails" columns="2" >
 	            <h:outputLabel for="title" value="Title:" />
 	            <p:inputText id="title" value="#{scheduleBean.event.title}" />
 	            <h:outputLabel for="from" value="From:" />
@@ -41,10 +50,12 @@
 	            <p:inputMask id="to" mask="99/99/9999" value="#{scheduleBean.event.endDate}" >
 	                <f:convertDateTime pattern="dd/MM/yyyy" />
 	            </p:inputMask>
-	            <h:outputLabel for="allDay" value="All Day:" />
-	            <h:selectBooleanCheckbox id="allDay" value="#{scheduleBean.event.allDay}" />
-	            <p:commandButton type="reset" value="Reset" />
-	            <p:commandButton value="Save" oncomplete="myschedule.update();eventDialog.hide();" actionListener="#{scheduleBean.addEvent}" />
+	            <h:outputLabel for="allDay" value="All Day:" style="font-size: smaller; font-weight: bold;" />
+	            <h:panelGroup >
+		            <h:selectBooleanCheckbox id="allDay" value="#{scheduleBean.event.allDay}" />
+		            <p:commandButton type="reset" value="Reset" />
+		            <p:commandButton value="Save" oncomplete="myschedule.update();eventDialog.hide();" actionListener="#{scheduleBean.addEvent}" />
+	            </h:panelGroup>
 	        </h:panelGrid>
 	    </p:dialog>
 	</ui:define>

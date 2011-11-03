@@ -12,7 +12,7 @@ import br.com.lawbook.model.*;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 28OCT2011-09
+ * @version 03NOV2011-10
  * 
  */
 public class TablesGenerator {
@@ -36,6 +36,7 @@ public class TablesGenerator {
 			Configuration cfg = new Configuration().configure("hibernate.cfg.xml");
 			cfg.addAnnotatedClass(Authority.class);
 			cfg.addAnnotatedClass(Comment.class);
+			cfg.addAnnotatedClass(Event.class);
 			cfg.addAnnotatedClass(Location.class);
 			cfg.addAnnotatedClass(Post.class);
 			cfg.addAnnotatedClass(Profile.class);
