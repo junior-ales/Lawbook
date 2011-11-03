@@ -1,17 +1,19 @@
 package br.com.lawbook.business;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.hibernate.HibernateException;
 
 import br.com.lawbook.dao.EventDAO;
 import br.com.lawbook.dao.impl.EventDAOImpl;
 import br.com.lawbook.model.Event;
+import br.com.lawbook.model.Profile;
 import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 02NOV2011-01
+ * @version 03NOV2011-02
  * 
  */
 public class EventService implements Serializable{
@@ -33,6 +35,17 @@ public class EventService implements Serializable{
 		JavaUtil.validateParameter(event, "EventService: create: event");
 		EventDAO dao = new EventDAOImpl();
 		dao.create(event);
+	}
+
+	public List<Event> getProfileEvents(Profile creator) throws IllegalArgumentException, HibernateException {
+		JavaUtil.validateParameter(creator, "EventService: getProfileEvents: creator");
+		EventDAO dao = new EventDAOImpl();
+		return dao.getProfileEvents(creator);
+	}
+
+	public void update(Event event) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -75,7 +75,10 @@ public class ProfileServiceTest {
 		
 		ProfileService.getInstance().update(p1);
 		assertFalse(p1.getFriends().isEmpty());
-		// TODO assertFalse(p2.getFriends().isEmpty());
+		/* TODO assertFalse(p2.getFriends().isEmpty()); 
+		 * It can be split in two methods. One is the "request to be friend" 
+		 * and other the "accept friend request"
+		 * */
 	}
 	
 	private static Calendar getDate(String dateString) {
