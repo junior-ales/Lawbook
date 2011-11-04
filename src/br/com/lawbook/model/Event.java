@@ -33,7 +33,7 @@ public class Event extends DefaultScheduleEvent implements Serializable {
 	@SequenceGenerator(name="lwb_event_seq_id", sequenceName="lwb_event_seq_id",allocationSize=1,initialValue=1)
     @GeneratedValue(generator="lwb_event_seq_id", strategy= GenerationType.SEQUENCE)
 	@Column(name="event_id")
-	private String id;
+	private Long id;
 	private Date endDate;
 	private Date startDate;
 	private String title;
@@ -50,16 +50,14 @@ public class Event extends DefaultScheduleEvent implements Serializable {
 	@Transient
 	private static final long serialVersionUID = -7266838152621809324L;
 
-	@Override
-	public String getId() {
+	public Long getEventId() {
 		return id;
 	}
-
-	@Override
-	public void setId(String id) {
+	
+	public void setEventId(Long id) {
 		this.id = id;
 	}
-
+	
 	@Override
 	public Date getEndDate() {
 		return endDate;

@@ -33,7 +33,8 @@ public class EventServiceTest {
 		for (int i = 0; i < 5; i++) {
 			event = new Event();
 			event.setCreator(ProfileService.getInstance().getProfileByUserName("admin"));
-			event.setContent(i + " - Meeting");
+			event.setTitle(i + " - Meeting");
+			event.setContent("Meeting about documents " + i);
 			event.setAllDay(false);
 			event.setStartDate(getDate(i + "/11/2011 09:00"));
 			event.setEndDate(getDate((i+1) + "/11/2011 08:00"));
@@ -42,20 +43,34 @@ public class EventServiceTest {
 	}
 	
 	@Test
+	public void getEventById() {
+		try {
+			Event event = EventService.getInstance().getEventById(1L);
+			assertNotNull(event.getEventId());
+			LOG.info("Event was fetched successfully");
+		} catch (IllegalArgumentException e) {
+			LOG.severe("Error on attribute, please check parameter: " + e.getMessage());
+			fail();
+		} catch (HibernateException e) {
+			LOG.severe("Error getting event from specified creator: " + e.getMessage());
+			fail();
+		}
+	}
+	
+	@Test
 	public void update() {
-		Event event = new Event();
-		event.setCreator(ProfileService.getInstance().getProfileByUserName("admin"));
-		event.setContent("New Meeting");
-		event.setAllDay(true);
-		event.setStartDate(getDate("05/11/2011"));
-		event.setEndDate(getDate("05/11/2011"));
-		create(event);
+		String newEventTitle = "New Meeting - " + Calendar.getInstance().getTimeInMillis();
+		Event event = EventService.getInstance().getEventById(1L);
+		
+		assertFalse(event.getTitle().equals(newEventTitle));
 		
 		try {
+			event.setTitle("Updated Meeting");
 			event.setAllDay(false);
 			event.setStartDate(getDate("05/11/2011 23:00"));
 			event.setEndDate(getDate("06/11/2011 08:00"));
 			EventService.getInstance().update(event);
+			
 			LOG.info("s events were fetched successfully");
 		} catch (IllegalArgumentException e) {
 			LOG.severe("Error on attributes, please check parameters: " + e.getMessage());

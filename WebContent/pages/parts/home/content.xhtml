@@ -3,7 +3,7 @@
 	 xmlns:f="http://java.sun.com/jsf/core"
 	 xmlns:h="http://java.sun.com/jsf/html">
 	 
-	<p:dataTable id="homeStream" var="post" value="#{homeBean.stream}" lazy="true" height="500" rows="8"  
+	<p:dataTable id="homeStream" var="post" value="#{homeBean.stream}" lazy="true" height="500" rows="8" widgetVar="homeStream" 
 				 paginator="true" paginatorTemplate="{PreviousPageLink} {NextPageLink}" paginatorPosition="bottom"  
 				 rowsPerPageTemplate="4,8,12" emptyMessage="No posts until now, what about create one?" >
 		<p:column style="padding: 10px; width: 580px;" >
@@ -17,7 +17,8 @@
 						<h:outputText value="#{post.dateTime.time}" style="font-size: small;">
 							<f:convertDateTime timeZone="America/Sao_Paulo" locale="pt_BR" pattern="HH:mm dd/MMM/yyyy"/>
 						</h:outputText>
-						<h:commandButton style="position: relative; top: -3px; left: 52%; width: 18px; height: 20px;" action="#{homeBean.removePost}" value="" />
+						<p:commandButton actionListener="#{homeBean.removePost}" value="" disabled="false" update="@form"
+										 style="position: relative; top: -3px; left: 52%; width: 18px; height: 20px;" />
 					</div>
 					<div>
 						<h:outputText value="#{post.content}" style="font-size: larger;" />

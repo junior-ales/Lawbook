@@ -16,6 +16,9 @@ public interface EventDAO {
 
 	void create(Event event) throws HibernateException;
 
+	void update(Event event);
+	
 	List<Event> getProfileEvents(Profile creator) throws HibernateException;
 
+	Event getEventById(Long eventId) throws HibernateException;
 }

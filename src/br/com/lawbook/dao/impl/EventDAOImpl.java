@@ -20,9 +20,21 @@ public class EventDAOImpl implements EventDAO {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public void update(Event event) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	@Override
 	public List<Event> getProfileEvents(Profile creator) throws HibernateException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Event getEventById(Long eventId) throws HibernateException {
 		// TODO Auto-generated method stub
 		return null;
 	}

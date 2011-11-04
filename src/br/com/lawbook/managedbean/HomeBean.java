@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.event.ActionEvent;
 
 import org.primefaces.model.LazyDataModel;
 
@@ -18,7 +19,7 @@ import br.com.lawbook.util.FacesUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 02NOV2011-07
+ * @version 03NOV2011-08
  */
 @ManagedBean
 @SessionScoped
@@ -65,11 +66,15 @@ public class HomeBean implements Serializable {
 	public Profile getProfile() {
 		return profile;
 	}
+
+	private void setProfile(Profile profile) {
+		this.profile = profile;
+	}
 	
-	public String removePost() {
+	public void removePost(ActionEvent event) {
 		Post post = (Post) this.stream.getRowData();
 		try {
-			if (post.getSender().getUserOwner().getUserName().equals(profile.getUserOwner().getUserName())) {
+			if (post.getSender().getId().equals(profile.getId())) {
 				this.postService.delete(post);
 				FacesUtil.successMessage("=)", "Post deleted!");
 			} else {
@@ -78,11 +83,9 @@ public class HomeBean implements Serializable {
 		} catch (Exception e) {
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
-		return "";
-	}
-
-	private void setProfile(Profile profile) {
-		this.profile = profile;
 	}
 	
+	public String getDisabled() {
+		return "false";
+	}
 }

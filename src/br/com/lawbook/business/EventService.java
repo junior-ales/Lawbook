@@ -36,6 +36,12 @@ public class EventService implements Serializable{
 		EventDAO dao = new EventDAOImpl();
 		dao.create(event);
 	}
+	
+	public void update(Event event) throws IllegalArgumentException, HibernateException {
+		JavaUtil.validateParameter(event, "EventService: update: event");
+		EventDAO dao = new EventDAOImpl();
+		dao.update(event);
+	}
 
 	public List<Event> getProfileEvents(Profile creator) throws IllegalArgumentException, HibernateException {
 		JavaUtil.validateParameter(creator, "EventService: getProfileEvents: creator");
@@ -43,9 +49,10 @@ public class EventService implements Serializable{
 		return dao.getProfileEvents(creator);
 	}
 
-	public void update(Event event) {
-		// TODO Auto-generated method stub
-		
+	public Event getEventById(Long eventId) throws IllegalArgumentException, HibernateException {
+		JavaUtil.validateParameter(eventId, "EventService: getEventById: eventId");
+		EventDAO dao = new EventDAOImpl();
+		return dao.getEventById(eventId);
 	}
 
 }
