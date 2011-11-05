@@ -9,14 +9,16 @@ import br.com.lawbook.model.Profile;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 03NOV2011-02
+ * @version 05NOV2011-03
  * 
  */
 public interface EventDAO {
 
 	void create(Event event) throws HibernateException;
 
-	void update(Event event);
+	void update(Event event) throws HibernateException;
+	
+	void delete(Event event) throws HibernateException;
 	
 	List<Event> getProfileEvents(Profile creator) throws HibernateException;
 

@@ -3,6 +3,7 @@ package br.com.lawbook.dao.impl;
 import java.util.List;
 
 import org.hibernate.HibernateException;
+import org.hibernate.Session;
 
 import br.com.lawbook.dao.EventDAO;
 import br.com.lawbook.model.Event;
@@ -10,21 +11,40 @@ import br.com.lawbook.model.Profile;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 03NOV2011-02
+ * @version 05NOV2011-03
  * 
  */
 public class EventDAOImpl implements EventDAO {
 
 	@Override
 	public void create(Event event) throws HibernateException {
-		// TODO Auto-generated method stub
+		/* TODO
+		 *  
+		 * Don't forget to verify before updating  if the event creator 
+		 * has events in the same date and hour (exist method below)  
+		 *
+		 */
 		
 	}
 	
 	@Override
-	public void update(Event event) {
-		// TODO Auto-generated method stub
-		
+	public void update(Event event) throws HibernateException {
+		/* TODO
+		 *  
+		 * Don't forget to verify before updating  if the event creator 
+		 * has events in the same date and hour (exist method below)  
+		 *
+		 */
+	}
+	
+	@Override
+	public void delete(Event event) throws HibernateException {
+		/* TODO
+		 *  
+		 * Don't forget to verify before deleting
+		 * if the event exist (exist method below)  
+		 *
+		 */
 	}
 
 	@Override
@@ -37,6 +57,12 @@ public class EventDAOImpl implements EventDAO {
 	public Event getEventById(Long eventId) throws HibernateException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@SuppressWarnings("unused")
+	private boolean exist(Event event, Session session) {
+		// TODO
+		return true;
 	}
 
 }

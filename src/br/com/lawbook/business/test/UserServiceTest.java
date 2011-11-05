@@ -39,14 +39,14 @@ public class UserServiceTest {
 		User user = new User();
 		user.setEmail("admin@lawbook.com.br");
 		user.setEnable(true);
-		user.setPassword("12345");
+		user.setPassword("1a2d3m4i5n");
 		user.setUserName("admin");
 		List<Authority> auths = new ArrayList<Authority>();
 		auths.add(AuthorityService.getInstance().getByName("ADMIN"));
 		user.setAuthority(auths);
 		
 		saveUser(publicUser, "12345");
-		saveUser(user, "12345");
+		saveUser(user, "1a2d3m4i5n");
 	}
 	
 	private static User saveUser(User user, String passConfirmation) {

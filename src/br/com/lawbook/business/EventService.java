@@ -13,13 +13,13 @@ import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 03NOV2011-02
+ * @version 05NOV2011-03
  * 
  */
-public class EventService implements Serializable{
+public class EventService implements Serializable {
 
 	private static EventService instance;
-	private static final long serialVersionUID = 7880789552218790351L;
+	private static final long serialVersionUID = 4925571173807103939L;
 
 	private EventService() {
 	}
@@ -41,6 +41,12 @@ public class EventService implements Serializable{
 		JavaUtil.validateParameter(event, "EventService: update: event");
 		EventDAO dao = new EventDAOImpl();
 		dao.update(event);
+	}
+	
+	public void delete(Event event) throws IllegalArgumentException, HibernateException {
+		JavaUtil.validateParameter(event, "EventService: delete: event");
+		EventDAO dao = new EventDAOImpl();
+		dao.delete(event);
 	}
 
 	public List<Event> getProfileEvents(Profile creator) throws IllegalArgumentException, HibernateException {
