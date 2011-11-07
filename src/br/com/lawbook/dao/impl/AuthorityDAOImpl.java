@@ -14,7 +14,7 @@ import br.com.lawbook.util.HibernateUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 29OCT2011-04
+ * @version 06NOV2011-05
  * 
  */
 public class AuthorityDAOImpl implements AuthorityDAO {
@@ -50,13 +50,18 @@ public class AuthorityDAOImpl implements AuthorityDAO {
 	public Authority getByName(String authName) throws HibernateException, IllegalArgumentException {
 		Authority auth = new Authority(authName);
 		Session session = HibernateUtil.getSession();
-		boolean flag = this.checkIfExist(auth, session);
-		session.close();
-		LOG.info("Hibernate Session closed");
-		
-		if (flag) return auth;
-		
-		throw new IllegalArgumentException("Authority " + authName + " doesn't exist");
+		try {
+			if (this.checkIfExist(auth, session)) 
+				return auth;
+			else
+				return null;
+		} catch (Exception e) {
+			LOG.severe(e.getMessage());
+			throw new HibernateException(e);
+		} finally {
+			session.close();
+			LOG.info("Hibernate Session closed");
+		}
 	}
 	
 	/* In order to optimize the database connection usage

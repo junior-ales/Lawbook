@@ -13,10 +13,10 @@ import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 05NOV2011-03
+ * @version 06NOV2011-04
  * 
  */
-public class EventService implements Serializable {
+public final class EventService implements Serializable {
 
 	private static EventService instance;
 	private static final long serialVersionUID = 4925571173807103939L;

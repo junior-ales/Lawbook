@@ -23,7 +23,7 @@ import org.primefaces.model.DefaultScheduleEvent;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 02NOV2011-01
+ * @version 06NOV2011-02
  * 
  */
 @Entity(name="lwb_event")
@@ -128,6 +128,18 @@ public class Event extends DefaultScheduleEvent implements Serializable {
 
 	public void setGuests(List<Profile> guests) {
 		this.guests = guests;
+	}
+	
+	public void copyTo(Event event) {
+		event.setEventId(this.id);
+		event.setAllDay(this.isAllDay);
+		event.setContent(this.content);
+		event.setCreator(this.creator);
+		event.setEndDate(this.endDate);
+		event.setGuests(this.guests);
+		event.setLocation(this.location);
+		event.setStartDate(this.startDate);
+		event.setTitle(this.title);
 	}
 	
 }
