@@ -1,6 +1,10 @@
 package br.com.lawbook.business.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,24 +24,24 @@ import br.com.lawbook.model.Profile;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 05NOV2011-03
+ * @version 07NOV2011-04
  * 
  */
 public class EventServiceTest {
 	
 	private final static Logger LOG = Logger.getLogger("ProfileServiceTest");
-
+	
 	@BeforeClass
 	public static void createEvents() {
 		Event event;
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 6; i++) {
 			event = new Event();
 			event.setCreator(ProfileService.getInstance().getProfileByUserName("admin"));
-			event.setTitle(i + " - Meeting");
-			event.setContent("Meeting about documents " + i);
+			event.setTitle(Calendar.getInstance().getTimeInMillis() + " - Meeting");
+			event.setContent(i + " - Meeting about documents");
 			event.setAllDay(false);
 			event.setStartDate(getDate(i + "/11/2011 09:00"));
-			event.setEndDate(getDate((i+1) + "/11/2011 08:00"));
+			event.setEndDate(getDate((i+1) + "/11/2011 14:00"));
 			create(event);
 		}
 	}
@@ -46,9 +50,14 @@ public class EventServiceTest {
 	public void update() {
 		String newEventTitle = "New Meeting - " + Calendar.getInstance().getTimeInMillis();
 		try {
-			Event event = null;
-			event = EventService.getInstance().getEventById(1L);
+			Profile creator = ProfileService.getInstance().getProfileByUserName("admin");
+			Long eventId = EventService.getInstance().getProfileEvents(creator).get(0).getId();
+			Event event = EventService.getInstance().getEventById(eventId);
+			
 			assertFalse(event.getTitle().equals(newEventTitle));
+			LOG.info("\nEvent " + event.getId() + ": " + event.getTitle() + 
+					" Start Date: " + event.getStartDate() + 
+					" End Date: " + event.getEndDate() + "\n");
 			
 			event.setTitle(newEventTitle);
 			event.setStartDate(addDays(event));
@@ -56,12 +65,15 @@ public class EventServiceTest {
 			EventService.getInstance().update(event);
 			
 			event = null;
-			event = EventService.getInstance().getEventById(1L);
+			event = EventService.getInstance().getEventById(eventId);
 			assertTrue(event.getTitle().equals(newEventTitle));
+			LOG.info("\nEvent " + event.getId() + ": " + event.getTitle() + 
+					" Start Date: " + event.getStartDate() + 
+					" End Date: " + event.getEndDate() + "\n");
 			
 			LOG.info("Events was successfully updated");
 		} catch (IllegalArgumentException e) {
-			LOG.severe("Error on attributes, please check parameters: " + e.getMessage());
+			LOG.warning("Error on attributes, please check parameters: " + e.getMessage());
 			fail();
 		} catch (HibernateException e) {
 			LOG.severe("Error updating event: " + e.getMessage());
@@ -73,14 +85,16 @@ public class EventServiceTest {
 	public void delete() {
 		try {
 			Profile creator = ProfileService.getInstance().getProfileByUserName("admin");
+			int count = EventService.getInstance().getEventsCount();
 			Event event = EventService.getInstance().getProfileEvents(creator).get(0);
-			Long eventId = event.getEventId();
+			Long eventId = event.getId();
 			
 			EventService.getInstance().delete(event);
 			assertNull(EventService.getInstance().getEventById(eventId));
+			assertTrue(EventService.getInstance().getEventsCount() < count);
 			LOG.info("Event was successfully deleted");
 		} catch (IllegalArgumentException e) {
-			LOG.severe("Error on attribute, please check parameter: " + e.getMessage());
+			LOG.warning("Error on attribute, please check parameter: " + e.getMessage());
 			fail();
 		} catch (HibernateException e) {
 			LOG.severe("Error getting event by event id: " + e.getMessage());
@@ -92,12 +106,12 @@ public class EventServiceTest {
 	public void getEventById() {
 		try {
 			Profile creator = ProfileService.getInstance().getProfileByUserName("admin");
-			Long eventId = EventService.getInstance().getProfileEvents(creator).get(0).getEventId();
+			Long eventId = EventService.getInstance().getProfileEvents(creator).get(0).getId();
 			Event event = EventService.getInstance().getEventById(eventId);
-			assertNotNull(event.getEventId());
+			assertNotNull(event.getId());
 			LOG.info("Event was fetched successfully");
 		} catch (IllegalArgumentException e) {
-			LOG.severe("Error on attribute, please check parameter: " + e.getMessage());
+			LOG.warning("Error on attribute, please check parameter: " + e.getMessage());
 			fail();
 		} catch (HibernateException e) {
 			LOG.severe("Error getting event by event id: " + e.getMessage());
@@ -114,7 +128,7 @@ public class EventServiceTest {
 			assertNotNull(newEvents);
 			LOG.info(creator.getFirstName() + "'s events were fetched successfully");
 		} catch (IllegalArgumentException e) {
-			LOG.severe("Error on attributes, please check parameters: " + e.getMessage());
+			LOG.warning("Error on attributes, please check parameters: " + e.getMessage());
 			fail();
 		} catch (HibernateException e) {
 			LOG.severe("Error getting events from specified creator: " + e.getMessage());
@@ -128,10 +142,10 @@ public class EventServiceTest {
 			assertNotNull(event.getId());
 			LOG.info("Event created successfully");
 		} catch (IllegalArgumentException e) {
-			LOG.severe("Error on attributes, please check parameters: " + e.getMessage());
+			LOG.warning("Error on attributes, please check parameters\n" + e);
 			fail();
 		} catch (HibernateException e) {
-			LOG.severe("Error saving events: " + e.getMessage());
+			LOG.severe("Error saving events\n" + e);
 			fail();
 		}
 	}
@@ -153,6 +167,7 @@ public class EventServiceTest {
 		Calendar c = Calendar.getInstance();
 		c.setTime(event.getStartDate());
 		c.add(Calendar.DAY_OF_MONTH, 2);
+		c.add(Calendar.HOUR_OF_DAY, 2);
 		return c.getTime();
 	}
 	

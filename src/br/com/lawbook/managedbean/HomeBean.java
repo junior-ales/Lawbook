@@ -76,7 +76,7 @@ public class HomeBean implements Serializable {
 		try {
 			if (post.getSender().getId().equals(profile.getId())) {
 				this.postService.delete(post);
-				FacesUtil.successMessage("=)", "Post deleted!");
+				FacesUtil.infoMessage("=)", "Post deleted!");
 			} else {
 				FacesUtil.warnMessage("=|", "You cannot delete this post");
 			}

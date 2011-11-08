@@ -39,7 +39,7 @@ public class PostBean {
 			this.post.setSender(ProfileService.getInstance().getAuthorizedUserProfile());
 			this.post.setReceiver(ProfileService.getInstance().getPublicProfile());
 			PostService.getInstance().create(post);
-			FacesUtil.successMessage("=)", postContent);
+			FacesUtil.infoMessage("=)", postContent);
 			this.postContent = null;
 		} catch (Exception e) {
 			FacesUtil.errorMessage("=(", e.getMessage());

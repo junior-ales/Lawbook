@@ -9,7 +9,7 @@ import br.com.lawbook.model.Profile;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 06NOV2011-04
+ * @version 07NOV2011-05
  * 
  */
 public interface EventDAO {
@@ -23,4 +23,6 @@ public interface EventDAO {
 	List<Event> getProfileEvents(Profile creator) throws HibernateException;
 
 	Event getEventById(Long eventId) throws HibernateException;
+
+	Long getEventsCount() throws HibernateException;
 }

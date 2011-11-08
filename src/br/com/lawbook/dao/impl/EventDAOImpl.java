@@ -1,68 +1,133 @@
 package br.com.lawbook.dao.impl;
 
 import java.util.List;
+import java.util.logging.Logger;
 
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 
 import br.com.lawbook.dao.EventDAO;
 import br.com.lawbook.model.Event;
 import br.com.lawbook.model.Profile;
+import br.com.lawbook.util.HibernateUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 05NOV2011-03
+ * @version 07NOV2011-05
  * 
  */
 public class EventDAOImpl implements EventDAO {
 
+	private final static Logger LOG = Logger.getLogger("EventDAOImpl");
+	
 	@Override
-	public void create(Event event) throws HibernateException {
-		/* TODO
-		 *  
-		 * Don't forget to verify before updating  if the event creator 
-		 * has events in the same date and hour (exist method below)  
-		 *
-		 */
+	public void create(Event event) throws IllegalArgumentException, HibernateException {
+		Session session = HibernateUtil.getSession();
+		
+		Transaction tx = session.beginTransaction();
+		try {
+			session.save(event);
+			tx.commit();
+		} catch (Exception e) {
+			LOG.severe(e.getMessage());
+			tx.rollback();
+			throw new HibernateException(e);
+		} finally {
+			session.close();
+			LOG.info("Hibernate Session closed");
+		}
 		
 	}
 	
 	@Override
-	public void update(Event event) throws HibernateException {
-		/* TODO
-		 *  
-		 * Don't forget to verify before updating  if the event creator 
-		 * has events in the same date and hour (exist method below)  
-		 *
-		 */
+	public void update(Event event) throws IllegalArgumentException, HibernateException {
+		Session session = HibernateUtil.getSession();
+		Transaction tx = session.beginTransaction();
+		try {
+			session.merge(event);
+			tx.commit();
+		} catch (Exception e) {
+			LOG.severe(e.getMessage());
+			tx.rollback();
+			throw new HibernateException(e);
+		} finally {
+			session.close();
+			LOG.info("Hibernate Session closed");
+		}
 	}
 	
 	@Override
-	public void delete(Event event) throws HibernateException {
-		/* TODO
-		 *  
-		 * Don't forget to verify before deleting
-		 * if the event exist (exist method below)  
-		 *
-		 */
+	public void delete(Event event) throws IllegalArgumentException, HibernateException {
+		Session session = HibernateUtil.getSession();
+		Transaction tx = session.beginTransaction();
+		try {
+			session.delete(event);
+			tx.commit();
+		} catch (Exception e) {
+			LOG.severe(e.getMessage());
+			tx.rollback();
+			throw new HibernateException(e);
+		} finally {
+			session.close();
+			LOG.info("Hibernate Session closed");
+		}
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<Event> getProfileEvents(Profile creator) throws HibernateException {
-		// TODO Auto-generated method stub
-		return null;
+		Session session = HibernateUtil.getSession();
+		try {
+			Criteria crit = session.createCriteria(Event.class);
+			crit.add(Restrictions.eq("creator", creator));
+			return (List<Event>) crit.list();
+		} catch (Exception e) {
+			LOG.severe(e.getMessage());
+			throw new HibernateException(e);
+		} finally {
+			session.close();
+			LOG.info("Hibernate Session closed");
+		}
 	}
 
 	@Override
 	public Event getEventById(Long eventId) throws HibernateException {
-		// TODO Auto-generated method stub
-		return null;
+		Session session = HibernateUtil.getSession();
+		try {
+			Criteria crit = session.createCriteria(Event.class);
+			crit.add(Restrictions.eq("id", eventId));
+			return (Event) crit.uniqueResult();
+		} catch (Exception e) {
+			LOG.severe(e.getMessage());
+			throw new HibernateException(e);
+		} finally {
+			session.close();
+			LOG.info("Hibernate Session closed");
+		}
 	}
 	
-	@SuppressWarnings("unused")
-	private boolean exist(Event event, Session session) {
-		// TODO
-		return true;
+	@Override
+	public Long getEventsCount() throws HibernateException {
+		Session session = HibernateUtil.getSession();
+		Transaction tx = session.beginTransaction();
+		try {
+			Criteria crit = session.createCriteria(Event.class);
+			crit.setProjection(Projections.rowCount());
+			Long count = (Long) crit.uniqueResult();
+			tx.commit();
+			return count;
+		} catch (Exception e) {
+			LOG.severe(e.getMessage());
+			tx.rollback();
+			throw new HibernateException(e);
+		} finally {
+			session.close();
+			LOG.info("Hibernate Session closed");
+		}
 	}
 
 }

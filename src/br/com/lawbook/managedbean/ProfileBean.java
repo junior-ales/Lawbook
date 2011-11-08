@@ -65,7 +65,7 @@ public class ProfileBean implements Serializable {
 		Post post = (Post) this.wall.getRowData();
 		try {
 			this.postService.delete(post);
-			FacesUtil.successMessage("=)", "Post deleted!");
+			FacesUtil.infoMessage("=)", "Post deleted!");
 		} catch (Exception e) {
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}

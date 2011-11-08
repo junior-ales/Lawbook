@@ -6,12 +6,12 @@ import javax.faces.context.FacesContext;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 27OUT2011-01
+ * @version 07NOV2011-02
  * 
  */
 public class FacesUtil {
 
-	public static void successMessage(String summary, String message) {
+	public static void infoMessage(String summary, String message) {
 		showMessage(FacesMessage.SEVERITY_INFO, summary, message);
 	}
 
