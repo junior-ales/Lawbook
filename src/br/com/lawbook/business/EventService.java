@@ -13,13 +13,13 @@ import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 06NOV2011-04
+ * @version 07NOV2011-05
  * 
  */
 public final class EventService implements Serializable {
 
 	private static EventService instance;
-	private static final long serialVersionUID = 4925571173807103939L;
+	private static final long serialVersionUID = 59989777723938454L;
 
 	private EventService() {
 	}
@@ -59,6 +59,11 @@ public final class EventService implements Serializable {
 		JavaUtil.validateParameter(eventId, "EventService: getEventById: eventId");
 		EventDAO dao = new EventDAOImpl();
 		return dao.getEventById(eventId);
+	}
+
+	public int getEventsCount() throws HibernateException {
+		EventDAO dao = new EventDAOImpl();
+		return Integer.parseInt(dao.getEventsCount().toString());
 	}
 
 }

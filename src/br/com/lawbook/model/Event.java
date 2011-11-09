@@ -23,7 +23,7 @@ import org.primefaces.model.DefaultScheduleEvent;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 06NOV2011-02
+ * @version 09NOV2011-03
  * 
  */
 @Entity(name="lwb_event")
@@ -33,7 +33,7 @@ public class Event extends DefaultScheduleEvent implements Serializable {
 	@SequenceGenerator(name="lwb_event_seq_id", sequenceName="lwb_event_seq_id",allocationSize=1,initialValue=1)
     @GeneratedValue(generator="lwb_event_seq_id", strategy= GenerationType.SEQUENCE)
 	@Column(name="event_id")
-	private Long id;
+	private Long event_id;
 	private Date endDate;
 	private Date startDate;
 	private String title;
@@ -48,16 +48,29 @@ public class Event extends DefaultScheduleEvent implements Serializable {
 	@JoinTable(name="lwb_event_guests", joinColumns = { @JoinColumn(name = "event_id") }, inverseJoinColumns = { @JoinColumn(name = "user_profile_id") })
 	private List<Profile> guests;
 	@Transient
-	private static final long serialVersionUID = -7266838152621809324L;
+	private static final long serialVersionUID = -3129018766121987426L;
+	@Transient
+	private String id;
+	
+	public Event() {
+	}
 
-	public Long getEventId() {
+	public Event(String title, Date startDate, Date endDate) {
+		this.title = title;
+		this.startDate = startDate;
+		this.endDate = endDate;
+	}
+
+	@Override
+	public String getId() {
 		return id;
 	}
 	
-	public void setEventId(Long id) {
+	@Override
+	public void setId(String id) {
 		this.id = id;
 	}
-	
+
 	@Override
 	public Date getEndDate() {
 		return endDate;
@@ -97,6 +110,14 @@ public class Event extends DefaultScheduleEvent implements Serializable {
 	public void setAllDay(boolean isAllDay) {
 		this.isAllDay = isAllDay;
 	}
+	
+	public Long getEventId() {
+		return event_id;
+	}
+	
+	public void setId(Long event_id) {
+		this.event_id = event_id;
+	}
 
 	public String getContent() {
 		return content;
@@ -131,7 +152,7 @@ public class Event extends DefaultScheduleEvent implements Serializable {
 	}
 	
 	public void copyTo(Event event) {
-		event.setEventId(this.id);
+		event.setId(this.event_id);
 		event.setAllDay(this.isAllDay);
 		event.setContent(this.content);
 		event.setCreator(this.creator);

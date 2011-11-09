@@ -1,10 +1,6 @@
 package br.com.lawbook.business.test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,7 +20,7 @@ import br.com.lawbook.model.Profile;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 07NOV2011-04
+ * @version 08NOV2011-05
  * 
  */
 public class EventServiceTest {
@@ -50,9 +46,10 @@ public class EventServiceTest {
 	public void update() {
 		String newEventTitle = "New Meeting - " + Calendar.getInstance().getTimeInMillis();
 		try {
+			EventService eventService = EventService.getInstance();
 			Profile creator = ProfileService.getInstance().getProfileByUserName("admin");
-			Long eventId = EventService.getInstance().getProfileEvents(creator).get(0).getId();
-			Event event = EventService.getInstance().getEventById(eventId);
+			Long eventId = eventService.getProfileEvents(creator).get(0).getEventId();
+			Event event = eventService.getEventById(eventId);
 			
 			assertFalse(event.getTitle().equals(newEventTitle));
 			LOG.info("\nEvent " + event.getId() + ": " + event.getTitle() + 
@@ -62,10 +59,10 @@ public class EventServiceTest {
 			event.setTitle(newEventTitle);
 			event.setStartDate(addDays(event));
 			event.setEndDate(addDays(event));
-			EventService.getInstance().update(event);
+			eventService.update(event);
 			
 			event = null;
-			event = EventService.getInstance().getEventById(eventId);
+			event = eventService.getEventById(eventId);
 			assertTrue(event.getTitle().equals(newEventTitle));
 			LOG.info("\nEvent " + event.getId() + ": " + event.getTitle() + 
 					" Start Date: " + event.getStartDate() + 
@@ -84,14 +81,15 @@ public class EventServiceTest {
 	@Test
 	public void delete() {
 		try {
+			EventService eventService = EventService.getInstance();
 			Profile creator = ProfileService.getInstance().getProfileByUserName("admin");
-			int count = EventService.getInstance().getEventsCount();
-			Event event = EventService.getInstance().getProfileEvents(creator).get(0);
-			Long eventId = event.getId();
+			int count = eventService.getEventsCount();
+			Event event = eventService.getProfileEvents(creator).get(0);
+			Long eventId = event.getEventId();
 			
-			EventService.getInstance().delete(event);
-			assertNull(EventService.getInstance().getEventById(eventId));
-			assertTrue(EventService.getInstance().getEventsCount() < count);
+			eventService.delete(event);
+			assertNull(eventService.getEventById(eventId));
+			assertTrue(eventService.getEventsCount() < count);
 			LOG.info("Event was successfully deleted");
 		} catch (IllegalArgumentException e) {
 			LOG.warning("Error on attribute, please check parameter: " + e.getMessage());
@@ -106,7 +104,7 @@ public class EventServiceTest {
 	public void getEventById() {
 		try {
 			Profile creator = ProfileService.getInstance().getProfileByUserName("admin");
-			Long eventId = EventService.getInstance().getProfileEvents(creator).get(0).getId();
+			Long eventId = EventService.getInstance().getProfileEvents(creator).get(0).getEventId();
 			Event event = EventService.getInstance().getEventById(eventId);
 			assertNotNull(event.getId());
 			LOG.info("Event was fetched successfully");

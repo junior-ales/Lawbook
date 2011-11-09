@@ -18,15 +18,14 @@
 	</ui:define>
 				
 	<ui:define name="postPanel">
-		<p:ajaxStatus style="height:24px;display:block;">
-			<f:facet name="start">
-				<h:graphicImage library="images" name="loading.gif" />
-			</f:facet>
-			<f:facet name="complete">
-				<h:outputText value="" />
-			</f:facet>
-		</p:ajaxStatus>
-	
+		
+		<p:ajaxStatus onstart="statusDialog.show()" oncomplete="statusDialog.hide()" />
+		
+		<p:dialog widgetVar="statusDialog" resizable="false" modal="true"
+				  draggable="false" closable="false" header="Please wait..."> 
+				<h:graphicImage library="images" name="ajaxloadingbar.gif" />
+		</p:dialog>
+		
 		<p:schedule value="#{scheduleBean.eventModel}"
 	                editable="true" widgetVar="myschedule"
 	                eventSelectListener="#{scheduleBean.onEventSelect}"
@@ -51,10 +50,10 @@
 	                <f:convertDateTime pattern="dd/MM/yyyy" />
 	            </p:inputMask>
 	            <h:outputLabel for="allDay" value="All Day:" style="font-size: smaller; font-weight: bold;" />
-	            <h:panelGroup >
+	            <h:panelGroup>
 		            <h:selectBooleanCheckbox id="allDay" value="#{scheduleBean.event.allDay}" />
 		            <p:commandButton type="reset" value="Reset" />
-		            <p:commandButton value="Save" oncomplete="myschedule.update();eventDialog.hide();" actionListener="#{scheduleBean.addEvent}" />
+		            <p:commandButton value="Save" oncomplete="eventDialog.hide();" update="@form" actionListener="#{scheduleBean.addEvent}" />
 	            </h:panelGroup>
 	        </h:panelGrid>
 	    </p:dialog>

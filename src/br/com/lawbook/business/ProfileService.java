@@ -14,13 +14,14 @@ import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 30OCT2011-10 
+ * @version 09NOV2011-11 
  */
 public final class ProfileService implements Serializable {
 	
 	private static ProfileService instance;
 	private static Profile publicProfile;
-	private static final long serialVersionUID = -7975898388328234855L;
+	private Profile authProfile;
+	private static final long serialVersionUID = 4353103189862156400L;
 
 	private ProfileService() {
 	}
@@ -50,6 +51,9 @@ public final class ProfileService implements Serializable {
 	}
 	
 	public Profile getAuthorizedUserProfile() throws IllegalArgumentException, HibernateException, Exception {
+		
+		if(this.authProfile != null) return this.authProfile;
+		
 		SecurityContext context = SecurityContextHolder.getContext();
 		if (context == null) throw new Exception("SecurityContext is null");
         
@@ -57,7 +61,8 @@ public final class ProfileService implements Serializable {
         if (authentication == null) throw new Exception("Authentication is null");
     	
         String username = ((org.springframework.security.core.userdetails.User)authentication.getPrincipal()).getUsername();
-        return this.getProfileByUserName(username);
+        this.authProfile = this.getProfileByUserName(username);
+        return this.authProfile;
 	}
 
 	public boolean checkIfExist(Long profileId) throws IllegalArgumentException, HibernateException {
