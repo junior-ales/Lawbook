@@ -80,4 +80,9 @@ public class ProfileBean implements Serializable {
 		this.profile = profile;
 	}
 	
+	public String getLocale() {
+		// TODO add property "locate" to profile 
+		return "pt_BR";
+	}
+	
 }

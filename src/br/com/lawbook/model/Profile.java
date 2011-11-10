@@ -23,7 +23,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 29OCT2011-17
+ * @version 10NOV2011-18
  * 
  */
 @Entity(name = "lwb_user_profile")
@@ -51,8 +51,10 @@ public class Profile implements Serializable {
 	private List<Profile> friends;
 	@Column(length = 255)
 	private String avatar;
+	@Column(length = 4)
+	private String locale;
 	@Transient
-	private static final long serialVersionUID = 1156277173284535028L;
+	private static final long serialVersionUID = -514526194524102776L;
 	
 	public Long getId() {
 		return id;
@@ -127,6 +129,14 @@ public class Profile implements Serializable {
 
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
+	}
+
+	public String getLocale() {
+		return locale;
+	}
+
+	public void setLocale(String locale) {
+		this.locale = locale;
 	}
 
 }

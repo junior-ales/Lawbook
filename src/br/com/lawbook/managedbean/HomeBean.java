@@ -35,7 +35,7 @@ public class HomeBean implements Serializable {
 		this.profileService = ProfileService.getInstance();
 		this.postService = PostService.getInstance();
 		try {
-			setProfile(this.profileService.getAuthorizedUserProfile());
+			this.setProfile(this.profileService.getAuthorizedUserProfile());
 		} catch (Exception e) {
 			e.printStackTrace();
 			FacesUtil.errorMessage("Authentication Error", "Problem with authentication process: " + e.getMessage());
@@ -86,6 +86,8 @@ public class HomeBean implements Serializable {
 	}
 	
 	public String getDisabled() {
+		// TODO check if post delete option is available to each post
 		return "false";
 	}
+	
 }
