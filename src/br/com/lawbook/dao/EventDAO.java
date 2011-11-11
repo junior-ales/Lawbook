@@ -10,7 +10,7 @@ import br.com.lawbook.model.Profile;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 11NOV2011-06
+ * @version 11NOV2011-07
  * 
  */
 public interface EventDAO {
@@ -20,6 +20,8 @@ public interface EventDAO {
 	void update(Event event) throws IllegalArgumentException, HibernateException;
 	
 	void delete(Event event) throws IllegalArgumentException, HibernateException;
+	
+	List<Event> getUpcomingEvents(Profile creator);
 	
 	List<Event> getProfileEvents(Profile creator, Date startDate, Date endDate) throws IllegalArgumentException, HibernateException;
 	

@@ -14,7 +14,7 @@ import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 11NOV2011-06
+ * @version 11NOV2011-07
  * 
  */
 public final class EventService implements Serializable {
@@ -57,6 +57,12 @@ public final class EventService implements Serializable {
 		EventDAO dao = new EventDAOImpl();
 		return dao.getProfileEvents(creator, startDate, endDate);
 	}
+	
+	public List<Event> getUpcomingEvents(Profile creator) throws IllegalArgumentException, HibernateException {
+		JavaUtil.validateParameter(creator, "EventService: getProfileEvents: creator");
+		EventDAO dao = new EventDAOImpl();
+		return dao.getUpcomingEvents(creator);
+	}
 
 	public Event getEventById(Long eventId) throws IllegalArgumentException, HibernateException {
 		JavaUtil.validateParameter(eventId, "EventService: getEventById: eventId");
@@ -67,11 +73,6 @@ public final class EventService implements Serializable {
 	public int getEventsCount() throws HibernateException {
 		EventDAO dao = new EventDAOImpl();
 		return Integer.parseInt(dao.getEventsCount().toString());
-	}
-
-	public List<Event> getProfileEvents(Profile creator) throws IllegalArgumentException, HibernateException {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

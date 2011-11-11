@@ -1,5 +1,6 @@
 package br.com.lawbook.dao.impl;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
@@ -8,6 +9,7 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
@@ -18,7 +20,7 @@ import br.com.lawbook.util.HibernateUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 11NOV2011-06
+ * @version 11NOV2011-07
  * 
  */
 public class EventDAOImpl implements EventDAO {
@@ -86,6 +88,26 @@ public class EventDAOImpl implements EventDAO {
 			Criteria crit = session.createCriteria(Event.class);
 			crit.add(Restrictions.eq("creator", creator));
 			crit.add(Restrictions.between("startDate", startDate, endDate));
+			return (List<Event>) crit.list();
+		} catch (Exception e) {
+			LOG.severe(e.getMessage());
+			throw new HibernateException(e);
+		} finally {
+			session.close();
+			LOG.info("Hibernate Session closed");
+		}
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Event> getUpcomingEvents(Profile creator) {
+		Session session = HibernateUtil.getSession();
+		try {
+			Criteria crit = session.createCriteria(Event.class);
+			crit.add(Restrictions.eq("creator", creator));
+			crit.add(Restrictions.ge("startDate", Calendar.getInstance().getTime()));
+			crit.addOrder(Order.asc("startDate"));
+			crit.setMaxResults(15);
 			return (List<Event>) crit.list();
 		} catch (Exception e) {
 			LOG.severe(e.getMessage());
