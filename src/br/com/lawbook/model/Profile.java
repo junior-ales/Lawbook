@@ -51,7 +51,7 @@ public class Profile implements Serializable {
 	private List<Profile> friends;
 	@Column(length = 255)
 	private String avatar;
-	@Column(length = 4)
+	@Column(length = 5)
 	private String locale;
 	@Transient
 	private static final long serialVersionUID = -514526194524102776L;

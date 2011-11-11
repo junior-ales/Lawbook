@@ -26,7 +26,7 @@
 				<h:graphicImage library="images" name="ajaxloadingbar.gif" />
 		</p:dialog>
 		
-		<p:schedule value="#{scheduleBean.eventModel}"
+		<p:schedule value="#{scheduleBean.lazyEventModel}"
 	                editable="true" widgetVar="myschedule"
 	                eventSelectListener="#{scheduleBean.onEventSelect}"
 	                dateSelectListener="#{scheduleBean.onDateSelect}"
@@ -37,21 +37,28 @@
 	                onEventSelectUpdate="eventDetails" onEventSelectComplete="eventDialog.show()">
 	    </p:schedule>
 	
-	    <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip" width="370" resizable="false">
-	        <h:panelGrid id="eventDetails" columns="2" >
+	    <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip" width="625" resizable="false">
+	        <h:panelGrid id="eventDetails" columns="2" style="width:595px">
 	            <h:outputLabel for="title" value="Title:" />
-	            <p:inputText id="title" value="#{scheduleBean.event.title}" />
+	            <p:inputText id="title" style="width:482px;" value="#{scheduleBean.event.title}" required="true" requiredMessage="Title is required" />
 	            <h:outputLabel for="from" value="From:" />
-	            <p:inputMask id="from" mask="99/99/9999" value="#{scheduleBean.event.startDate}" >
-	                <f:convertDateTime pattern="dd/MM/yyyy" />
-	            </p:inputMask>
-	            <h:outputLabel for="to" value="To:" />
-	            <p:inputMask id="to" mask="99/99/9999" value="#{scheduleBean.event.endDate}" >
-	                <f:convertDateTime pattern="dd/MM/yyyy" />
-	            </p:inputMask>
-	            <h:outputLabel for="allDay" value="All Day:" style="font-size: smaller; font-weight: bold;" />
-	            <h:panelGroup>
+	            
+	            <h:panelGroup >
+		            <p:inputMask id="from" mask="99/99/9999 99:99" size="13" required="true" requiredMessage="Title is required" value="#{scheduleBean.event.startDate}" >
+		                <f:convertDateTime timeZone="America/Sao_Paulo" locale="pt_BR" pattern="dd/MM/yyyy HH:mm" />
+		            </p:inputMask>
+		            <h:outputLabel for="to" value=" To: " />
+		            <p:inputMask id="to" mask="99/99/9999 99:99" size="13" required="true" requiredMessage="Title is required" value="#{scheduleBean.event.endDate}" >
+		                <f:convertDateTime timeZone="America/Sao_Paulo" locale="pt_BR" pattern="dd/MM/yyyy HH:mm" />
+		            </p:inputMask>
+		            <h:outputLabel for="allDay" value="All Day:" />
 		            <h:selectBooleanCheckbox id="allDay" value="#{scheduleBean.event.allDay}" />
+	            </h:panelGroup>
+	            
+	            <h:outputLabel for="content" value="Content:" />
+	            <p:inputTextarea id="content" style="width:482px;height:80px;" value="#{scheduleBean.event.content}" />
+				<p:commandButton value="Delete" actionListener="#{scheduleBean.deleteEvent}" oncomplete="eventDialog.hide();" update="@form" disabled="#{scheduleBean.disabled}" />
+	            <h:panelGroup style="display:block; text-align: right; padding-top: 8px;">
 		            <p:commandButton type="reset" value="Reset" />
 		            <p:commandButton value="Save" oncomplete="eventDialog.hide();" update="@form" actionListener="#{scheduleBean.addEvent}" />
 	            </h:panelGroup>

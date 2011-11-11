@@ -33,7 +33,7 @@ public class ProfileBean implements Serializable {
 	public ProfileBean() {
 		this.profileService = ProfileService.getInstance();
 		try {
-			setProfile(this.profileService.getAuthorizedUserProfile());
+			this.setProfile(this.profileService.getAuthorizedUserProfile());
 		} catch (Exception e) {
 			FacesUtil.errorMessage("Authentication Error", "Problem with authentication process: " + e.getMessage());
 		}
@@ -81,8 +81,9 @@ public class ProfileBean implements Serializable {
 	}
 	
 	public String getLocale() {
-		// TODO add property "locate" to profile 
-		return "pt_BR";
+		String locale = this.profile.getLocale(); 
+		if (locale == null || locale.equals("")) locale = "pt_BR";
+		return locale;
 	}
 	
 }

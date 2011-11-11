@@ -115,7 +115,7 @@ public class Event extends DefaultScheduleEvent implements Serializable {
 		return event_id;
 	}
 	
-	public void setId(Long event_id) {
+	public void setEventId(Long event_id) {
 		this.event_id = event_id;
 	}
 
@@ -152,7 +152,7 @@ public class Event extends DefaultScheduleEvent implements Serializable {
 	}
 	
 	public void copyTo(Event event) {
-		event.setId(this.event_id);
+		event.setEventId(this.event_id);
 		event.setAllDay(this.isAllDay);
 		event.setContent(this.content);
 		event.setCreator(this.creator);

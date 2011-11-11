@@ -85,9 +85,4 @@ public class HomeBean implements Serializable {
 		}
 	}
 	
-	public String getDisabled() {
-		// TODO check if post delete option is available to each post
-		return "false";
-	}
-	
 }

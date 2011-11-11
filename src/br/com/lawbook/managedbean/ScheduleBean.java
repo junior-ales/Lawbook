@@ -17,9 +17,11 @@ package br.com.lawbook.managedbean;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.ActionEvent;
@@ -29,9 +31,8 @@ import org.primefaces.event.DateSelectEvent;
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.ScheduleEntrySelectEvent;
-import org.primefaces.model.DefaultScheduleModel;
+import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleEvent;
-import org.primefaces.model.ScheduleModel;
 
 import br.com.lawbook.business.EventService;
 import br.com.lawbook.business.ProfileService;
@@ -41,7 +42,7 @@ import br.com.lawbook.util.FacesUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 09NOV2011-05
+ * @version 11NOV2011-06
  * 
  */
 @ManagedBean
@@ -50,23 +51,49 @@ public class ScheduleBean implements Serializable {
 
 	private Profile authProfile;
 	private Event event;
-	private ScheduleModel eventModel;
+	private LazyScheduleModel lazyEventModel;
 	private HashMap<String, Long> idEventMapping;
+	private Boolean disabled;
 	private static final long serialVersionUID = 1915515651902440505L;
 
 	public ScheduleBean() {
 		this.event = new Event();
-		this.eventModel = new DefaultScheduleModel();
 		try {
 			this.authProfile = ProfileService.getInstance().getAuthorizedUserProfile();
 			this.idEventMapping = new HashMap<String, Long>();
-			loadEvents();
 		} catch (IllegalArgumentException e) {
 			FacesUtil.warnMessage("=|", e.getMessage());
 		} catch (HibernateException e) {
 			FacesUtil.errorMessage("=(", e.getMessage());
 		} catch (Exception e) {
 			FacesUtil.errorMessage("=(", e.getMessage());
+		}
+	}
+	
+	@PostConstruct
+	public void loadLazilyEvents() {
+		if(this.lazyEventModel == null) {
+			this.lazyEventModel = new LazyScheduleModel() {
+
+				private static final long serialVersionUID = -1716309540036635519L;
+
+				@Override
+				public void loadEvents(Date startDate, Date endDate) {
+					clear();
+					EventService eventService = EventService.getInstance();
+					try {
+						List<Event> events = eventService.getProfileEvents(authProfile, startDate, endDate);
+						for (Event e : events) {
+							addEvent(e);
+							idEventMapping.put(e.getId(), e.getEventId());
+						}
+					} catch (HibernateException e) {
+						FacesUtil.errorMessage("=(", e.getMessage());
+					} catch (IllegalArgumentException e) {
+						FacesUtil.errorMessage("=(", e.getMessage());
+					}
+				}
+			};
 		}
 	}
 	
@@ -77,19 +104,29 @@ public class ScheduleBean implements Serializable {
 	public void setEvent(ScheduleEvent event) {
 		this.event = (Event) event;
 	}
-	
-	public ScheduleModel getEventModel() {
-		return this.eventModel;
+
+	public LazyScheduleModel getLazyEventModel() {
+		return lazyEventModel;
 	}
 
-	public void setEventModel(ScheduleModel eventModel) {
-		this.eventModel = eventModel;
+	public Boolean getDeletable() {
+		return disabled;
 	}
 
 	public void addEvent(ActionEvent actionEvent) {
+		this.event.setCreator(this.authProfile);
+		
+		if(this.event.isAllDay()) {
+			Calendar c = Calendar.getInstance();
+			c.setTime(this.event.getStartDate());
+			c.set(Calendar.HOUR_OF_DAY, 12);
+			this.event.setStartDate(c.getTime());
+			c.set(Calendar.HOUR_OF_DAY, 14);
+			this.event.setEndDate(c.getTime());
+		}
+		
 		try {
-			workaround(1);
-			if (this.event.getEventId() == null)
+			if (this.event.getEventId() == null) 
 				createEvent();
 			else
 				updateEvent();
@@ -99,12 +136,24 @@ public class ScheduleBean implements Serializable {
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
 	}
+	
+	public void deleteEvent(ActionEvent actionEvent) {
+		try {
+			EventService.getInstance().delete(this.event);
+			this.lazyEventModel.deleteEvent(this.getEvent()); 
+			FacesUtil.infoMessage("=)", "Event deleted");
+		} catch (IllegalArgumentException e) {
+			FacesUtil.warnMessage("=|", e.getMessage());
+		} catch (HibernateException e) {
+			FacesUtil.errorMessage("=(", e.getMessage());
+		}
+	}
 
 	public void onEventSelect(ScheduleEntrySelectEvent selectEvent) {
 		try {
+			this.disabled = false;
 			Long eventId = this.idEventMapping.get(selectEvent.getScheduleEvent().getId());
 			this.event = EventService.getInstance().getEventById(eventId);
-			workaround(-1);
 		} catch (IllegalArgumentException e) {
 			FacesUtil.warnMessage("=|", e.getMessage());
 		} catch (HibernateException e) {
@@ -113,7 +162,13 @@ public class ScheduleBean implements Serializable {
 	}
 	
 	public void onDateSelect(DateSelectEvent selectEvent) {
+		this.disabled = true;
 		this.event = new Event("", selectEvent.getDate(), selectEvent.getDate());
+	}
+	
+	public String getDisabled() {
+		if(this.disabled == null) this.disabled = true;
+		return this.disabled.toString();
 	}
 	
 	public void onEventMove(ScheduleEntryMoveEvent event) {
@@ -149,12 +204,6 @@ public class ScheduleBean implements Serializable {
 			this.event = EventService.getInstance().getEventById(eventId);
 			
 			Calendar c = Calendar.getInstance();
-			c.setTime(this.event.getStartDate());
-			c.add(Calendar.DAY_OF_MONTH, event.getDayDelta());
-			c.add(Calendar.MINUTE, event.getMinuteDelta());
-			this.event.setStartDate(c.getTime());
-			
-			c = Calendar.getInstance();
 			c.setTime(this.event.getEndDate());
 			c.add(Calendar.DAY_OF_MONTH, event.getDayDelta());
 			c.add(Calendar.MINUTE, event.getMinuteDelta());
@@ -170,44 +219,20 @@ public class ScheduleBean implements Serializable {
 		}
 	}
 	
-	private void loadEvents() throws IllegalArgumentException, HibernateException {
-		List<Event> events = EventService.getInstance().getProfileEvents(this.authProfile);
-		for (Event e : events) {
-			this.eventModel.addEvent(e);
-			idEventMapping.put(e.getId(), e.getEventId());
-		}
-	}
-	
 	private void updateEvent() throws IllegalArgumentException, HibernateException {
-		this.event.setCreator(this.authProfile);
-		this.event.setContent("UPDATED");
 		EventService.getInstance().update(this.event);
-		this.eventModel.updateEvent(this.event);
+		this.lazyEventModel.updateEvent(this.event);
 		this.idEventMapping.put(this.event.getId(), this.event.getEventId());
 		this.event = new Event();
 		FacesUtil.infoMessage("=)", "Event updated successfully");
 	}
 	
 	private void createEvent() throws IllegalArgumentException, HibernateException {
-		this.event.setCreator(this.authProfile);
-		this.event.setContent("CREATED");
 		EventService.getInstance().create(this.event);
-		this.eventModel.addEvent(this.event);
+		this.lazyEventModel.addEvent(this.event);
 		this.idEventMapping.put(this.event.getId(), this.event.getEventId());
 		this.event = new Event();
 		FacesUtil.infoMessage("=)", "Event created successfully");
-	}
-	
-	private void workaround(int day) {
-		Calendar c = Calendar.getInstance();
-		
-		c.setTime(this.event.getStartDate());
-		c.add(Calendar.DAY_OF_MONTH, day);
-		this.event.setStartDate(c.getTime());
-		
-		c.setTime(this.event.getEndDate());
-		c.add(Calendar.DAY_OF_MONTH, day);
-		this.event.setEndDate(c.getTime());
 	}
 	
 }

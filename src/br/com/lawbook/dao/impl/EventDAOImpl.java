@@ -1,5 +1,6 @@
 package br.com.lawbook.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -17,7 +18,7 @@ import br.com.lawbook.util.HibernateUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 07NOV2011-05
+ * @version 11NOV2011-06
  * 
  */
 public class EventDAOImpl implements EventDAO {
@@ -79,11 +80,12 @@ public class EventDAOImpl implements EventDAO {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<Event> getProfileEvents(Profile creator) throws HibernateException {
+	public List<Event> getProfileEvents(Profile creator, Date startDate, Date endDate) throws HibernateException {
 		Session session = HibernateUtil.getSession();
 		try {
 			Criteria crit = session.createCriteria(Event.class);
 			crit.add(Restrictions.eq("creator", creator));
+			crit.add(Restrictions.between("startDate", startDate, endDate));
 			return (List<Event>) crit.list();
 		} catch (Exception e) {
 			LOG.severe(e.getMessage());

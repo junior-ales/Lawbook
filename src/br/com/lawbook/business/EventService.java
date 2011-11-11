@@ -1,6 +1,7 @@
 package br.com.lawbook.business;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -13,13 +14,13 @@ import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 07NOV2011-05
+ * @version 11NOV2011-06
  * 
  */
 public final class EventService implements Serializable {
 
 	private static EventService instance;
-	private static final long serialVersionUID = 59989777723938454L;
+	private static final long serialVersionUID = -7707732860167752283L;
 
 	private EventService() {
 	}
@@ -49,10 +50,12 @@ public final class EventService implements Serializable {
 		dao.delete(event);
 	}
 
-	public List<Event> getProfileEvents(Profile creator) throws IllegalArgumentException, HibernateException {
+	public List<Event> getProfileEvents(Profile creator, Date startDate, Date endDate) throws IllegalArgumentException, HibernateException {
 		JavaUtil.validateParameter(creator, "EventService: getProfileEvents: creator");
+		JavaUtil.validateParameter(startDate, "EventService: getProfileEvents: startDate");
+		JavaUtil.validateParameter(endDate, "EventService: getProfileEvents: endDate");
 		EventDAO dao = new EventDAOImpl();
-		return dao.getProfileEvents(creator);
+		return dao.getProfileEvents(creator, startDate, endDate);
 	}
 
 	public Event getEventById(Long eventId) throws IllegalArgumentException, HibernateException {
@@ -64,6 +67,11 @@ public final class EventService implements Serializable {
 	public int getEventsCount() throws HibernateException {
 		EventDAO dao = new EventDAOImpl();
 		return Integer.parseInt(dao.getEventsCount().toString());
+	}
+
+	public List<Event> getProfileEvents(Profile creator) throws IllegalArgumentException, HibernateException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
