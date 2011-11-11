@@ -23,7 +23,7 @@ import org.primefaces.model.DefaultScheduleEvent;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 09NOV2011-03
+ * @version 11NOV2011-04
  * 
  */
 @Entity(name="lwb_event")
@@ -33,7 +33,7 @@ public class Event extends DefaultScheduleEvent implements Serializable {
 	@SequenceGenerator(name="lwb_event_seq_id", sequenceName="lwb_event_seq_id",allocationSize=1,initialValue=1)
     @GeneratedValue(generator="lwb_event_seq_id", strategy= GenerationType.SEQUENCE)
 	@Column(name="event_id")
-	private Long event_id;
+	private Long eventId;
 	private Date endDate;
 	private Date startDate;
 	private String title;
@@ -112,11 +112,11 @@ public class Event extends DefaultScheduleEvent implements Serializable {
 	}
 	
 	public Long getEventId() {
-		return event_id;
+		return eventId;
 	}
 	
-	public void setEventId(Long event_id) {
-		this.event_id = event_id;
+	public void setEventId(Long eventId) {
+		this.eventId = eventId;
 	}
 
 	public String getContent() {
@@ -152,7 +152,7 @@ public class Event extends DefaultScheduleEvent implements Serializable {
 	}
 	
 	public void copyTo(Event event) {
-		event.setEventId(this.event_id);
+		event.setEventId(this.eventId);
 		event.setAllDay(this.isAllDay);
 		event.setContent(this.content);
 		event.setCreator(this.creator);
