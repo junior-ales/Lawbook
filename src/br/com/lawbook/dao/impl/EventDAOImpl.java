@@ -20,7 +20,7 @@ import br.com.lawbook.util.HibernateUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 11NOV2011-07
+ * @version 12NOV2011-08
  * 
  */
 public class EventDAOImpl implements EventDAO {
@@ -107,7 +107,7 @@ public class EventDAOImpl implements EventDAO {
 			crit.add(Restrictions.eq("creator", creator));
 			crit.add(Restrictions.ge("startDate", Calendar.getInstance().getTime()));
 			crit.addOrder(Order.asc("startDate"));
-			crit.setMaxResults(15);
+			crit.setMaxResults(6);
 			return (List<Event>) crit.list();
 		} catch (Exception e) {
 			LOG.severe(e.getMessage());

@@ -7,7 +7,9 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.event.ActionEvent;
 
+import org.hibernate.HibernateException;
 import org.primefaces.model.LazyDataModel;
 
 import br.com.lawbook.business.PostService;
@@ -18,7 +20,7 @@ import br.com.lawbook.util.FacesUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 02NOV2011-06
+ * @version 12NOV2011-07
  */
 @ManagedBean
 @SessionScoped
@@ -61,15 +63,16 @@ public class ProfileBean implements Serializable {
 		return this.wall;
 	}
 	
-	public String removePost() {
+	public void removePost(ActionEvent actionEvent) {
 		Post post = (Post) this.wall.getRowData();
 		try {
 			this.postService.delete(post);
 			FacesUtil.infoMessage("=)", "Post deleted!");
-		} catch (Exception e) {
+		} catch (IllegalArgumentException e) {
+			FacesUtil.warnMessage("=|", e.getMessage());
+		} catch (HibernateException e) {
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
-		return "";
 	}
 
 	public Profile getProfile() {

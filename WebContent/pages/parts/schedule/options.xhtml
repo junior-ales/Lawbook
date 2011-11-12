@@ -1,0 +1,26 @@
+<div xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+	<div style="margin-left: 5px; position: absolute; width: 230px;">
+		<div style="margin-left: 80px; width: 76px; height: 76px;">
+			<h:graphicImage value="#{scheduleBean.authProfile.avatar}" width="75" height="75" />
+		</div>
+		<p:menu style="margin-left:20px; width:180px; top:10px;">
+			<p:submenu label="#{scheduleBean.authProfile.firstName} #{scheduleBean.authProfile.lastName}" >
+				<p:menuitem value="New Event" actionListener="#{scheduleBean.onDateSelect}" onclick="eventDialog.show()" />
+			</p:submenu>
+		</p:menu>
+		<p:dataTable value="#{scheduleBean.upcomingEvents}" rows="6" 
+					 var="upcomingEvent" paginator="false" style="position:relative;top:20px;" >
+			<p:column headerText="Upcoming Events">
+				<h:outputText value="#{upcomingEvent.startDate}" style="font-size: small;">
+					<f:convertDateTime timeZone="America/Sao_Paulo" locale="pt_BR" pattern="HH:mm dd/MMM"/>
+				</h:outputText>
+				<br />
+				<h:outputText value="#{upcomingEvent.title}" style="font-size: small;" />
+			</p:column>
+		</p:dataTable>
+	</div>
+</div>

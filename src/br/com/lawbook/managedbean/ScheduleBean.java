@@ -16,6 +16,7 @@
 package br.com.lawbook.managedbean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -42,7 +43,7 @@ import br.com.lawbook.util.FacesUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 11NOV2011-06
+ * @version 12NOV2011-07
  * 
  */
 @ManagedBean
@@ -54,10 +55,12 @@ public class ScheduleBean implements Serializable {
 	private LazyScheduleModel lazyEventModel;
 	private HashMap<String, Long> idEventMapping;
 	private Boolean disabled;
-	private static final long serialVersionUID = 1915515651902440505L;
+	private List<Event> upcomingEvents;
+	private static final long serialVersionUID = 3659583666295112931L;
 
 	public ScheduleBean() {
 		this.event = new Event();
+		this.upcomingEvents = new ArrayList<Event>();
 		try {
 			this.authProfile = ProfileService.getInstance().getAuthorizedUserProfile();
 			this.idEventMapping = new HashMap<String, Long>();
@@ -72,6 +75,9 @@ public class ScheduleBean implements Serializable {
 	
 	@PostConstruct
 	public void loadLazilyEvents() {
+		
+		this.upcomingEvents = EventService.getInstance().getUpcomingEvents(authProfile);
+		
 		if(this.lazyEventModel == null) {
 			this.lazyEventModel = new LazyScheduleModel() {
 
@@ -87,9 +93,9 @@ public class ScheduleBean implements Serializable {
 							addEvent(e);
 							idEventMapping.put(e.getId(), e.getEventId());
 						}
-					} catch (HibernateException e) {
-						FacesUtil.errorMessage("=(", e.getMessage());
 					} catch (IllegalArgumentException e) {
+						FacesUtil.warnMessage("=|", e.getMessage());
+					} catch (HibernateException e) {
 						FacesUtil.errorMessage("=(", e.getMessage());
 					}
 				}
@@ -105,8 +111,16 @@ public class ScheduleBean implements Serializable {
 		this.event = (Event) event;
 	}
 
+	public Profile getAuthProfile() {
+		return authProfile;
+	}
+
 	public LazyScheduleModel getLazyEventModel() {
 		return lazyEventModel;
+	}
+	
+	public List<Event> getUpcomingEvents() {
+		return this.upcomingEvents;
 	}
 
 	public Boolean getDeletable() {
@@ -148,7 +162,7 @@ public class ScheduleBean implements Serializable {
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
 	}
-
+	
 	public void onEventSelect(ScheduleEntrySelectEvent selectEvent) {
 		try {
 			this.disabled = false;
