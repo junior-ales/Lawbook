@@ -18,13 +18,15 @@
 				<div id="divMaster" style="width: 900px; margin-left: 20px;">
 					<div id="topPanel" style="background-color: white; float: none; width: 100%;">
 						<div id="menuBar_" style="float: right;">
-							<p:menubar>
-								<p:menuitem value="#{label.template_menu_home}" url="home.jsf" />
-								<p:menuitem value="#{label.template_menu_profile}" url="profile.jsf" />
-								<p:submenu label="#{label.template_menu_settings}">
-									<p:menuitem value="#{label.template_menu_settings_logout}" url="#{facesContext.externalContext.requestContextPath}/j_spring_security_logout" />
-								</p:submenu>
-							</p:menubar>
+							<p:fieldset>
+								<h:commandLink value="#{label.template_menu_home} " action="home" />
+								<h:commandLink type="button" value="#{label.template_menu_profile} " action="profile" >
+									<f:setPropertyActionListener target="#{profileBean.profileOwner}" value="#{profileBean.authProfile}" />
+								</h:commandLink>
+								<h:outputLink value="${request.contextPath}/j_spring_security_logout">
+									<h:outputText value="#{label.template_menu_settings_logout}" />
+								</h:outputLink> 
+							</p:fieldset>
 						</div>
 					</div>
 					<div id="centerPanel" style="float: left; width: 100%;">

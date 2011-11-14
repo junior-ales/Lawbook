@@ -25,7 +25,7 @@ import br.com.lawbook.util.FacesUtil;
 @SessionScoped
 public class HomeBean implements Serializable {
 	
-	private Profile profile;
+	private Profile authProfile;
 	private LazyDataModel<Post> stream;
 	private ProfileService profileService;
 	private PostService postService;
@@ -35,7 +35,7 @@ public class HomeBean implements Serializable {
 		this.profileService = ProfileService.getInstance();
 		this.postService = PostService.getInstance();
 		try {
-			this.setProfile(this.profileService.getAuthorizedUserProfile());
+			this.setAuthProfile(this.profileService.getAuthorizedUserProfile());
 		} catch (Exception e) {
 			e.printStackTrace();
 			FacesUtil.errorMessage("Authentication Error", "Problem with authentication process: " + e.getMessage());
@@ -55,7 +55,7 @@ public class HomeBean implements Serializable {
 
 				@Override
 				public List<Post> load(int first, int pageSize, String sortField, boolean sortOrder, Map<String, String> filters) {
-					List<Post> st = postService.getStream(profile, first, pageSize);
+					List<Post> st = postService.getStream(authProfile, first, pageSize);
 					return st;
 				}
 			};
@@ -63,18 +63,18 @@ public class HomeBean implements Serializable {
 		}
 	}
 
-	public Profile getProfile() {
-		return profile;
+	public Profile getAuthProfile() {
+		return authProfile;
 	}
 
-	private void setProfile(Profile profile) {
-		this.profile = profile;
+	private void setAuthProfile(Profile profile) {
+		this.authProfile = profile;
 	}
 	
 	public void removePost(ActionEvent event) {
 		Post post = (Post) this.stream.getRowData();
 		try {
-			if (post.getSender().getId().equals(profile.getId())) {
+			if (post.getSender().getId().equals(authProfile.getId())) {
 				this.postService.delete(post);
 				FacesUtil.infoMessage("=)", "Post deleted!");
 			} else {

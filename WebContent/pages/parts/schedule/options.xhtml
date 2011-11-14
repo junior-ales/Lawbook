@@ -12,7 +12,7 @@
 				<p:menuitem value="New Event" actionListener="#{scheduleBean.onDateSelect}" onclick="eventDialog.show()" />
 			</p:submenu>
 		</p:menu>
-		<p:dataTable value="#{scheduleBean.upcomingEvents}" rows="6" 
+		<p:dataTable id="upcomingEventsTable" value="#{scheduleBean.upcomingEvents}" rows="6" emptyMessage="No upcoming events"
 					 var="upcomingEvent" paginator="false" style="position:relative;top:20px;" >
 			<p:column headerText="Upcoming Events">
 				<h:outputText value="#{upcomingEvent.startDate}" style="font-size: small;">

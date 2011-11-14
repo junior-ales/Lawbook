@@ -20,13 +20,14 @@ import br.com.lawbook.util.FacesUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 12NOV2011-07
+ * @version 14NOV2011-08
  */
 @ManagedBean
 @SessionScoped
 public class ProfileBean implements Serializable {
 	
-	private Profile profile;
+	private Profile authProfile;
+	private Profile profileOwner;
 	private LazyDataModel<Post> wall;
 	private ProfileService profileService;
 	private PostService postService;
@@ -35,7 +36,7 @@ public class ProfileBean implements Serializable {
 	public ProfileBean() {
 		this.profileService = ProfileService.getInstance();
 		try {
-			this.setProfile(this.profileService.getAuthorizedUserProfile());
+			this.setAuthProfile(this.profileService.getAuthorizedUserProfile());
 		} catch (Exception e) {
 			FacesUtil.errorMessage("Authentication Error", "Problem with authentication process: " + e.getMessage());
 		}
@@ -51,7 +52,7 @@ public class ProfileBean implements Serializable {
 
 				@Override
 				public List<Post> load(int first, int pageSize, String sortField, boolean sortOrder, Map<String, String> filters) {
-					List<Post> posts = postService.getWall(profile, first, pageSize);
+					List<Post> posts = postService.getWall(profileOwner, first, pageSize);
 					return posts;
 				}
 			};
@@ -59,11 +60,11 @@ public class ProfileBean implements Serializable {
 		}
 	}
 	
-	public LazyDataModel<Post> getWall() {
-		return this.wall;
-	}
-	
 	public void removePost(ActionEvent actionEvent) {
+		if (this.profileOwner.getId() != this.authProfile.getId()) {
+			FacesUtil.warnMessage("=|", "I cannot delete this post");
+			return;
+		}
 		Post post = (Post) this.wall.getRowData();
 		try {
 			this.postService.delete(post);
@@ -74,19 +75,31 @@ public class ProfileBean implements Serializable {
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
 	}
-
-	public Profile getProfile() {
-		return profile;
-	}
-
-	private void setProfile(Profile profile) {
-		this.profile = profile;
-	}
 	
 	public String getLocale() {
-		String locale = this.profile.getLocale(); 
+		String locale = this.authProfile.getLocale(); 
 		if (locale == null || locale.equals("")) locale = "pt_BR";
 		return locale;
+	}
+	
+	public LazyDataModel<Post> getWall() {
+		return this.wall;
+	}
+
+	public Profile getAuthProfile() {
+		return authProfile;
+	}
+
+	private void setAuthProfile(Profile profile) {
+		this.authProfile = profile;
+	}
+	
+	public Profile getProfileOwner() {
+		return profileOwner;
+	}
+
+	public void setProfileOwner(Profile profileOwner) {
+		this.profileOwner = profileOwner;
 	}
 	
 }

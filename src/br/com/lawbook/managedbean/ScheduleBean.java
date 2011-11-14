@@ -128,6 +128,10 @@ public class ScheduleBean implements Serializable {
 	}
 
 	public void addEvent(ActionEvent actionEvent) {
+		if (this.event.getTitle() == null || this.event.getTitle().isEmpty()) {
+			FacesUtil.warnMessage("=|", "Title is required");
+			return;
+		}
 		this.event.setCreator(this.authProfile);
 		
 		if(this.event.isAllDay()) {

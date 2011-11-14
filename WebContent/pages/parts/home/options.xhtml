@@ -5,11 +5,11 @@
 	 
 	<div style="margin-left: 25px;">
 		<div style="margin-left: 60px;  width: 76px; height: 76px;">
-			<h:graphicImage value="#{profileBean.profile.avatar}" width="75" height="75" />
+			<h:graphicImage value="#{homeBean.authProfile.avatar}" width="75" height="75" />
 		</div>
-		<div style="padding-top: 10px;">
+		<div style="padding-top: 10px; padding-bottom:10px;">
 			<p:menu style="width: 180px;">
-				<p:submenu label="#{profileBean.profile.firstName} #{profileBean.profile.lastName}" >
+				<p:submenu label="#{homeBean.authProfile.firstName} #{homeBean.authProfile.lastName}" >
 					<p:menuitem value="Schedule" url="/pages/schedule.jsf" />
 					<p:menuitem value="Events" url="/pages/event.jsf" />
 					<p:menuitem value="Messages" url="/pages/message.jsf" />
@@ -17,4 +17,18 @@
 			</p:menu>
 		</div>
 	</div>
+	<p:fieldset style="width: 200px;" legend="Connections" toggleable="false">
+		<p:dataGrid id="friendsDataGrid" value="#{homeBean.authProfile.friends}" 
+					var="friend" columns="1" rows="6" paginator="false">
+			<f:facet name="header">
+				<h:outputText value="Connections" />
+			</f:facet>
+			<p:column>
+				<p:graphicImage value="#{friend.avatar}" width="75" height="75" />
+				<h:commandLink value="#{friend.firstName}" action="profile" >
+					<f:setPropertyActionListener target="#{profileBean.profileOwner}" value="#{friend}" />
+				</h:commandLink>
+			</p:column>
+		</p:dataGrid>
+	</p:fieldset>
 </div>
