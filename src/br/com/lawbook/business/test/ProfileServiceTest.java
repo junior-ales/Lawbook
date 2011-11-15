@@ -20,7 +20,7 @@ import br.com.lawbook.model.Profile;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 29OCT2011-08
+ * @version 14NOV2011-09
  * 
  */
 public class ProfileServiceTest {
@@ -59,7 +59,10 @@ public class ProfileServiceTest {
 	
 	@Test
 	public void getProfileByIdTest() {
-		Profile p = ProfileService.getInstance().getProfileByUserId(1L);
+		
+		Long profileId = ProfileService.getInstance().getProfileByUserName("admin").getId();
+		
+		Profile p = ProfileService.getInstance().getProfileByUserId(profileId);
 		assertNotNull(p);
 		LOG.info("Profile " + p.getFirstName() + " " + p.getLastName() + " fetched by user id successfully");
 	}

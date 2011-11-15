@@ -1,6 +1,9 @@
 package br.com.lawbook.business;
 
 import org.hibernate.HibernateException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import br.com.lawbook.dao.UserDAO;
 import br.com.lawbook.dao.impl.UserDAOImpl;
@@ -9,7 +12,7 @@ import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 29OCT2011-08
+ * @version 15NOV2011-09
  *  
  */
 public final class UserService  {
@@ -57,5 +60,17 @@ public final class UserService  {
 		JavaUtil.validateParameter(userName, "UserService: getUserByUserName: userName");
 		UserDAO dao = new UserDAOImpl();
 		return dao.getUserByUserName(userName);
+	}
+	
+	public User getAuthorizedUser() throws IllegalArgumentException, HibernateException, Exception {
+		
+		SecurityContext context = SecurityContextHolder.getContext();
+		if (context == null) throw new Exception("SecurityContext is null");
+        
+		Authentication authentication = context.getAuthentication();
+        if (authentication == null) throw new Exception("Authentication is null");
+    	
+        String username = ((org.springframework.security.core.userdetails.User)authentication.getPrincipal()).getUsername();
+        return this.getUserByUserName(username);
 	}
 }

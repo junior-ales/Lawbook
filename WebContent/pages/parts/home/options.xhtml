@@ -25,7 +25,7 @@
 			</f:facet>
 			<p:column>
 				<p:graphicImage value="#{friend.avatar}" width="75" height="75" />
-				<h:commandLink value="#{friend.firstName}" action="profile" >
+				<h:commandLink id="friendNameLink" value="#{friend.firstName}" action="#{userBean.profileOutcome}" >
 					<f:setPropertyActionListener target="#{profileBean.profileOwner}" value="#{friend}" />
 				</h:commandLink>
 			</p:column>

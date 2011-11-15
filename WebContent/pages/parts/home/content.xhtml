@@ -13,7 +13,9 @@
 				</div>
 				<div style="margin-left: 131px;">
 					<div>
-						<h:outputText value="#{post.sender.firstName} #{post.sender.lastName} " />
+						<h:commandLink value="#{post.sender.firstName} #{post.sender.lastName}" action="#{userBean.profileOutcome}" >
+							<f:setPropertyActionListener target="#{profileBean.profileOwner}" value="#{post.sender}" />
+						</h:commandLink>
 						<h:outputText value="#{post.dateTime.time}" style="font-size: small;">
 							<f:convertDateTime timeZone="America/Sao_Paulo" locale="pt_BR" pattern="HH:mm dd/MMM/yyyy"/>
 						</h:outputText>
