@@ -105,7 +105,7 @@ public class UserBean {
 	}
 	
 	public String profileOutcome() {
-		return "profile";
+		return "profile?faces-redirect=true";
 	}
 	
 }

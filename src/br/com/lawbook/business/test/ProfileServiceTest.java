@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
@@ -20,7 +19,7 @@ import br.com.lawbook.model.Profile;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 14NOV2011-09
+ * @version 16NOV2011-10
  * 
  */
 public class ProfileServiceTest {
@@ -72,16 +71,50 @@ public class ProfileServiceTest {
 		Profile p1 = ProfileService.getInstance().getProfileByUserName("admin");
 		Profile p2 = ProfileService.getInstance().getPublicProfile();
 		
-		List<Profile> friends = new ArrayList<Profile>();
-		friends.add(p2);
-		p1.setFriends(friends);
+		List<Profile> p1Friends = p1.getFriends();
+		
+		for (Profile profile : p1Friends) {
+			if (profile.getId() == p2.getId()) {
+				LOG.warning("Users are already friends");
+				return;
+			}
+		}
+		
+		p1Friends.add(p2);
+		p1.setFriends(p1Friends);
 		
 		ProfileService.getInstance().update(p1);
 		assertFalse(p1.getFriends().isEmpty());
-		/* TODO assertFalse(p2.getFriends().isEmpty()); 
-		 * It can be split in two methods. One is the "request to be friend" 
-		 * and other the "accept friend request"
-		 * */
+		LOG.info("Friendship applied successfully");
+	}
+	
+	@Test
+	public void unfriend() {
+		// TODO
+		Profile p1 = ProfileService.getInstance().getProfileByUserName("admin");
+		Profile p2 = ProfileService.getInstance().getPublicProfile();
+		
+		List<Profile> p1Friends = p1.getFriends();
+		
+		for (Profile profile : p1Friends) {
+			if (profile.getId() == p2.getId()) {
+				p1Friends.remove(p2);
+				p1.setFriends(p1Friends);
+				
+				ProfileService.getInstance().update(p1);
+				
+				for (Profile profile2: p1.getFriends()) {
+					if (profile2.getId() == p2.getId()) {
+						LOG.severe("Unfriend not applied");
+						fail();
+					}
+				}
+				LOG.info("Unfriend with success");
+				return;
+			}
+		}
+		LOG.warning("Users aren't friends");
+		
 	}
 	
 	private static Calendar getDate(String dateString) {

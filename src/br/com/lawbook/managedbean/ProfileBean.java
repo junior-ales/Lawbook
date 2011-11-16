@@ -20,7 +20,7 @@ import br.com.lawbook.util.FacesUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 14NOV2011-08
+ * @version 16NOV2011-09
  */
 @ManagedBean
 @SessionScoped
@@ -31,9 +31,10 @@ public class ProfileBean implements Serializable {
 	private LazyDataModel<Post> wall;
 	private ProfileService profileService;
 	private PostService postService;
-	private static final long serialVersionUID = 5494870990228898461L;
+	private static final long serialVersionUID = 4305913075799591127L;
 
 	public ProfileBean() {
+		this.profileOwner = new Profile();
 		this.profileService = ProfileService.getInstance();
 		try {
 			this.setAuthProfile(this.profileService.getAuthorizedUserProfile());
@@ -74,6 +75,22 @@ public class ProfileBean implements Serializable {
 		} catch (HibernateException e) {
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
+	}
+	
+	public void addFriend(ActionEvent event) {
+		// TODO action to add a user as a friend
+		FacesUtil.infoMessage("=)", "Connection successfully added!");
+	}
+	
+	public String getDisabled() {
+		
+		if (this.authProfile.getId() == profileOwner.getId()) return "true";  
+		
+		for (Profile p: this.authProfile.getFriends()) {
+			if (p.getId() == this.profileOwner.getId()) return "true";
+		}
+
+		return "false";
 	}
 	
 	public String getLocale() {

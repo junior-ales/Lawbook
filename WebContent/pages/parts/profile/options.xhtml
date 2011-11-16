@@ -4,10 +4,40 @@
 	 xmlns:h="http://java.sun.com/jsf/html">
 	 
 	<div style="margin-left: 25px;">
-		<div style="margin-left: 60px;  width: 76px; height: 76px;">
+		<div style="margin-left: 55px;  width: 76px; height: 76px;">
 			<h:graphicImage value="#{profileBean.profileOwner.avatar}" width="75" height="75" />
 		</div>
-		<div style="padding-top: 10px;">
+		<div style="padding-top: 10px; padding-bottom:10px;">
+			<p:panel header="#{profileBean.profileOwner.firstName}" style="font-size: small; width:180px;">
+				<h:outputLabel for="completeNameProfile" value="Name" style="font-weight: bold;"/><br />
+				<h:outputText id="completeNameProfile" value="#{profileBean.profileOwner.firstName} #{profileBean.profileOwner.lastName}" />
+				<br /><br />
+				<h:outputLabel for="birthProfile" value="Birthdate" style="font-weight: bold;"/><br />
+				<h:outputText id="birthProfile" value="#{profileBean.profileOwner.birth.time}">
+					<f:convertDateTime timeZone="America/Sao_Paulo" locale="pt_BR" pattern="dd/MMM/yyyy"/>
+				</h:outputText>
+				<br /><br />
+				<h:outputLabel for="aboutMeProfile" value="About #{profileBean.profileOwner.firstName}" style="font-weight: bold;"/><br />
+				<h:outputText id="aboutMeProfile" value="#{profileBean.profileOwner.aboutMe}" />
+				<br /><br />
+				<h:outputLabel for="locationProfile" value="Location" style="font-weight: bold;"/><br />
+				<h:outputText id="locationProfile" value="#{profileBean.profileOwner.location.city} #{profileBean.profileOwner.location.state}" />
+				<f:facet name="footer">
+					<p:commandButton value="+Connection" disabled="#{profileBean.disabled}" update="@form"
+									 actionListener="#{profileBean.addFriend}" style="font-size: large;" />
+				</f:facet>
+			</p:panel>
 		</div>
 	</div>
+	<p:fieldset style="width: 200px;" legend="#{profileBean.profileOwner.firstName} Connections" toggleable="false">
+		<p:dataGrid id="friendsDataGridProfile" value="#{profileBean.profileOwner.friends}" 
+					var="friend" columns="1" rows="6" paginator="false">
+			<p:column>
+				<p:graphicImage value="#{friend.avatar}" width="75" height="75" />
+				<h:commandLink id="friendNameLink" value=" #{friend.firstName}" action="#{userBean.profileOutcome}" >
+					<f:setPropertyActionListener target="#{profileBean.profileOwner}" value="#{friend}" />
+				</h:commandLink>
+			</p:column>
+		</p:dataGrid>
+	</p:fieldset>
 </div>

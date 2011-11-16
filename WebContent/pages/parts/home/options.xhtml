@@ -4,7 +4,7 @@
 	 xmlns:h="http://java.sun.com/jsf/html">
 	 
 	<div style="margin-left: 25px;">
-		<div style="margin-left: 60px;  width: 76px; height: 76px;">
+		<div style="margin-left: 55px;  width: 76px; height: 76px;">
 			<h:graphicImage value="#{homeBean.authProfile.avatar}" width="75" height="75" />
 		</div>
 		<div style="padding-top: 10px; padding-bottom:10px;">
@@ -17,15 +17,12 @@
 			</p:menu>
 		</div>
 	</div>
-	<p:fieldset style="width: 200px;" legend="Connections" toggleable="false">
-		<p:dataGrid id="friendsDataGrid" value="#{homeBean.authProfile.friends}" 
+	<p:fieldset style="width: 200px;" legend="Your Connections" toggleable="false">
+		<p:dataGrid id="friendsDataGridHome" value="#{homeBean.authProfile.friends}" 
 					var="friend" columns="1" rows="6" paginator="false">
-			<f:facet name="header">
-				<h:outputText value="Connections" />
-			</f:facet>
 			<p:column>
 				<p:graphicImage value="#{friend.avatar}" width="75" height="75" />
-				<h:commandLink id="friendNameLink" value="#{friend.firstName}" action="#{userBean.profileOutcome}" >
+				<h:commandLink id="friendNameLink" value=" #{friend.firstName}" action="#{userBean.profileOutcome}" >
 					<f:setPropertyActionListener target="#{profileBean.profileOwner}" value="#{friend}" />
 				</h:commandLink>
 			</p:column>
