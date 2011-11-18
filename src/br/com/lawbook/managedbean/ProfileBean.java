@@ -20,7 +20,7 @@ import br.com.lawbook.util.FacesUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 16NOV2011-09
+ * @version 17NOV2011-10
  */
 @ManagedBean
 @SessionScoped
@@ -63,7 +63,7 @@ public class ProfileBean implements Serializable {
 	
 	public void removePost(ActionEvent actionEvent) {
 		if (this.profileOwner.getId() != this.authProfile.getId()) {
-			FacesUtil.warnMessage("=|", "I cannot delete this post");
+			FacesUtil.warnMessage("=|", "You cannot delete this post");
 			return;
 		}
 		Post post = (Post) this.wall.getRowData();
@@ -78,18 +78,24 @@ public class ProfileBean implements Serializable {
 	}
 	
 	public void addFriend(ActionEvent event) {
-		// TODO action to add a user as a friend
-		FacesUtil.infoMessage("=)", "Connection successfully added!");
+		try {
+			this.profileService.friendship(this.authProfile, this.profileOwner);
+			FacesUtil.infoMessage("=)", "Connection successfully added!");
+		} catch (IllegalArgumentException e) {
+			FacesUtil.warnMessage("=|", e.getMessage());
+		} catch (HibernateException e) {
+			FacesUtil.errorMessage("=(", e.getMessage());
+		}
 	}
 	
 	public String getDisabled() {
 		
-		if (this.authProfile.getId() == profileOwner.getId()) return "true";  
-		
+		if (authProfile.getId() == profileOwner.getId()) return "true";  
+
 		for (Profile p: this.authProfile.getFriends()) {
 			if (p.getId() == this.profileOwner.getId()) return "true";
 		}
-
+		
 		return "false";
 	}
 	

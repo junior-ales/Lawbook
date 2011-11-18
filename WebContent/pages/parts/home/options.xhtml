@@ -18,7 +18,7 @@
 		</div>
 	</div>
 	<p:fieldset style="width: 200px;" legend="Your Connections" toggleable="false">
-		<p:dataGrid id="friendsDataGridHome" value="#{homeBean.authProfile.friends}" 
+		<p:dataGrid id="friendsDataGridHome" value="#{profileBean.authProfile.friends}" 
 					var="friend" columns="1" rows="6" paginator="false">
 			<p:column>
 				<p:graphicImage value="#{friend.avatar}" width="75" height="75" />

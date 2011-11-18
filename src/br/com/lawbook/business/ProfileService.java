@@ -1,6 +1,7 @@
 package br.com.lawbook.business;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.springframework.security.core.Authentication;
@@ -14,13 +15,13 @@ import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 14NOV2011-12 
+ * @version 17NOV2011-13 
  */
 public final class ProfileService implements Serializable {
 	
 	private static ProfileService instance;
 	private static Profile publicProfile;
-	private static final long serialVersionUID = 4352063815724678222L;
+	private static final long serialVersionUID = -1417908002111759231L;
 
 	private ProfileService() {
 	}
@@ -93,6 +94,22 @@ public final class ProfileService implements Serializable {
 			}
 		}
 		return publicProfile;
+	}
+	
+	public void friendship(Profile profile1, Profile profile2) throws IllegalArgumentException, HibernateException {
+		if (profile1.getId() == profile2.getId()) 
+			throw new IllegalArgumentException("You cannot connect to yourself");
+			
+		List<Profile> friends = profile1.getFriends();
+		for (Profile p : friends) {
+			if (p.getId() == profile2.getId()) {
+				throw new IllegalArgumentException("This user is already connected to you");
+			}
+		}
+		
+		friends.add(profile2);
+		profile1.setFriends(friends);
+		this.update(profile1);
 	}
 	
 }
