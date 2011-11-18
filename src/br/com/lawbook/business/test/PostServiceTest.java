@@ -18,7 +18,7 @@ import br.com.lawbook.model.Profile;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 30OUT2011-06
+ * @version 18NOV2011-07
  * 
  */
 public class PostServiceTest {
@@ -50,7 +50,7 @@ public class PostServiceTest {
 	@Test
 	public void getWall() {
 		Profile owner = ProfileService.getInstance().getProfileByUserName("admin");
-		List<Post> wall = PostService.getInstance().getWall(owner, 1, 8);
+		List<Post> wall = PostService.getInstance().getWall(owner, owner, 1, 8);
 		assertNotNull(wall);
 		assertTrue(wall.size() == 8);
 		assertFalse(wall.get(0).getContent().trim().equals(""));

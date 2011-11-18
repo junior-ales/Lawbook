@@ -36,11 +36,11 @@
 	            
 	            <h:panelGroup >
 		            <p:inputMask id="from" mask="99/99/9999 99:99" size="13" value="#{scheduleBean.event.startDate}" required="true" requiredMessage="Start date is required">
-		                <f:convertDateTime timeZone="America/Sao_Paulo" locale="pt_BR" pattern="dd/MM/yyyy HH:mm" />
+		                <f:convertDateTime timeZone="America/Sao_Paulo" locale="#{profileBean.locale}" pattern="dd/MM/yyyy HH:mm" />
 		            </p:inputMask>
 		            <h:outputLabel for="to" value=" To: " />
 		            <p:inputMask id="to" mask="99/99/9999 99:99" size="13" value="#{scheduleBean.event.endDate}" required="true" requiredMessage="End date is required">
-		                <f:convertDateTime timeZone="America/Sao_Paulo" locale="pt_BR" pattern="dd/MM/yyyy HH:mm" />
+		                <f:convertDateTime timeZone="America/Sao_Paulo" locale="#{profileBean.locale}" pattern="dd/MM/yyyy HH:mm" />
 		            </p:inputMask>
 		            <h:outputLabel for="allDay" value="All Day:" />
 		            <h:selectBooleanCheckbox id="allDay" value="#{scheduleBean.event.allDay}" />

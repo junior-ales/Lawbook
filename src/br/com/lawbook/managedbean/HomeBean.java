@@ -19,17 +19,18 @@ import br.com.lawbook.util.FacesUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 03NOV2011-08
+ * @version 18NOV2011-09
  */
 @ManagedBean
 @SessionScoped
 public class HomeBean implements Serializable {
 	
 	private Profile authProfile;
+	private Profile publicProfile;
 	private LazyDataModel<Post> stream;
 	private ProfileService profileService;
 	private PostService postService;
-	private static final long serialVersionUID = 928727904018740163L;
+	private static final long serialVersionUID = 8903872486208401363L;
 
 	public HomeBean() {
 		this.profileService = ProfileService.getInstance();
@@ -71,6 +72,11 @@ public class HomeBean implements Serializable {
 		this.authProfile = profile;
 	}
 	
+	public Profile getPublicProfile() {
+		if (publicProfile == null) publicProfile = profileService.getPublicProfile();
+		return publicProfile;
+	}
+
 	public void removePost(ActionEvent event) {
 		Post post = (Post) this.stream.getRowData();
 		try {

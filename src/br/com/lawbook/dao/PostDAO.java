@@ -8,7 +8,7 @@ import br.com.lawbook.model.Post;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 29OCT2011-06
+ * @version 18NOV2011-07
  * 
  */
 public interface PostDAO {
@@ -21,7 +21,7 @@ public interface PostDAO {
 	
 	List<Post> getStreamPosts(Long streamOwnerId, List<Long> sendersId, int first, int pageSize) throws HibernateException;
 	
-	List<Post> getProfileWall(Long wallOwnerId, int first, int pageSize) throws HibernateException;
+	List<Post> getProfileWall(Long wallOwnerId, Long authProfileId, int first, int pageSize) throws HibernateException;
 
 	Long getPostsCount() throws HibernateException;
 

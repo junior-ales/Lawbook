@@ -16,7 +16,7 @@
 					 var="upcomingEvent" paginator="false" style="position:relative;top:20px;" >
 			<p:column headerText="Upcoming Events">
 				<h:outputText value="#{upcomingEvent.startDate}" style="font-size: small;">
-					<f:convertDateTime timeZone="America/Sao_Paulo" locale="pt_BR" pattern="HH:mm dd/MMM"/>
+					<f:convertDateTime timeZone="America/Sao_Paulo" locale="#{profileBean.locale}" pattern="HH:mm dd/MMM"/>
 				</h:outputText>
 				<br />
 				<h:outputText value="#{upcomingEvent.title}" style="font-size: small;" />

@@ -14,7 +14,7 @@
 				<br /><br />
 				<h:outputLabel for="birthProfile" value="Birthdate" style="font-weight: bold;"/><br />
 				<h:outputText id="birthProfile" value="#{profileBean.profileOwner.birth.time}">
-					<f:convertDateTime timeZone="America/Sao_Paulo" locale="pt_BR" pattern="dd/MMM/yyyy"/>
+					<f:convertDateTime timeZone="America/Sao_Paulo" locale="#{profileBean.locale}" pattern="dd/MMM/yyyy"/>
 				</h:outputText>
 				<br /><br />
 				<h:outputLabel for="aboutMeProfile" value="About #{profileBean.profileOwner.firstName}" style="font-weight: bold;"/><br />

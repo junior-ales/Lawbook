@@ -15,9 +15,9 @@
 					<div>
 						<h:outputText value="#{post.sender.firstName} #{post.sender.lastName} " />
 						<h:outputText value="#{post.dateTime.time}" style="font-size: small;">
-							<f:convertDateTime timeZone="America/Sao_Paulo" locale="pt_BR" pattern="HH:mm dd/MMM/yyyy"/>
+							<f:convertDateTime timeZone="America/Sao_Paulo" locale="#{profileBean.locale}" pattern="HH:mm dd/MMM/yyyy"/>
 						</h:outputText>
-						<p:commandButton actionListener="#{homeBean.removePost}" value="" update="@form"
+						<p:commandButton actionListener="#{profileBean.removePost}" value="" update="@form"
 										 style="position: relative; top: -3px; left: 52%; width: 18px; height: 20px;" />
 					</div>
 					<div>
@@ -34,7 +34,7 @@
 										<div>
 											<h:outputText value="#{postComment.sender.firstName} #{postComment.sender.lastName} " style="font-weight: bold; font-size: small;" />
 											<h:outputText value="#{postComment.dateTime.time}" style="font-size: small;">
-												<f:convertDateTime timeZone="America/Sao_Paulo" locale="pt_BR" pattern="HH:mm dd/MMM/yyyy" />
+												<f:convertDateTime timeZone="America/Sao_Paulo" locale="#{profileBean.locale}" pattern="HH:mm dd/MMM/yyyy" />
 											</h:outputText>
 										</div>
 										<div>

@@ -15,7 +15,7 @@ import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 30OCT2011-07
+ * @version 18NOV2011-08
  * 
  */
 public final class PostService implements Serializable{
@@ -64,16 +64,14 @@ public final class PostService implements Serializable{
 		return dao.getStreamPosts(profile.getId(), sendersId, first, pageSize);
 	}
 
-	public List<Post> getWall(Profile profile, int first, int pageSize) throws HibernateException, IllegalArgumentException {
-		JavaUtil.validateParameter(profile, "PostService: getWall: profile");
+	public List<Post> getWall(Profile profileOwner, Profile authProfile, int first, int pageSize) throws HibernateException, IllegalArgumentException {
+		JavaUtil.validateParameter(profileOwner, "PostService: getWall: profileOwner");
+		JavaUtil.validateParameter(authProfile, "PostService: getWall: authProfile");
 		JavaUtil.validateParameter(first, "PostService: getWall: first");
 		JavaUtil.validateParameter(pageSize, "PostService: getWall: pageSize");
 		
-		List<Long> sendersId = new ArrayList<Long>();
-		for (Profile p : profile.getFriends()) sendersId.add(p.getId());
-		
 		PostDAO dao = new PostDAOImpl();
-		return dao.getProfileWall(profile.getId(), first, pageSize);
+		return dao.getProfileWall(profileOwner.getId(), authProfile.getId(), first, pageSize);
 	}
 	
 	public int getPostsCount() throws HibernateException {

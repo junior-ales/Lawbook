@@ -9,7 +9,7 @@
 	<ui:define name="postPanel">
 		<p:inputTextarea id="newpostProfile" value="#{postBean.postContent}" 
 						 style="width:588px; height:60px; margin-bottom: 25px;" />
-	    <p:watermark for="newpostProfile" value="Post something..." />
+	    <p:watermark for="newpostProfile" value="Post privately to #{profileBean.profileOwner.firstName}" />
 
 	    <p:ajaxStatus onstart="statusDialog.show()" oncomplete="statusDialog.hide()" />
 		<p:dialog widgetVar="statusDialog" resizable="false" modal="true"
@@ -17,8 +17,10 @@
 				<h:graphicImage library="images" name="ajaxloadingbar.gif" />
 		</p:dialog>
 	   
-	    <p:commandButton widgetVar="profilePostButton" update="profileWall growl newpostProfile" value="Post" actionListener="#{postBean.savePost}" 
-	    				 style="position: relative; top: -15px; left: 522px" oncomplete="PrimeFaces.showWatermarks()" /> 
+	    <p:commandButton widgetVar="profilePostButton" update="profileWall growl newpostProfile" value="Post" action="#{postBean.savePost}" 
+	    				 style="position: relative; top: -15px; left: 522px" oncomplete="PrimeFaces.showWatermarks()">
+	    	<f:setPropertyActionListener target="#{postBean.receiver}" value="#{profileBean.profileOwner}" />				 
+	    </p:commandButton> 
 	</ui:define>			
 	<ui:define name="contentPanel">
 		<ui:include src="/pages/parts/profile/content.xhtml"/> 

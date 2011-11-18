@@ -17,7 +17,7 @@ import br.com.lawbook.util.HibernateUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 30OUT2011-08 
+ * @version 18NOV2011-09 
  * 
  */
 public class PostDAOImpl implements PostDAO {
@@ -109,13 +109,17 @@ public class PostDAOImpl implements PostDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Post> getProfileWall(Long wallOwnerId, int first, int pageSize) throws HibernateException {
+	public List<Post> getProfileWall(Long wallOwnerId, Long authProfileId, int first, int pageSize) throws HibernateException {
 		Long publicId = ProfileService.getInstance().getPublicProfile().getId();
 		Session session = HibernateUtil.getSession();
 		Transaction tx = session.beginTransaction();
 		try {
-			Query query = session.createQuery("from lwb_post where sender_id = :profileId and receiver_id = :publicId order by datetime desc");
-			query.setParameter("profileId", wallOwnerId);
+			String stringQuery = "from lwb_post where (sender_id = :wallOwnerId and receiver_id = :publicId) " +
+								 "or (sender_id = :wallOwnerId and receiver_id = :authProfileId) " +
+								 "or (sender_id = :authProfileId and receiver_id = :wallOwnerId) order by datetime desc";
+			Query query = session.createQuery(stringQuery);
+			query.setParameter("wallOwnerId", wallOwnerId);
+			query.setParameter("authProfileId", authProfileId);
 			query.setParameter("publicId", publicId);
 			query.setFirstResult(first);
 			query.setMaxResults(pageSize);

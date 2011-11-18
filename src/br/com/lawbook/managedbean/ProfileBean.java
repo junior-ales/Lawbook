@@ -20,7 +20,7 @@ import br.com.lawbook.util.FacesUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 17NOV2011-10
+ * @version 18NOV2011-11
  */
 @ManagedBean
 @SessionScoped
@@ -53,7 +53,7 @@ public class ProfileBean implements Serializable {
 
 				@Override
 				public List<Post> load(int first, int pageSize, String sortField, boolean sortOrder, Map<String, String> filters) {
-					List<Post> posts = postService.getWall(profileOwner, first, pageSize);
+					List<Post> posts = postService.getWall(profileOwner, authProfile, first, pageSize);
 					return posts;
 				}
 			};

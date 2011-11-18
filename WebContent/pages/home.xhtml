@@ -17,8 +17,10 @@
 				<h:graphicImage library="images" name="ajaxloadingbar.gif" />
 		</p:dialog>
 		
-	    <p:commandButton widgetVar="homePostButton" update="homeStream growl newpostHome" value="Post" actionListener="#{postBean.savePost}" 
-	    				 style="position: relative; top: -15px; left: 522px" oncomplete="PrimeFaces.showWatermarks()" /> 
+	    <p:commandButton widgetVar="homePostButton" update="homeStream growl newpostHome" value="Post" action="#{postBean.savePost}" 
+	    				 style="position: relative; top: -15px; left: 522px" oncomplete="PrimeFaces.showWatermarks()" >
+			<f:setPropertyActionListener target="#{postBean.receiver}" value="#{homeBean.publicProfile}" />			 	 
+	    </p:commandButton>  
 	</ui:define>
 	<ui:define name="contentPanel">
 		<ui:include src="/pages/parts/home/content.xhtml"/>
