@@ -62,7 +62,7 @@ public class ProfileBean implements Serializable {
 	}
 	
 	public void removePost(ActionEvent actionEvent) {
-		if (this.profileOwner.getId() != this.authProfile.getId()) {
+		if (this.profileOwner.getId().equals(this.authProfile.getId())) {
 			FacesUtil.warnMessage("=|", "You cannot delete this post");
 			return;
 		}
@@ -93,7 +93,7 @@ public class ProfileBean implements Serializable {
 		if (authProfile.getId() == profileOwner.getId()) return "true";  
 
 		for (Profile p: this.authProfile.getFriends()) {
-			if (p.getId() == this.profileOwner.getId()) return "true";
+			if (p.getId().equals(this.profileOwner.getId())) return "true";
 		}
 		
 		return "false";

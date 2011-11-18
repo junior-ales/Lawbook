@@ -2,6 +2,7 @@ package br.com.lawbook.business;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.hibernate.HibernateException;
 import org.springframework.security.core.Authentication;
@@ -15,12 +16,13 @@ import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 17NOV2011-13 
+ * @version 18NOV2011-14 
  */
 public final class ProfileService implements Serializable {
 	
 	private static ProfileService instance;
 	private static Profile publicProfile;
+	private final static Logger LOG = Logger.getLogger("ProfileService");
 	private static final long serialVersionUID = -1417908002111759231L;
 
 	private ProfileService() {
@@ -39,7 +41,7 @@ public final class ProfileService implements Serializable {
 		try {
 			dao.create(profile);
 		} catch (HibernateException e) {
-			e.printStackTrace();
+			LOG.severe(e.getMessage());
 			throw new HibernateException(e);
 		} 
 	}
@@ -90,19 +92,19 @@ public final class ProfileService implements Serializable {
 			try {
 				publicProfile = this.getProfileByUserName("public");
 			} catch (HibernateException e) {
-				e.printStackTrace();
+				LOG.severe(e.getMessage());
 			}
 		}
 		return publicProfile;
 	}
 	
 	public void friendship(Profile profile1, Profile profile2) throws IllegalArgumentException, HibernateException {
-		if (profile1.getId() == profile2.getId()) 
+		if (profile1.getId().equals(profile2.getId())) 
 			throw new IllegalArgumentException("You cannot connect to yourself");
 			
 		List<Profile> friends = profile1.getFriends();
 		for (Profile p : friends) {
-			if (p.getId() == profile2.getId()) {
+			if (p.getId().equals(profile2.getId())) {
 				throw new IllegalArgumentException("This user is already connected to you");
 			}
 		}

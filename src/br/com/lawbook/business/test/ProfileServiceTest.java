@@ -19,7 +19,7 @@ import br.com.lawbook.model.Profile;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 16NOV2011-10
+ * @version 18NOV2011-11
  * 
  */
 public class ProfileServiceTest {
@@ -71,21 +71,20 @@ public class ProfileServiceTest {
 		Profile p1 = ProfileService.getInstance().getProfileByUserName("admin");
 		Profile p2 = ProfileService.getInstance().getPublicProfile();
 		
-		List<Profile> p1Friends = p1.getFriends();
-		
-		for (Profile profile : p1Friends) {
-			if (profile.getId() == p2.getId()) {
-				LOG.warning("Users are already friends");
-				return;
-			}
+		for (Profile p : p1.getFriends()) {
+			assertFalse("Users are already connected", p.getId().equals(p2.getId()));
 		}
 		
-		p1Friends.add(p2);
-		p1.setFriends(p1Friends);
+		ProfileService.getInstance().friendship(p1, p2);
 		
-		ProfileService.getInstance().update(p1);
-		assertFalse(p1.getFriends().isEmpty());
-		LOG.info("Friendship applied successfully");
+		int counter = 0;
+		for (Profile p : p1.getFriends()) {
+			if (p.getId().equals(p2.getId())) counter++;
+		}
+		
+		assertTrue("Users aren't connected or they were connected twice", counter == 1);
+		
+		LOG.info("Connection between " + p1.getFirstName() + " and " + p2.getFirstName() + " was applied successfully");
 	}
 	
 	@Test
