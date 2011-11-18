@@ -26,7 +26,7 @@ import com.sun.faces.taglib.jsf_core.SetPropertyActionListenerImpl;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 14NOV2011-06
+ * @version 18NOV2011-07
  *  
  */
 @ManagedBean
@@ -73,7 +73,7 @@ public class UserBean {
 					item = new MenuItem();
 					item.setId("menuItemAdmin");
 					item.setValue(rs.getString("template_menu_account_admin"));
-					item.setUrl("/pages/admin.jsf");
+					item.setUrl("/pages/admin/administration.jsf");
 					sub.getChildren().add(item);
 				}
 			}
