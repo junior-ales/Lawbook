@@ -7,6 +7,37 @@
 		<ui:include src="./parts/options.xhtml" />
 	</ui:define>
 	<ui:define name="contentPanel">
+		
 		<h3>User Administration</h3>
+		<p:accordionPanel autoHeight="false" tabChangeListener="#{adminBean.onTabChange}" onTabChangeUpdate="growl">
+			<p:tab title="New User" id="newUser">
+				<h:outputText value="Create a new user" />
+			</p:tab>
+			<p:tab title="Edit User" id="editUser">
+				<p:ajaxStatus onstart="statusDialog.show()" oncomplete="statusDialog.hide()" />
+				<p:dialog widgetVar="statusDialog" resizable="false" draggable="false" closable="false" header="Please wait..."> 
+						<h:graphicImage library="images" name="ajaxloadingbar.gif" />
+				</p:dialog>
+				<h4>Find users by username</h4>
+				<h:outputLabel value="Serch Users: " for="searchUsers" />
+				<p:autoComplete id="searchUsers" forceSelection="true" minQueryLength="3" itemLabel="#{user.userName}"
+								value="#{adminBean.chosenUser}" completeMethod="#{adminBean.completeUsers}" var="user" 
+								itemValue="#{user}" converter="userConv" onSelectUpdate="editUserPanelGrid" selectListener="#{adminBean.handleSelect}" />
+				<p:panel id="editUserPanel" style="margin-top:25px;">
+					<h:panelGrid id="editUserPanelGrid" columns="2">
+						<h:outputText value="Username: " />
+						<p:inplace editor="true" saveListener="#{adminBean.updateUser}" onEditUpdate="growl">  
+			                <p:inputText value="#{adminBean.chosenUser.userName}" required="true" />  
+			            </p:inplace>
+			            
+			            <h:outputText value="Email: " />
+						<p:inplace editor="true" saveListener="#{adminBean.updateUser}" onEditUpdate="growl">  
+			                <p:inputText value="#{adminBean.chosenUser.email}" required="true" />  
+			            </p:inplace>
+			            
+					</h:panelGrid>
+				</p:panel>
+			</p:tab>
+		</p:accordionPanel>
 	</ui:define>
 </ui:composition>

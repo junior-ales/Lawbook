@@ -1,5 +1,7 @@
 package br.com.lawbook.business;
 
+import java.util.List;
+
 import org.hibernate.HibernateException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -12,7 +14,7 @@ import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 15NOV2011-09
+ * @version 19NOV2011-10
  *  
  */
 public final class UserService  {
@@ -48,6 +50,11 @@ public final class UserService  {
 		JavaUtil.validateParameter(user, "UserService: update: user");
 		UserDAO dao = new UserDAOImpl();
 		dao.update(user);
+	}
+	
+	public List<User> getAll() throws HibernateException {
+		UserDAO dao = new UserDAOImpl();
+		return dao.getAll();
 	}
 	
 	public User getUserById(Long userId) throws IllegalArgumentException, HibernateException {

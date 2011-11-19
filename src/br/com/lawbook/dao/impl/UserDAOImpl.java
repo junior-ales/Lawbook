@@ -1,5 +1,6 @@
 package br.com.lawbook.dao.impl;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.hibernate.Criteria;
@@ -15,7 +16,7 @@ import br.com.lawbook.util.HibernateUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 30OCT2011-07
+ * @version 19NOV2011-08
  * 
  */
 public class UserDAOImpl implements UserDAO {
@@ -60,6 +61,21 @@ public class UserDAOImpl implements UserDAO {
 		} catch (Exception e) {
 			LOG.severe(e.getMessage());
 			tx.rollback();
+			throw new HibernateException(e);
+		} finally {
+			session.close();
+			LOG.info("Hibernate Session closed");
+		}
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<User> getAll() throws HibernateException {
+		Session session = HibernateUtil.getSession();
+		try {
+			return session.createCriteria(User.class).list();
+		} catch (Exception e) {
+			LOG.severe(e.getMessage());
 			throw new HibernateException(e);
 		} finally {
 			session.close();
