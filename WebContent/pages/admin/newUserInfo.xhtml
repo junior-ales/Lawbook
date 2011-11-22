@@ -1,0 +1,13 @@
+<ui:composition template="../template.xhtml"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:p="http://primefaces.prime.com.tr/ui"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:h="http://java.sun.com/jsf/html">
+	<ui:define name="optionsPanel">
+		<ui:include src="./parts/options.xhtml" />
+	</ui:define>
+	<ui:define name="contentPanel">
+		<h3>New User Info</h3>
+		<h:outputText id="vaiporra" value="numero #{customerBean.userName}" />
+	</ui:define>
+</ui:composition>

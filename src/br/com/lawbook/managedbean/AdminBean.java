@@ -21,7 +21,7 @@ import br.com.lawbook.util.UserConverter;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 21NOV2011-02
+ * @version 22NOV2011-03
  *
  */
 @ManagedBean
@@ -61,7 +61,7 @@ public class AdminBean {
         return results;
     }
 
-	public void saveUser() {
+	public String saveUser() {
 		this.validateUser();
 		try {
 			UserService.getInstance().create(this.chosenUser);
@@ -70,9 +70,12 @@ public class AdminBean {
 			FacesUtil.infoMessage("=)", "User created successfully");
 		} catch (final IllegalArgumentException e) {
 			FacesUtil.warnMessage("=|", e.getMessage());
+			return "";
 		} catch (final HibernateException e) {
 			FacesUtil.errorMessage("=(", e.getMessage());
+			return "";
 		}
+		return "newUserInfo?newUserId=" + this.chosenUser.getId() + "&faces-redirect=true";
 	}
 
 	public void updateUser() {
@@ -92,11 +95,6 @@ public class AdminBean {
 		}
 	}
 
-	public void deleteUser() {
-		// TODO
-		FacesUtil.infoMessage("=)", "User deleted successfully");
-	}
-
 	private void validateUser() {
 		try {
 			JavaUtil.validateParameter(this.chosenUser.getEmail(), "AdminBean: validateUser: chosenUser.getEmail()");
@@ -111,6 +109,10 @@ public class AdminBean {
 		}
 		try {
 			if (this.pass != null && !this.pass.trim().equals("")) {
+				if (this.pass.length() < 5) {
+					FacesUtil.warnMessage("=|", "Password must have at least 5 characters");
+					return;
+				}
 				this.chosenUser.setPassword(JavaUtil.encode(this.pass));
 			}
 			final ArrayList<Authority> userAuthorities = new ArrayList<Authority>();
