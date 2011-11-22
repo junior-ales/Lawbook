@@ -2,8 +2,8 @@ package br.com.lawbook.managedbean;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -12,8 +12,10 @@ import org.hibernate.HibernateException;
 import org.primefaces.event.SelectEvent;
 
 import br.com.lawbook.business.AuthorityService;
+import br.com.lawbook.business.ProfileService;
 import br.com.lawbook.business.UserService;
 import br.com.lawbook.model.Authority;
+import br.com.lawbook.model.Profile;
 import br.com.lawbook.model.User;
 import br.com.lawbook.util.FacesUtil;
 import br.com.lawbook.util.JavaUtil;
@@ -21,7 +23,7 @@ import br.com.lawbook.util.UserConverter;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 22NOV2011-03
+ * @version 22NOV2011-04
  *
  */
 @ManagedBean
@@ -35,9 +37,12 @@ public class AdminBean {
 	private String passConfirmation;
 	private List<Authority> authorities;
 	private Long[] authsId;
-//	private final static Logger LOG = Logger.getLogger("AdminBean");
+	private Boolean disabled;
+	private final String imagePath = FacesUtil.getExternalContext().getRequestContextPath() + "resources/images/";
+	private final static Logger LOG = Logger.getLogger("AdminBean");
 
 	public AdminBean() {
+		LOG.info("#### AdminBean created ####");
 		this.chosenUser = new User();
 		this.users = UserConverter.users;
 		try{
@@ -62,25 +67,34 @@ public class AdminBean {
     }
 
 	public String saveUser() {
-		this.validateUser();
+		LOG.info("#### saveUser() ####");
+		String outcome = "";
 		try {
+			this.validateUser();
 			UserService.getInstance().create(this.chosenUser);
+			final Profile profile = new Profile();
+			profile.setAvatar(this.imagePath + "defaultAvatar.png");
+			profile.setFirstName(this.chosenUser.getUserName());
+			profile.setLastName("");
+			profile.setUserOwner(UserService.getInstance().getUserById(this.chosenUser.getId()));
+			ProfileService.getInstance().create(profile);
 			this.users.add(this.chosenUser);
-			// TODO create a profile to new user
 			FacesUtil.infoMessage("=)", "User created successfully");
+			outcome = "customerInfo?newUserId=" + this.chosenUser.getId() + "&faces-redirect=true";
 		} catch (final IllegalArgumentException e) {
 			FacesUtil.warnMessage("=|", e.getMessage());
-			return "";
 		} catch (final HibernateException e) {
 			FacesUtil.errorMessage("=(", e.getMessage());
-			return "";
+		} catch (final NoSuchAlgorithmException e) {
+			FacesUtil.errorMessage("=(", e.getMessage());
 		}
-		return "newUserInfo?newUserId=" + this.chosenUser.getId() + "&faces-redirect=true";
+		return outcome;
 	}
 
 	public void updateUser() {
-		this.validateUser();
+		LOG.info("#### updateUser() ####");
 		try {
+			this.validateUser();
 			UserService.getInstance().update(this.chosenUser);
 			for (int i = 0; i < this.users.size(); i++) {
 				if (this.users.get(i).getId().equals(this.chosenUser.getId())) {
@@ -92,48 +106,52 @@ public class AdminBean {
 			FacesUtil.warnMessage("=|", e.getMessage());
 		} catch (final HibernateException e) {
 			FacesUtil.errorMessage("=(", e.getMessage());
-		}
-	}
-
-	private void validateUser() {
-		try {
-			JavaUtil.validateParameter(this.chosenUser.getEmail(), "AdminBean: validateUser: chosenUser.getEmail()");
-			JavaUtil.validateParameter(this.chosenUser.getUserName(), "AdminBean: validateUser: chosenUser.getUserName()");
-		} catch (final IllegalArgumentException e) {
-			FacesUtil.warnMessage("=|", "Username and email are required");
-			return;
-		}
-		if (!this.passConfirmation.equals(this.pass)) {
-			FacesUtil.warnMessage("=|", "Password and his confirmation doesn't match");
-			return;
-		}
-		try {
-			if (this.pass != null && !this.pass.trim().equals("")) {
-				if (this.pass.length() < 5) {
-					FacesUtil.warnMessage("=|", "Password must have at least 5 characters");
-					return;
-				}
-				this.chosenUser.setPassword(JavaUtil.encode(this.pass));
-			}
-			final ArrayList<Authority> userAuthorities = new ArrayList<Authority>();
-			for (final Long id : this.authsId) {
-				for (final Authority auth : this.authorities) {
-					if (id == auth.getId()) userAuthorities.add(auth);
-				}
-			}
-			this.chosenUser.setAuthority(userAuthorities);
 		} catch (final NoSuchAlgorithmException e) {
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
 	}
+	public String updateCustomerInfo() {
+		LOG.info("#### updateCustomerInfo() ####");
+		String outcome = "";
+		if (this.chosenUser != null && this.chosenUser.getId() != null)
+			outcome = "customerInfo?newUserId=" + this.chosenUser.getId() + "&faces-redirect=true";
+		else
+			FacesUtil.warnMessage("=|", "Select an user before editing his informations");
+		return outcome;
+	}
+
+	private void validateUser() throws IllegalArgumentException, NoSuchAlgorithmException {
+		LOG.info("#### validateUser() ####");
+		JavaUtil.validateParameter(this.chosenUser.getEmail(), "Email is required");
+		JavaUtil.validateParameter(this.chosenUser.getUserName(), "Username is required");
+		if (!this.passConfirmation.equals(this.pass)) {
+			throw new IllegalArgumentException("Password and his confirmation doesn't match");
+		}
+		if (this.pass == null || this.pass.trim().equals("")) {
+			JavaUtil.validateParameter(this.chosenUser.getPassword(), "Password is required");
+		}
+		else {
+			if (this.pass.length() < 5) {
+				throw new IllegalArgumentException("Password must have at least 5 characters");
+			}
+			this.chosenUser.setPassword(JavaUtil.encode(this.pass));
+		}
+		final ArrayList<Authority> userAuthorities = new ArrayList<Authority>();
+		for (final Long id : this.authsId) {
+			for (final Authority auth : this.authorities) {
+				if (id == auth.getId()) userAuthorities.add(auth);
+			}
+		}
+		this.chosenUser.setAuthority(userAuthorities);
+	}
 
 	public void handleSelect(final SelectEvent event) {
-
+		LOG.info("#### handleSelect(final SelectEvent event) ####");
 		final List<Authority> auths = this.chosenUser.getAuthority();
 		for (int i = 0; i < auths.size(); i++) {
 			this.authsId[i] = auths.get(i).getId();
 		}
-		FacesUtil.infoMessage("=)", Arrays.toString(this.authsId));
+		this.disabled = false;
 	}
 
 	public List<User> getUsers() {
@@ -154,10 +172,6 @@ public class AdminBean {
 
 	public List<Authority> getAuthorities() {
 		return this.authorities;
-	}
-
-	public void setAuthorities(final List<Authority> authorities) {
-		this.authorities = authorities;
 	}
 
 	public String getUsernameComplete() {
@@ -190,6 +204,15 @@ public class AdminBean {
 
 	public void setAuthsId(final Long[] authsId) {
 		this.authsId = authsId;
+	}
+
+	public String getImagePath() {
+		return this.imagePath;
+	}
+
+	public String getDisabled() {
+		if (this.disabled == null) this.disabled = true;
+		return this.disabled.toString();
 	}
 
 }

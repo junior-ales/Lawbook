@@ -8,7 +8,7 @@ import br.com.lawbook.util.FacesUtil;
 /**
  * @author Edilson Luiz Ales Junior
  * @version 22NOV2011-01
- *  
+ * TODO Set customers information 
  */
 @ManagedBean
 @RequestScoped

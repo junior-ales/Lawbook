@@ -6,21 +6,21 @@ import java.security.NoSuchAlgorithmException;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 14NOV2011-03
+ * @version 22NOV2011-04
  *  
  */
 public class JavaUtil {
 	
-	public static void validateParameter(Object obj, String parameterName) throws IllegalArgumentException {
-		if (obj == null) throw new IllegalArgumentException("Paramenter " + parameterName + " required");
+	public static void validateParameter(Object obj, String errorMessage) throws IllegalArgumentException {
+		if (obj == null) throw new IllegalArgumentException(errorMessage);
 		
 		if (obj instanceof String) {
-			if (((String) obj).trim().equals("")) throw new IllegalArgumentException("Paramenter " + parameterName + " required");
+			if (((String) obj).trim().equals("")) throw new IllegalArgumentException(errorMessage);
 		}
 	}
 	
 	public static String encode(String pass) throws NoSuchAlgorithmException, IllegalArgumentException {
-		validateParameter(pass, "JavaUtil: encode: pass");
+		validateParameter(pass, "Parameter required: JavaUtil.encode.pass");
 
 		MessageDigest md = MessageDigest.getInstance("SHA-256");
 		md.update(pass.getBytes());

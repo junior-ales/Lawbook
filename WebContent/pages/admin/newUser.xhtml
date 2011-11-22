@@ -33,10 +33,10 @@
                 <p:inputText value="#{adminBean.chosenUser.email}" required="true" requiredMessage="Email is required" size="29" style="color: gray;" />  
 	            
 	            <h:outputText value="Password:  " />
-                <p:password feedback="true" minLength="5" value="#{adminBean.pass}" size="29" required="false" style="color: gray;" />  
+                <p:password feedback="true" minLength="5" value="#{adminBean.pass}" size="29" required="true" style="color: gray;" />  
 
 	            <h:outputText value="Confirmation:  " />
-                <p:password feedback="true" minLength="5" value="#{adminBean.passConfirmation}" size="29" required="false" style="color: gray;" />  
+                <p:password feedback="true" minLength="5" value="#{adminBean.passConfirmation}" size="29" required="true" style="color: gray;" />  
 	            
 	            <h:outputText value="Enabled:  " />
                 <h:selectBooleanCheckbox value="#{adminBean.chosenUser.enable}" />
