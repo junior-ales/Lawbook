@@ -1,11 +1,13 @@
 package br.com.lawbook.dao.impl;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import br.com.lawbook.dao.AuthorityDAO;
@@ -14,7 +16,7 @@ import br.com.lawbook.util.HibernateUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 06NOV2011-05
+ * @version 21NOV2011-06
  * 
  */
 public class AuthorityDAOImpl implements AuthorityDAO {
@@ -81,6 +83,21 @@ public class AuthorityDAOImpl implements AuthorityDAO {
 			LOG.info("Hibernate Session closed");
 			LOG.severe(e.getMessage());
 			throw new HibernateException(e);
+		}
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Authority> getAll() throws HibernateException {
+		Session session = HibernateUtil.getSession();
+		try {
+			 return session.createCriteria(Authority.class).addOrder(Order.asc("name")).list();
+		} catch (Exception e) {
+			LOG.severe(e.getMessage());
+			throw new HibernateException(e);
+		} finally {
+			session.close();
+			LOG.info("Hibernate Session closed");
 		}
 	}
 }

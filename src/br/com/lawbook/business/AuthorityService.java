@@ -1,5 +1,7 @@
 package br.com.lawbook.business;
 
+import java.util.List;
+
 import org.hibernate.HibernateException;
 
 import br.com.lawbook.dao.AuthorityDAO;
@@ -9,7 +11,7 @@ import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 30OCT2011-06
+ * @version 21NOV2011-07
  *  
  */
 public final class AuthorityService {
@@ -36,6 +38,11 @@ public final class AuthorityService {
 		JavaUtil.validateParameter(authorityName, "AuthorityService: getByName: authorityName");
 		AuthorityDAO dao = new AuthorityDAOImpl();
 		return dao.getByName(authorityName);
+	}
+
+	public List<Authority> getAll() throws HibernateException {
+		AuthorityDAO dao = new AuthorityDAOImpl();
+		return dao.getAll();
 	}
 	
 }

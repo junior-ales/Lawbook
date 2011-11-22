@@ -8,12 +8,17 @@
 			<h:graphicImage value="#{homeBean.authProfile.avatar}" width="75" height="75" />
 		</div>
 		<div style="padding-top: 10px; padding-bottom:10px;">
-			<p:menu style="width: 180px;">
+			<p:menu style="width: 180px;" >
 				<p:submenu label="Lawbook Admistration" >
 					<p:menuitem value="General Settings" url="./administration.jsf" />
-					<p:menuitem value="Users" url="./user.jsf" />
-					<p:menuitem value="Process" url="./process.jsf" />
-					<p:menuitem value="Location" url="./location.jsf" />
+					<p:submenu label="Users">
+						<p:menuitem value="New User"  url="./newUser.jsf" />
+						<p:menuitem value="Edit Users" url="./editUser.jsf" />
+					</p:submenu>
+					<p:submenu label="Other">
+						<p:menuitem value="Process" url="./process.jsf" />
+						<p:menuitem value="Location" url="./location.jsf" />
+					</p:submenu>
 				</p:submenu>
 			</p:menu>
 		</div>

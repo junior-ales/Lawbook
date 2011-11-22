@@ -20,7 +20,7 @@ import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 14NOV2011-09
+ * @version 22NOV2011-10
  * 
  */
 public class UserServiceTest {
@@ -55,13 +55,13 @@ public class UserServiceTest {
 			LOG.warning(e.getMessage());
 		}
 			
-		saveUser(publicUser, pass);
-		saveUser(user, pass);
+		saveUser(publicUser);
+		saveUser(user);
 	}
 	
-	private static User saveUser(User user, String passConfirmation) {
+	private static User saveUser(User user) {
 		try {
-			UserService.getInstance().create(user, passConfirmation);
+			UserService.getInstance().create(user);
 			assertNotNull(user.getId());
 			LOG.info("User " + user.getUserName() + " create successfully");
 		} catch (IllegalArgumentException e) {
@@ -104,13 +104,6 @@ public class UserServiceTest {
 		assertTrue(user.getEmail().equals(newEmail)); 
 
 		LOG.info("User " + user.getUserName() + " updated successfully");
-	}
-	
-	@Test(expected=IllegalArgumentException.class)
-	public void passConfirmationTest() {
-		User user = new User();
-		user.setPassword("123");
-		UserService.getInstance().create(user, "321");
 	}
 
 }

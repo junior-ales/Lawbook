@@ -14,7 +14,7 @@ import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 19NOV2011-10
+ * @version 22NOV2011-11
  *  
  */
 public final class UserService  {
@@ -31,17 +31,8 @@ public final class UserService  {
 		return instance;
 	}
 	
-	public void create(User user, String passConfirmation) throws IllegalArgumentException, HibernateException {
-		JavaUtil.validateParameter(user, "UserService: create(user, passConfirmation): user");
-		
-		if(!user.getPassword().equals(passConfirmation)) 
-			throw new IllegalArgumentException("Password confirmation doesn't match");
-
-		create(user);
-	}
-	
-	private void create(User user) throws IllegalArgumentException, HibernateException {
-		JavaUtil.validateParameter(user, "UserService: create(user): user");
+	public void create(User user) throws IllegalArgumentException, HibernateException {
+		JavaUtil.validateParameter(user, "UserService: create: user");
 		UserDAO dao = new UserDAOImpl();
 		dao.create(user);
 	}
