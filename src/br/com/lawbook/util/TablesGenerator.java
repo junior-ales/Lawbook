@@ -8,11 +8,18 @@ import java.util.logging.Logger;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 
-import br.com.lawbook.model.*;
+import br.com.lawbook.model.Authority;
+import br.com.lawbook.model.Comment;
+import br.com.lawbook.model.Event;
+import br.com.lawbook.model.Location;
+import br.com.lawbook.model.Post;
+import br.com.lawbook.model.Process;
+import br.com.lawbook.model.Profile;
+import br.com.lawbook.model.User;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 03NOV2011-10
+ * @version 22NOV2011-11
  * 
  */
 public class TablesGenerator {
@@ -39,6 +46,7 @@ public class TablesGenerator {
 			cfg.addAnnotatedClass(Event.class);
 			cfg.addAnnotatedClass(Location.class);
 			cfg.addAnnotatedClass(Post.class);
+			cfg.addAnnotatedClass(Process.class);
 			cfg.addAnnotatedClass(Profile.class);
 			cfg.addAnnotatedClass(User.class);
 			SchemaExport se = new SchemaExport(cfg);

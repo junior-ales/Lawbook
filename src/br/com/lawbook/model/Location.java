@@ -12,7 +12,7 @@ import javax.persistence.Transient;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 20OCT2011-06 
+ * @version 23NOV2011-07
  */
 @Entity(name="lwb_location")
 public class Location implements Serializable {
@@ -36,54 +36,67 @@ public class Location implements Serializable {
 	@Column(length = 9, name="sec_address_zipcode")
 	private String secAddZipCode;
 	@Transient
-	private static final long serialVersionUID = 6916990507563022210L;
-	
+	private static final long serialVersionUID = 4558747330416487751L;
+
 	public Long getId() {
-		return id;
+		return this.id;
 	}
-	public void setId(Long id) {
+	public void setId(final Long id) {
 		this.id = id;
 	}
 	public String getCountry() {
-		return country;
+		return this.country;
 	}
-	public void setCountry(String country) {
+	public void setCountry(final String country) {
 		this.country = country;
 	}
 	public String getState() {
-		return state;
+		return this.state;
 	}
-	public void setState(String state) {
+	public void setState(final String state) {
 		this.state = state;
 	}
 	public String getCity() {
-		return city;
+		return this.city;
 	}
-	public void setCity(String city) {
+	public void setCity(final String city) {
 		this.city = city;
 	}
 	public String getMainAdd() {
-		return mainAdd;
+		return this.mainAdd;
 	}
-	public void setMainAdd(String mainAdd) {
+	public void setMainAdd(final String mainAdd) {
 		this.mainAdd = mainAdd;
 	}
 	public String getMainZipCode() {
-		return mainZipCode;
+		return this.mainZipCode;
 	}
-	public void setMainZipCode(String mainZipCode) {
+	public void setMainZipCode(final String mainZipCode) {
 		this.mainZipCode = mainZipCode;
 	}
 	public String getSecAdd() {
-		return secAdd;
+		return this.secAdd;
 	}
-	public void setSecAdd(String secAdd) {
+	public void setSecAdd(final String secAdd) {
 		this.secAdd = secAdd;
 	}
 	public String getSecAddZipCode() {
-		return secAddZipCode;
+		return this.secAddZipCode;
 	}
-	public void setSecAddZipCode(String secAddZipCode) {
+	public void setSecAddZipCode(final String secAddZipCode) {
 		this.secAddZipCode = secAddZipCode;
 	}
+	public String getShort() {
+		return this.city + ", " + this.state;
+	}
+	public String getMedium() {
+		return this.city + ", " + this.state + " - " + this.country;
+	}
+	public String getMainAddComplete() {
+		return this.mainAdd + " - " + this.mainZipCode + " - " + this.city + ", " + this.state + " - " + this.country;
+	}
+	public String getSecAddComplete() {
+		return this.secAdd + " - " + this.secAddZipCode + " - " + this.city + ", " + this.state + " - " + this.country;
+	}
+
 }

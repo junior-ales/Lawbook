@@ -1,0 +1,30 @@
+<ui:composition template="./template.xhtml"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:p="http://primefaces.prime.com.tr/ui"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:h="http://java.sun.com/jsf/html">
+	<ui:define name="optionsPanel">
+		<ui:include src="/pages/parts/home/options.xhtml" />
+	</ui:define>
+	<ui:define name="postPanel">
+		<h3>Processes</h3>
+	</ui:define>
+	<ui:define name="contentPanel">
+		
+		<p:dataTable id="userProcesses" var="proc" value="#{processBean.processes}" rows="8" 
+					 paginator="true" paginatorTemplate="{PreviousPageLink} {NextPageLink}" paginatorPosition="bottom"  
+					 rowsPerPageTemplate="4,8,12" widgetVar="userProcesses" >
+			<p:column headerText="Id">
+				<h:outputText value="#{proc.id}" />
+			</p:column>
+			<p:column headerText="Topic">
+				<h:outputText value="#{proc.topic}" />
+			</p:column>
+			<p:column headerText="Legal Area">
+				<h:outputText value="#{proc.legalArea}" />
+			</p:column>
+		</p:dataTable>
+		
+		
+	</ui:define>
+</ui:composition>
