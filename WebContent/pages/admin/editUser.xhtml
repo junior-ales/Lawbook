@@ -23,7 +23,7 @@
 						value="#{adminBean.chosenUser}" completeMethod="#{adminBean.completeUsers}" var="user" 
 						itemValue="#{user}" converter="userConv" onSelectUpdate="editUserPanel" 
 						size="32" selectListener="#{adminBean.handleSelect}" />
-		<p:panel id="editUserPanel" style="margin-top:25px;" header="Edit User" collapsed="#{adminBean.disabled}">
+		<p:panel id="editUserPanel" style="margin-top:25px;" header="Edit User">
 			<h:panelGrid id="editUserPanelGrid" columns="2" cellpadding="3" >
 	            <h:outputText value="Role:  " />
 	            <h:selectManyCheckbox value="#{adminBean.authsId}" required="true" requiredMessage="Authority is required">
@@ -47,8 +47,8 @@
 		            
 			</h:panelGrid>
 			<f:facet name="footer">
-				<p:commandButton value="Edit Customer Info" action="#{adminBean.updateCustomerInfo}" disabled="#{adminBean.disabled}" update="growl" />
-	            <p:commandButton value="Save" actionListener="#{adminBean.updateUser}" disabled="#{adminBean.disabled}" update="growl" />
+				<p:commandButton value="Edit Customer Info" action="#{adminBean.updateCustomerInfo}" update="growl" />
+	            <p:commandButton value="Save" actionListener="#{adminBean.updateUser}" update="growl" />
 			</f:facet>
 		</p:panel>
 	</ui:define>

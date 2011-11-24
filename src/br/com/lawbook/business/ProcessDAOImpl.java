@@ -1,11 +1,11 @@
 package br.com.lawbook.business;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
@@ -17,7 +17,7 @@ import br.com.lawbook.util.HibernateUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 22NOV2011-01
+ * @version 23NOV2011-02
  *
  */
 public class ProcessDAOImpl implements ProcessDAO {
@@ -93,12 +93,22 @@ public class ProcessDAOImpl implements ProcessDAO {
 	}
 	
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<Process> getMyProcesses(Profile profile) throws HibernateException {
-		List<Process> processes = new ArrayList<Process>();
-		processes.addAll(getByResponsible(profile));
-		processes.addAll(getByDefendant(profile));
-		processes.addAll(getByPetitioner(profile));
-		return processes;
+		Session session = HibernateUtil.getSession();
+		try {
+			StringBuilder stringQuery = new StringBuilder();
+			stringQuery.append("from lwb_process where defendant_id = :profileId or petitioner_id = :profileId or responsible_id = :profileId order by opening_date desc");
+			Query query = session.createQuery(stringQuery.toString());
+			query.setParameter("profileId", profile.getId());
+			return (List<Process>) query.list();
+		} catch (Exception e) {
+			LOG.severe(e.getMessage());
+			throw new HibernateException(e);
+		} finally {
+			session.close();
+			LOG.info("Hibernate Session closed");
+		}
 	}
 	
 	@Override
