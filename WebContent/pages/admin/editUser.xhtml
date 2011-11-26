@@ -50,7 +50,10 @@
                 <p:password feedback="true" minLength="5" value="#{adminBean.passConfirmation}" size="29" required="false" style="color: gray;" />  
 	            
 	            <h:outputText value="Enabled:  " />
-                <h:selectBooleanCheckbox value="#{adminBean.chosenUser.enable}" />
+	            <h:panelGroup>
+	                <h:selectBooleanCheckbox value="#{adminBean.chosenUser.enable}" />
+	                <h:outputText value="Changes will be applied at next login" style="margin-left:80px;font-size:small;" />
+	            </h:panelGroup>
 		            
 			</h:panelGrid>
 			<f:facet name="footer">

@@ -10,14 +10,11 @@
 		<h3>User Administration</h3>
 	</ui:define>
 	<ui:define name="contentPanel">
-		<p:ajaxStatus style="position:relative; top:-50px; left:280px; width:16px;height:16px;">
-			<f:facet name="start">
-				<h:graphicImage library="images" name="loading.gif" />
-			</f:facet>
-			<f:facet name="complete">
-				<h:outputText value="" /> 
-			</f:facet>
-		</p:ajaxStatus>
+		<p:ajaxStatus onstart="statusDialog.show()" oncomplete="statusDialog.hide()" />
+		<p:dialog widgetVar="statusDialog" resizable="false" modal="true"
+				  draggable="false" closable="false" header="#{label.please_wait}"> 
+				<h:graphicImage library="images" name="ajaxloadingbar.gif" />
+		</p:dialog>
 		<p:panel id="editUserPanel" style="margin-top:25px;" header="New User">
 			<h:panelGrid id="editUserPanelGrid" columns="2" cellpadding="3">
 	            

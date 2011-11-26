@@ -24,7 +24,7 @@ import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 25NOV2011-05
+ * @version 26NOV2011-05
  *
  */
 @ManagedBean
@@ -41,7 +41,7 @@ public class AdminBean implements Serializable {
 	private Boolean disabled;
 	private static final ProfileService PROFILE_SERVICE = ProfileService.getInstance();
 	private static final Logger LOG = Logger.getLogger("AdminBean");
-	private static final long serialVersionUID = -4720255529212517543L;
+	private static final long serialVersionUID = -539046698174305790L;
 
 	public AdminBean() {
 		LOG.info("#### AdminBean created");
@@ -68,16 +68,12 @@ public class AdminBean implements Serializable {
 		String outcome = "";
 		try {
 			this.validateUser();
+			this.chosenUser.getUserName().toLowerCase();
 			UserService.getInstance().create(this.chosenUser);
-			Profile profile = new Profile();
-			profile.setAvatar("http://www.lawbook.com.br/lawbook/resources/images/defaultAvatar.png");
-			profile.setFirstName(this.chosenUser.getUserName());
-			profile.setLastName("");
-			profile.setUserOwner(UserService.getInstance().getUserById(this.chosenUser.getId()));
-			PROFILE_SERVICE.create(profile);
+			Long profileId = postProcessing();
 			this.users.add(this.chosenUser);
 			FacesUtil.infoMessage("=)", "User created successfully");
-			outcome = "customerInfo?newUserProfileId=" + profile.getId() + "&faces-redirect=true";
+			outcome = "customerInfo?newUserProfileId=" + profileId + "&faces-redirect=true";
 		} catch (final IllegalArgumentException e) {
 			FacesUtil.warnMessage("=|", e.getMessage());
 		} catch (final HibernateException e) {
@@ -86,6 +82,29 @@ public class AdminBean implements Serializable {
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
 		return outcome;
+	}
+
+	private Long postProcessing() throws IllegalArgumentException, HibernateException {
+		Profile profile = new Profile();
+		profile.setAvatar("http://www.lawbook.com.br/lawbook/resources/images/defaultAvatar.png");
+		profile.setFirstName(this.chosenUser.getUserName());
+		profile.setLastName("");
+		profile.setUserOwner(UserService.getInstance().getUserById(this.chosenUser.getId()));
+		PROFILE_SERVICE.create(profile);
+		
+		List<Profile> friends = new ArrayList<Profile>();
+		for (User user : users) {
+			for (Authority auth : user.getAuthority()) {
+				if (auth.equals("MANAGER")) {
+					friends.add(PROFILE_SERVICE.getProfileByUserId(user.getId()));
+				}
+			}
+		}
+		friends.add(PROFILE_SERVICE.getProfileByUserName("admin"));
+		profile.setFriends(friends);
+		PROFILE_SERVICE.update(profile);
+		
+		return profile.getId();
 	}
 
 	public void updateUser() {

@@ -10,8 +10,8 @@
 		<div style="padding-top: 10px; padding-bottom:10px;">
 			<p:menu style="width: 180px;">
 				<p:submenu label="#{homeBean.authProfile.firstName} #{homeBean.authProfile.lastName}" >
-					<p:menuitem value="Schedule" url="/pages/schedule.jsf" />
-					<p:menuitem value="Process" url="/pages/process.jsf" />
+					<p:menuitem value="#{label.home_schedule}" url="/pages/schedule.jsf" />
+					<p:menuitem value="#{label.home_processes}" url="/pages/process.jsf" />
 					<!--
 						<p:menuitem value="Messages" url="/pages/message.jsf" />
 						<p:menuitem value="Events" url="/pages/event.jsf" />

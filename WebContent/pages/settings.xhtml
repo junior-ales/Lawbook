@@ -10,6 +10,11 @@
 		<h3>Account Settings</h3>
 	</ui:define>
 	<ui:define name="contentPanel">
+		<p:ajaxStatus onstart="statusDialog.show()" oncomplete="statusDialog.hide()" />
+		<p:dialog widgetVar="statusDialog" resizable="false" modal="true"
+				  draggable="false" closable="false" header="#{label.please_wait}"> 
+				<h:graphicImage library="images" name="ajaxloadingbar.gif" />
+		</p:dialog>
 		<p:panel id="editUserPanel" style="margin-top:25px;">
 			<h:panelGrid id="editUserPanelGrid" columns="3" cellpadding="3" style="width:100%;">
 		   		
@@ -38,7 +43,7 @@
 		   			<f:selectItem itemLabel="English" itemValue="en_US" />
 		   			<f:selectItem itemLabel="Portuguese" itemValue="pt_BR" />
 		   		</h:selectOneMenu>
-		   		<h:outputText value="Language changes will be applied at next login" style="font-size:small;" />  
+		   		<h:outputText value="Changes will be applied at next login" style="font-size:small;" />  
 	            
 			</h:panelGrid>
 			<f:facet name="footer">

@@ -9,14 +9,11 @@
 	</ui:define>
 				
 	<ui:define name="postPanel">
-		
 		<p:ajaxStatus onstart="statusDialog.show()" oncomplete="statusDialog.hide()" />
-		
 		<p:dialog widgetVar="statusDialog" resizable="false" modal="true"
-				  draggable="false" closable="false" header="Please wait..."> 
+				  draggable="false" closable="false" header="#{label.please_wait}"> 
 				<h:graphicImage library="images" name="ajaxloadingbar.gif" />
 		</p:dialog>
-		
 		<p:schedule value="#{scheduleBean.lazyEventModel}"
 	                editable="true" widgetVar="myschedule"
 	                eventSelectListener="#{scheduleBean.onEventSelect}"
