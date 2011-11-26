@@ -16,7 +16,7 @@ import org.primefaces.component.submenu.Submenu;
 import org.primefaces.model.DefaultMenuModel;
 import org.primefaces.model.MenuModel;
 
-import br.com.lawbook.business.UserService;
+import br.com.lawbook.business.service.UserService;
 import br.com.lawbook.model.Authority;
 import br.com.lawbook.model.Profile;
 import br.com.lawbook.model.User;
@@ -26,7 +26,7 @@ import com.sun.faces.taglib.jsf_core.SetPropertyActionListenerImpl;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 18NOV2011-07
+ * @version 26NOV2011-08
  *  
  */
 @ManagedBean
@@ -34,10 +34,9 @@ import com.sun.faces.taglib.jsf_core.SetPropertyActionListenerImpl;
 public class UserBean {
 
 	private MenuModel menu;
-	private UserService userService;
+	private static final UserService USER_SERVICE = UserService.getInstance();
 
 	public UserBean() {
-		this.userService = UserService.getInstance();
 		this.menu = new DefaultMenuModel();
 		
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -68,7 +67,7 @@ public class UserBean {
 		sub.setLabel(rs.getString("template_menu_account"));
 		
 		try {
-			User user = userService.getAuthorizedUser();
+			User user = USER_SERVICE.getAuthorizedUser();
 			for (Authority auth: user.getAuthority()) {
 				if (auth.getName().equals("ADMIN")) {
 					item = new MenuItem();

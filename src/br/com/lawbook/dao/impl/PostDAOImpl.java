@@ -10,7 +10,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Projections;
 
-import br.com.lawbook.business.ProfileService;
+import br.com.lawbook.business.service.ProfileService;
 import br.com.lawbook.dao.PostDAO;
 import br.com.lawbook.model.Post;
 import br.com.lawbook.util.HibernateUtil;

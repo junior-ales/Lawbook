@@ -1,4 +1,4 @@
-package br.com.lawbook.business;
+package br.com.lawbook.business.service;
 
 import java.io.Serializable;
 import java.util.List;
@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.HibernateException;
 
 import br.com.lawbook.dao.ProcessDAO;
+import br.com.lawbook.dao.impl.ProcessDAOImpl;
 import br.com.lawbook.model.Process;
 import br.com.lawbook.model.Profile;
 import br.com.lawbook.util.JavaUtil;

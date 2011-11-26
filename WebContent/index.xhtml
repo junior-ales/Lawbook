@@ -15,6 +15,7 @@
 		<h:outputStylesheet name="styleMenu.css" library="css" />
 		<h:outputScript name="jquery-1.6.2.js" library="js" />
 		<h:outputScript name="apresentacao.js" library="js" />
+		
 		<div id="principal">
 			<div class="blockProjeto">
 				<h2>Apresentamos a vocês o lawbook.</h2>
@@ -82,7 +83,6 @@
 				<img id="banner" src="resources/images/banner.png" alt="banner" />
 				<div class="nav">
 					<a href="#" id="entrar">Entrar</a>
-					<h:outputText value="Usuário ou senha incorretos!" rendered="#{param.erro}" style="color: darkred"/>
 					<ul>
 						<li><a href="#" id="menuProjeto">Projeto</a></li>
 						<li><a href="#" id="menuObjetivo">Objetivo</a></li>
@@ -90,15 +90,18 @@
 					</ul>
 				</div>
 			</div>
-			<div id="loginBlock">
+			<div id="loginBlock" style="font-size:12px;font-family:Verdana,Helvetica;font-weight:bold;color:white;">
 				<form action="j_spring_security_check" method="post">
 					<h:outputLabel for="j_username" value="Username:" />
-                    <h:inputText id="j_username" required="true"/>
-                    <h:outputLabel for="j_password" value="Password:"/> 
-                    <h:inputSecret id="j_password" required="true"/>
-                    <h:commandButton value="Login" type="submit"/>
+                    <h:inputText id="j_username" required="true" />
+                    <h:outputLabel for="j_password" value="Password:" /> 
+                    <h:inputSecret id="j_password" required="true" />
+                    <h:commandButton id="buttonSubmitLogin" value="Login" type="submit" style="margin-left: 10px;" onclick="errorPanel.hide()" />
 				</form>
 			</div>
+			<p:panel styleClass="errorPanel" visible="#{param.erro}" widgetVar="errorPanel">
+				<h:outputText value="Usuário ou senha incorretos!" style="color: red"/>
+			</p:panel>
 		</div>
 	</h:body>
 </f:view>

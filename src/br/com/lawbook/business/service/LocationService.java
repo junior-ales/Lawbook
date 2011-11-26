@@ -1,4 +1,4 @@
-package br.com.lawbook.business;
+package br.com.lawbook.business.service;
 
 import org.hibernate.HibernateException;
 

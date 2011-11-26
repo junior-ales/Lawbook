@@ -3,8 +3,8 @@ package br.com.lawbook.managedbean;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
-import br.com.lawbook.business.PostService;
-import br.com.lawbook.business.ProfileService;
+import br.com.lawbook.business.service.PostService;
+import br.com.lawbook.business.service.ProfileService;
 import br.com.lawbook.model.Post;
 import br.com.lawbook.model.Profile;
 import br.com.lawbook.util.FacesUtil;

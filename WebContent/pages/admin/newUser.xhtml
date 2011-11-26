@@ -27,23 +27,37 @@
 		   		</h:selectManyCheckbox>
 		   		
 				<h:outputText value="Username: " />
-                <p:inputText value="#{adminBean.chosenUser.userName}" required="true" requiredMessage="Username is required" size="29" style="color: gray;" />  
-	            
+				<h:panelGroup>
+	                <p:inputText value="#{adminBean.chosenUser.userName}" required="true" requiredMessage="Username is required" size="29" style="color: gray;" />  
+		            <h:outputText value="*" style="color:red;" />  
+			   		<h:outputText value="*" style="position:relative;top:-32px;left:-11px;color:red;" />
+		   		</h:panelGroup>
+		   		
 	            <h:outputText value="Email:  " />
-                <p:inputText value="#{adminBean.chosenUser.email}" required="true" requiredMessage="Email is required" size="29" style="color: gray;" />  
+	            <h:panelGroup>
+	                <p:inputText value="#{adminBean.chosenUser.email}" required="true" requiredMessage="Email is required" size="29" style="text-transform:lowercase;" />
+	                <h:outputText value="*" style="color:red;" />  
+	            </h:panelGroup>  
 	            
 	            <h:outputText value="Password:  " />
-                <p:password feedback="true" minLength="5" value="#{adminBean.pass}" size="29" required="true" style="color: gray;" />  
+	            <h:panelGroup>
+	                <p:password feedback="true" minLength="5" value="#{adminBean.pass}" size="29" required="true" requiredMessage="Password is required" style="color: gray;" />  
+					<h:outputText value="*" style="color:red;" />  
+	            </h:panelGroup>
 
 	            <h:outputText value="Confirmation:  " />
-                <p:password feedback="true" minLength="5" value="#{adminBean.passConfirmation}" size="29" required="true" style="color: gray;" />  
+	            <h:panelGroup>
+	                <p:password feedback="true" minLength="5" value="#{adminBean.passConfirmation}" size="29" required="true" requiredMessage="Password confirmation is required" style="color: gray;" />  
+		            <h:outputText value="*" style="color:red;" />  
+	            </h:panelGroup>
 	            
 	            <h:outputText value="Enabled:  " />
                 <h:selectBooleanCheckbox value="#{adminBean.chosenUser.enable}" />
 		            
 			</h:panelGrid>
 			<f:facet name="footer">
-	            <p:commandButton value="Save" action="#{adminBean.saveUser}" update="growl" />
+				<h:outputText value="* Required fields" style="color:red;" />
+	            <p:commandButton value="Save" action="#{adminBean.saveUser}" update="growl" style="position:relative;margin-left:300px;" />
 			</f:facet>
 		</p:panel>
 	</ui:define>

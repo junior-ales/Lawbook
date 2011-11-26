@@ -18,7 +18,11 @@
 	</application>
 	<converter>
 		<converter-id>userConv</converter-id>
-		<converter-class>br.com.lawbook.util.UserConverter</converter-class>
+		<converter-class>br.com.lawbook.business.converter.UserConverter</converter-class>
+	</converter>
+	<converter>
+		<converter-id>authConv</converter-id>
+		<converter-class>br.com.lawbook.business.converter.AuthorityConverter</converter-class>
 	</converter>
 
 </faces-config>

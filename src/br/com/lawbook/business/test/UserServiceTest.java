@@ -12,8 +12,8 @@ import org.hibernate.HibernateException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import br.com.lawbook.business.AuthorityService;
-import br.com.lawbook.business.UserService;
+import br.com.lawbook.business.service.AuthorityService;
+import br.com.lawbook.business.service.UserService;
 import br.com.lawbook.model.Authority;
 import br.com.lawbook.model.User;
 import br.com.lawbook.util.JavaUtil;

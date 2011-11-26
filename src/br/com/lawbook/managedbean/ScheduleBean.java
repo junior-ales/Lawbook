@@ -35,8 +35,8 @@ import org.primefaces.event.ScheduleEntrySelectEvent;
 import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 
-import br.com.lawbook.business.EventService;
-import br.com.lawbook.business.ProfileService;
+import br.com.lawbook.business.service.EventService;
+import br.com.lawbook.business.service.ProfileService;
 import br.com.lawbook.model.Event;
 import br.com.lawbook.model.Profile;
 import br.com.lawbook.util.FacesUtil;

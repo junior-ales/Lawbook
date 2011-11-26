@@ -1,4 +1,4 @@
-package br.com.lawbook.util;
+package br.com.lawbook.business.converter;
 
 import java.util.List;
 
@@ -8,8 +8,9 @@ import javax.faces.convert.Converter;
 
 import org.hibernate.HibernateException;
 
-import br.com.lawbook.business.UserService;
+import br.com.lawbook.business.service.UserService;
 import br.com.lawbook.model.User;
+import br.com.lawbook.util.FacesUtil;
 
 /**
  * @author Edilson Luiz Ales Junior

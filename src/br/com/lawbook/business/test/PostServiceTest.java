@@ -11,8 +11,8 @@ import org.hibernate.HibernateException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import br.com.lawbook.business.PostService;
-import br.com.lawbook.business.ProfileService;
+import br.com.lawbook.business.service.PostService;
+import br.com.lawbook.business.service.ProfileService;
 import br.com.lawbook.model.Post;
 import br.com.lawbook.model.Profile;
 

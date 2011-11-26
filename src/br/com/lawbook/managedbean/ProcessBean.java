@@ -10,8 +10,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 
-import br.com.lawbook.business.ProcessService;
-import br.com.lawbook.business.ProfileService;
+import br.com.lawbook.business.service.ProcessService;
+import br.com.lawbook.business.service.ProfileService;
 import br.com.lawbook.model.Process;
 import br.com.lawbook.model.Profile;
 import br.com.lawbook.util.FacesUtil;

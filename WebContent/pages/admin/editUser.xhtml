@@ -18,11 +18,11 @@
 				<h:outputText value="" /> 
 			</f:facet>
 		</p:ajaxStatus>
-		<h:outputLabel value="Search by username: " for="searchUsers" />
+		<h:outputLabel value="Search by username: " style="font-weight:bold;" for="searchUsers" />
 		<p:autoComplete id="searchUsers" forceSelection="true" minQueryLength="2" itemLabel="#{user.userName}"
 						value="#{adminBean.chosenUser}" completeMethod="#{adminBean.completeUsers}" var="user" 
 						itemValue="#{user}" converter="userConv" onSelectUpdate="editUserPanel" 
-						size="32" selectListener="#{adminBean.handleSelect}" />
+						size="30" selectListener="#{adminBean.handleSelect}" />
 		<p:panel id="editUserPanel" style="margin-top:25px;" header="Edit User">
 			<h:panelGrid id="editUserPanelGrid" columns="2" cellpadding="3" >
 	            <h:outputText value="Role:  " />
@@ -31,10 +31,17 @@
 		   		</h:selectManyCheckbox>
 		   		
 				<h:outputText value="Username: " />
-                <p:inputText value="#{adminBean.chosenUser.userName}" required="true" requiredMessage="Username is required" size="29" style="color: gray;" />  
+		   		<h:panelGroup>
+	                <p:inputText value="#{adminBean.chosenUser.userName}" required="true" requiredMessage="Username is required" size="29" style="color: gray;" />
+	                <h:outputText value="*" style="color:red;" />  
+			   		<h:outputText value="*" style="position:relative;top:-32px;left:-11px;color:red;" />
+		   		</h:panelGroup>
 	            
 	            <h:outputText value="Email:  " />
-                <p:inputText value="#{adminBean.chosenUser.email}" required="true" requiredMessage="Email is required" size="29" style="color: gray;" />  
+	            <h:panelGroup>
+	                <p:inputText value="#{adminBean.chosenUser.email}" required="true" requiredMessage="Email is required" size="29" style="color: gray;" />
+	                <h:outputText value="*" style="color:red;" />  
+	            </h:panelGroup>
 	            
 	            <h:outputText value="Password:  " />
                 <p:password feedback="true" minLength="5" value="#{adminBean.pass}" size="29" required="false" style="color: gray;" />  
@@ -47,7 +54,8 @@
 		            
 			</h:panelGrid>
 			<f:facet name="footer">
-				<p:commandButton value="Edit Customer Info" action="#{adminBean.updateCustomerInfo}" update="growl" />
+				<h:outputText value="* Required fields" style="color:red;" />
+				<p:commandButton value="Edit Customer Info" action="#{adminBean.updateCustomerInfo}" update="growl" style="position:relative;margin-left:100px;" />
 	            <p:commandButton value="Save" actionListener="#{adminBean.updateUser}" update="growl" />
 			</f:facet>
 		</p:panel>

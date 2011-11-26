@@ -1,5 +1,6 @@
 package br.com.lawbook.managedbean;
 
+import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,47 +12,43 @@ import javax.faces.bean.RequestScoped;
 import org.hibernate.HibernateException;
 import org.primefaces.event.SelectEvent;
 
-import br.com.lawbook.business.AuthorityService;
-import br.com.lawbook.business.ProfileService;
-import br.com.lawbook.business.UserService;
+import br.com.lawbook.business.converter.AuthorityConverter;
+import br.com.lawbook.business.converter.UserConverter;
+import br.com.lawbook.business.service.ProfileService;
+import br.com.lawbook.business.service.UserService;
 import br.com.lawbook.model.Authority;
 import br.com.lawbook.model.Profile;
 import br.com.lawbook.model.User;
 import br.com.lawbook.util.FacesUtil;
 import br.com.lawbook.util.JavaUtil;
-import br.com.lawbook.util.UserConverter;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 22NOV2011-04
+ * @version 25NOV2011-05
  *
  */
 @ManagedBean
 @RequestScoped
-public class AdminBean {
+public class AdminBean implements Serializable {
 
 	private List<User> users;
 	private User chosenUser;
 	private String usernameComplete;
 	private String pass;
 	private String passConfirmation;
-	private List<Authority> authorities;
+	private final List<Authority> authorities;
 	private Long[] authsId;
 	private Boolean disabled;
-	private final String imagePath = FacesUtil.getExternalContext().getRequestContextPath() + "resources/images/";
-	private final static Logger LOG = Logger.getLogger("AdminBean");
+	private static final ProfileService PROFILE_SERVICE = ProfileService.getInstance();
+	private static final Logger LOG = Logger.getLogger("AdminBean");
+	private static final long serialVersionUID = -4720255529212517543L;
 
 	public AdminBean() {
-		LOG.info("#### AdminBean created ####");
+		LOG.info("#### AdminBean created");
 		this.chosenUser = new User();
 		this.users = UserConverter.users;
-		try{
-			this.authorities = AuthorityService.getInstance().getAll();
-			this.authsId = new Long[this.authorities.size()];
-		} catch (final HibernateException e) {
-			this.authorities = new ArrayList<Authority>();
-			FacesUtil.errorMessage("=(", e.getMessage());
-		}
+		this.authorities = AuthorityConverter.authorities;
+		this.authsId = new Long[this.authorities.size()];
 
 	}
 
@@ -67,20 +64,20 @@ public class AdminBean {
     }
 
 	public String saveUser() {
-		LOG.info("#### saveUser() ####");
+		LOG.info("#### saveUser()");
 		String outcome = "";
 		try {
 			this.validateUser();
 			UserService.getInstance().create(this.chosenUser);
-			final Profile profile = new Profile();
-			profile.setAvatar(this.imagePath + "defaultAvatar.png");
+			Profile profile = new Profile();
+			profile.setAvatar("http://www.lawbook.com.br/lawbook/resources/images/defaultAvatar.png");
 			profile.setFirstName(this.chosenUser.getUserName());
 			profile.setLastName("");
 			profile.setUserOwner(UserService.getInstance().getUserById(this.chosenUser.getId()));
-			ProfileService.getInstance().create(profile);
+			PROFILE_SERVICE.create(profile);
 			this.users.add(this.chosenUser);
 			FacesUtil.infoMessage("=)", "User created successfully");
-			outcome = "customerInfo?newUserId=" + this.chosenUser.getId() + "&faces-redirect=true";
+			outcome = "customerInfo?newUserProfileId=" + profile.getId() + "&faces-redirect=true";
 		} catch (final IllegalArgumentException e) {
 			FacesUtil.warnMessage("=|", e.getMessage());
 		} catch (final HibernateException e) {
@@ -92,7 +89,7 @@ public class AdminBean {
 	}
 
 	public void updateUser() {
-		LOG.info("#### updateUser() ####");
+		LOG.info("#### updateUser()");
 		try {
 			this.validateUser();
 			UserService.getInstance().update(this.chosenUser);
@@ -111,17 +108,19 @@ public class AdminBean {
 		}
 	}
 	public String updateCustomerInfo() {
-		LOG.info("#### updateCustomerInfo() ####");
+		LOG.info("#### updateCustomerInfo()");
 		String outcome = "";
-		if (this.chosenUser != null && this.chosenUser.getId() != null)
-			outcome = "customerInfo?newUserId=" + this.chosenUser.getId() + "&faces-redirect=true";
+		if (this.chosenUser != null) {
+			Long id = PROFILE_SERVICE.getProfileByUserId(this.chosenUser.getId()).getId();
+			outcome = "customerInfo?newUserProfileId=" + id + "&faces-redirect=true";
+		}
 		else
 			FacesUtil.warnMessage("=|", "Select an user before editing his informations");
 		return outcome;
 	}
 
-	private void validateUser() throws IllegalArgumentException, NoSuchAlgorithmException {
-		LOG.info("#### validateUser() ####");
+	public void validateUser() throws IllegalArgumentException, NoSuchAlgorithmException {
+		LOG.info("#### validateUser()");
 		JavaUtil.validateParameter(this.chosenUser.getEmail(), "Email is required");
 		JavaUtil.validateParameter(this.chosenUser.getUserName(), "Username is required");
 		if (!this.passConfirmation.equals(this.pass)) {
@@ -146,7 +145,7 @@ public class AdminBean {
 	}
 
 	public void handleSelect(final SelectEvent event) {
-		LOG.info("#### handleSelect(final SelectEvent event) ####");
+		LOG.info("#### handleSelect(final SelectEvent event)");
 		final List<Authority> auths = this.chosenUser.getAuthority();
 		for (int i = 0; i < auths.size(); i++) {
 			this.authsId[i] = auths.get(i).getId();
@@ -204,10 +203,6 @@ public class AdminBean {
 
 	public void setAuthsId(final Long[] authsId) {
 		this.authsId = authsId;
-	}
-
-	public String getImagePath() {
-		return this.imagePath;
 	}
 
 	public String getDisabled() {

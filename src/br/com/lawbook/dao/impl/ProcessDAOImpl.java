@@ -1,4 +1,4 @@
-package br.com.lawbook.business;
+package br.com.lawbook.dao.impl;
 
 import java.util.List;
 import java.util.logging.Logger;

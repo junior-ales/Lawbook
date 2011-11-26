@@ -10,6 +10,41 @@
 		<h3>Customer Information</h3>
 	</ui:define>
 	<ui:define name="contentPanel">
-		<h:outputText value="numero #{customerBean.userId}" />
+		<p:panel id="editUserPanel" style="margin-top:25px;" header="#{customerBean.customer.firstName}'s Profile Data">
+			<h:panelGrid id="editUserPanelGrid" columns="3" cellpadding="3" style="width:100%;">
+		   		
+				<h:outputText value="First Name: " />
+                <p:inputText value="#{customerBean.customer.firstName}" size="18" required="true" requiredMessage="First name is required" />  
+	            <h:outputText value="*" style="color:red;" />
+	            
+	            <h:outputText value="Last Name:  " />
+                <p:inputText value="#{customerBean.customer.lastName}" size="18"  />
+                <h:outputText value="" />  
+                
+                <h:outputText value="Avatar:  " />
+                <p:inputText value="#{customerBean.customer.avatar}" size="18"  />
+                <h:graphicImage id="imagePreview" height="50" width="50" url="#{customerBean.customer.avatar}" />
+	            
+	            <h:outputText value="Birthdate:  " />
+                <p:inputMask value="#{customerBean.birth}" size="18" mask="99/99/9999" />
+                <h:outputText value="DD/MM/YYYY" />  
+                
+                <h:outputText value="About me:  " />
+                <p:inputTextarea value="#{customerBean.customer.aboutMe}" cols="18"  />
+                <h:outputText value="" />  
+	            
+	            <h:outputText value="Language: " />
+	            <h:selectOneMenu value="#{customerBean.customer.locale}" >
+		   			<f:selectItem itemLabel="English" itemValue="en_US" />
+		   			<f:selectItem itemLabel="Portuguese" itemValue="pt_BR" />
+		   		</h:selectOneMenu>
+		   		<h:outputText value="Language changes will be applied at next login" style="font-size:small;" />  
+	            
+			</h:panelGrid>
+			<f:facet name="footer">
+				<h:outputText value="* Required fields" style="color:red;" />
+	            <p:commandButton value="Save" actionListener="#{customerBean.updateProfile}" update="growl" style="position:relative;margin-left:300px;" />
+			</f:facet>
+		</p:panel>
 	</ui:define>
 </ui:composition>

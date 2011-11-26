@@ -15,8 +15,8 @@ import org.hibernate.HibernateException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import br.com.lawbook.business.EventService;
-import br.com.lawbook.business.ProfileService;
+import br.com.lawbook.business.service.EventService;
+import br.com.lawbook.business.service.ProfileService;
 import br.com.lawbook.model.Event;
 import br.com.lawbook.model.Profile;
 
