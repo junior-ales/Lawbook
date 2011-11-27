@@ -69,11 +69,14 @@ public class ProfileBean implements Serializable {
 	}
 	
 	public void removePost(ActionEvent actionEvent) {
-		if (this.profileOwner.getId().equals(this.authProfile.getId())) {
-			FacesUtil.warnMessage("=|", "You cannot delete this post");
-			return;
+		Post post = new Post();
+		if (!this.profileOwner.getId().equals(this.authProfile.getId())) {
+			post = (Post) this.wall.getRowData();
+			if (!this.authProfile.getId().equals(post.getSender().getId())) {
+				FacesUtil.warnMessage("=|", "You cannot delete this post");
+				return;
+			}
 		}
-		Post post = (Post) this.wall.getRowData();
 		try {
 			POST_SERVICE.delete(post);
 			FacesUtil.infoMessage("=)", "Post deleted!");

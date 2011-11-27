@@ -14,61 +14,58 @@ import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 22NOV2011-11
- *  
+ * @version 27NOV2011-12
+ *
  */
 public final class UserService  {
 
+	private final UserDAO dao;
 	private static UserService instance;
 
 	private UserService() {
+		this.dao = new UserDAOImpl();
 	}
-	
+
 	public static UserService getInstance() {
 		if (instance == null) {
 			instance = new UserService();
 		}
 		return instance;
 	}
-	
-	public void create(User user) throws IllegalArgumentException, HibernateException {
+
+	public void create(final User user) throws IllegalArgumentException, HibernateException {
 		JavaUtil.validateParameter(user, "UserService: create: user");
-		UserDAO dao = new UserDAOImpl();
-		dao.create(user);
-	}
-	
-	public void update(User user) throws IllegalArgumentException, HibernateException {
-		JavaUtil.validateParameter(user, "UserService: update: user");
-		UserDAO dao = new UserDAOImpl();
-		dao.update(user);
-	}
-	
-	public List<User> getAll() throws HibernateException {
-		UserDAO dao = new UserDAOImpl();
-		return dao.getAll();
-	}
-	
-	public User getUserById(Long userId) throws IllegalArgumentException, HibernateException {
-		JavaUtil.validateParameter(userId, "UserService: getUserById: userId");
-		UserDAO dao = new UserDAOImpl();
-		return dao.getUserById(userId);
+		this.dao.create(user);
 	}
 
-	public User getUserByUserName(String userName) throws IllegalArgumentException, HibernateException {
-		JavaUtil.validateParameter(userName, "UserService: getUserByUserName: userName");
-		UserDAO dao = new UserDAOImpl();
-		return dao.getUserByUserName(userName);
+	public void update(final User user) throws IllegalArgumentException, HibernateException {
+		JavaUtil.validateParameter(user, "UserService: update: user");
+		this.dao.update(user);
 	}
-	
+
+	public List<User> getAll() throws HibernateException {
+		return this.dao.getAll();
+	}
+
+	public User getUserById(final Long userId) throws IllegalArgumentException, HibernateException {
+		JavaUtil.validateParameter(userId, "UserService: getUserById: userId");
+		return this.dao.getUserById(userId);
+	}
+
+	public User getUserByUserName(final String userName) throws IllegalArgumentException, HibernateException {
+		JavaUtil.validateParameter(userName, "UserService: getUserByUserName: userName");
+		return this.dao.getUserByUserName(userName);
+	}
+
 	public User getAuthorizedUser() throws IllegalArgumentException, HibernateException, Exception {
-		
-		SecurityContext context = SecurityContextHolder.getContext();
+
+		final SecurityContext context = SecurityContextHolder.getContext();
 		if (context == null) throw new Exception("SecurityContext is null");
-        
-		Authentication authentication = context.getAuthentication();
+
+		final Authentication authentication = context.getAuthentication();
         if (authentication == null) throw new Exception("Authentication is null");
-    	
-        String username = ((org.springframework.security.core.userdetails.User)authentication.getPrincipal()).getUsername();
+
+        final String username = ((org.springframework.security.core.userdetails.User)authentication.getPrincipal()).getUsername();
         return this.getUserByUserName(username);
 	}
 }

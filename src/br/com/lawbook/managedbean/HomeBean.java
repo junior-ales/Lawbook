@@ -3,6 +3,7 @@ package br.com.lawbook.managedbean;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -19,34 +20,29 @@ import br.com.lawbook.util.FacesUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 18NOV2011-09
+ * @version 27NOV2011-10
  */
 @ManagedBean
 @SessionScoped
 public class HomeBean implements Serializable {
-	
+
 	private Profile authProfile;
 	private Profile publicProfile;
 	private LazyDataModel<Post> stream;
-	private ProfileService profileService;
-	private PostService postService;
-	private static final long serialVersionUID = 8903872486208401363L;
+	private static final Logger LOG = Logger.getLogger("HomeBean");
+	private static final long serialVersionUID = -7732382195991593343L;
+	private static final PostService POST_SERVICE = PostService.getInstance();
+	private static final ProfileService PROFILE_SERVICE = ProfileService.getInstance();
 
 	public HomeBean() {
-		this.profileService = ProfileService.getInstance();
-		this.postService = PostService.getInstance();
 		try {
-			this.setAuthProfile(this.profileService.getAuthorizedUserProfile());
-		} catch (Exception e) {
-			e.printStackTrace();
+			this.authProfile = PROFILE_SERVICE.getAuthorizedUserProfile();
+		} catch (final Exception e) {
+			LOG.severe(e.getMessage());
 			FacesUtil.errorMessage("Authentication Error", "Problem with authentication process: " + e.getMessage());
 		}
 	}
-	
-	public LazyDataModel<Post> getStream() {
-		return this.stream;
-	}
-	
+
 	@PostConstruct
 	public void loadLazyStream() {
 		if (this.stream == null) {
@@ -55,40 +51,45 @@ public class HomeBean implements Serializable {
 				private static final long serialVersionUID = 311055813797675620L;
 
 				@Override
-				public List<Post> load(int first, int pageSize, String sortField, boolean sortOrder, Map<String, String> filters) {
-					List<Post> st = postService.getStream(authProfile, first, pageSize);
+				public List<Post> load(final int first, final int pageSize, final String sortField, final boolean sortOrder, final Map<String, String> filters) {
+					final List<Post> st = POST_SERVICE.getStream(HomeBean.this.authProfile, first, pageSize);
 					return st;
 				}
 			};
-			this.stream.setRowCount(this.postService.getPostsCount());
+			this.stream.setRowCount(POST_SERVICE.getPostsCount());
 		}
 	}
 
-	public Profile getAuthProfile() {
-		return authProfile;
-	}
-
-	private void setAuthProfile(Profile profile) {
-		this.authProfile = profile;
-	}
-	
-	public Profile getPublicProfile() {
-		if (publicProfile == null) publicProfile = profileService.getPublicProfile();
-		return publicProfile;
-	}
-
-	public void removePost(ActionEvent event) {
-		Post post = (Post) this.stream.getRowData();
+	public void removePost(final ActionEvent event) {
+		final Post post = (Post) this.stream.getRowData();
 		try {
-			if (post.getSender().getId().equals(authProfile.getId())) {
-				this.postService.delete(post);
+			if (post.getSender().getId().equals(this.authProfile.getId())) {
+				POST_SERVICE.delete(post);
 				FacesUtil.infoMessage("=)", "Post deleted!");
 			} else {
 				FacesUtil.warnMessage("=|", "You cannot delete this post");
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
+			LOG.severe(e.getMessage());
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
 	}
-	
+
+	public LazyDataModel<Post> getStream() {
+		return this.stream;
+	}
+
+	public Profile getAuthProfile() {
+		return this.authProfile;
+	}
+
+	public void setAuthProfile(final Profile profile) {
+		this.authProfile = profile;
+	}
+
+	public Profile getPublicProfile() {
+		if (this.publicProfile == null) this.publicProfile = PROFILE_SERVICE.getPublicProfile();
+		return this.publicProfile;
+	}
+
 }

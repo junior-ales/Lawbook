@@ -11,38 +11,37 @@ import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 21NOV2011-07
- *  
+ * @version 27NOV2011-08
+ *
  */
 public final class AuthorityService {
-	
+
+	private final AuthorityDAO dao;
 	private static AuthorityService instance;
 
 	private AuthorityService() {
+		this.dao = new AuthorityDAOImpl();
 	}
-	
+
 	public static AuthorityService getInstance() {
 		if (instance == null) {
 			instance = new AuthorityService();
 		}
 		return instance;
 	}
-	
-	public void create(Authority auth) throws HibernateException, IllegalArgumentException {
+
+	public void create(final Authority auth) throws HibernateException, IllegalArgumentException {
 		JavaUtil.validateParameter(auth, "AuthorityService: create: auth");
-		AuthorityDAO dao = new AuthorityDAOImpl();
-		dao.create(auth);
+		this.dao.create(auth);
 	}
 
-	public Authority getByName(String authorityName) throws HibernateException, IllegalArgumentException {
+	public Authority getByName(final String authorityName) throws HibernateException, IllegalArgumentException {
 		JavaUtil.validateParameter(authorityName, "AuthorityService: getByName: authorityName");
-		AuthorityDAO dao = new AuthorityDAOImpl();
-		return dao.getByName(authorityName);
+		return this.dao.getByName(authorityName);
 	}
 
 	public List<Authority> getAll() throws HibernateException {
-		AuthorityDAO dao = new AuthorityDAOImpl();
-		return dao.getAll();
+		return this.dao.getAll();
 	}
-	
+
 }

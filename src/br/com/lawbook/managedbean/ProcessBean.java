@@ -36,10 +36,10 @@ public class ProcessBean implements Serializable {
 	private Date openingDate;
 	private List<Process> processes;
 	private List<User> users;
-	private static final ProfileService profileService = ProfileService.getInstance();
-	private static final ProcessService processService = ProcessService.getInstance();
-	private final static Logger LOG = Logger.getLogger("ProcessBean");
-	private static final long serialVersionUID = -7499567752071913343L;
+	private static final ProfileService PROFILE_SERVICE = ProfileService.getInstance();
+	private static final ProcessService PROCESS_SERVICE = ProcessService.getInstance();
+	private static final Logger LOG = Logger.getLogger("ProcessBean");
+	private static final long serialVersionUID = 1650461649670013799L;
 
 	// TODO ask someone legal areas and situations to add in drop-down lists in newProcess.xhtml
 
@@ -47,12 +47,12 @@ public class ProcessBean implements Serializable {
 		LOG.info("#### ProcessBean created");
 		this.process = new Process();
 		try {
-			this.setAuthProfile(profileService.getAuthorizedUserProfile());
+			this.setAuthProfile(PROFILE_SERVICE.getAuthorizedUserProfile());
 			if (FacesUtil.getExternalContext().getRequestServletPath().contains("admin")) { // testing if is an administration page
 				this.users = UserConverter.users;
 				LOG.info("#### Users loaded");
 			} else {
-				this.processes = processService.getMyProcesses(this.authProfile);
+				this.processes = PROCESS_SERVICE.getMyProcesses(this.authProfile);
 				LOG.info("#### Users not loaded");
 			}
 		} catch (final Exception e) {
@@ -63,10 +63,10 @@ public class ProcessBean implements Serializable {
 
 	public void saveProcess() {
 		try {
-			Calendar auxDate = Calendar.getInstance();
-			auxDate.setTime(this.openingDate); 
+			final Calendar auxDate = Calendar.getInstance();
+			auxDate.setTime(this.openingDate);
 			this.process.setOpeningDate(auxDate);
-			processService.create(this.process);
+			PROCESS_SERVICE.create(this.process);
 			FacesUtil.infoMessage("=)", "Process saved succesfully");
 		} catch (final IllegalArgumentException e) {
 			LOG.severe(e.getMessage());
@@ -82,7 +82,7 @@ public class ProcessBean implements Serializable {
 
 	public List<User> completeUsers(String query) {
 		if (query == null) query = "";
-        List<User> results = new ArrayList<User>();
+        final List<User> results = new ArrayList<User>();
         for (final User u : this.users) {
             if (u.getUserName().startsWith(query)) {
                 results.add(u);
@@ -93,7 +93,7 @@ public class ProcessBean implements Serializable {
 
 	public void handleSelect(final SelectEvent event) {
 		LOG.info("#### handleSelect(final SelectEvent event) ");
-		final Profile p = profileService.getProfileByUserName(this.part.getUserName());
+		final Profile p = PROFILE_SERVICE.getProfileByUserName(this.part.getUserName());
 		if (event.getComponent().getId().equals("responsibleName")) {
 			this.process.setResponsible(p);
 			LOG.info("#### responsibleName set");

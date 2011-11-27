@@ -13,15 +13,17 @@ import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 22NOV2011-01
+ * @version 27NOV2011-02
  *
  */
 public final class ProcessService implements Serializable {
 
+	private final ProcessDAO dao;
 	private static ProcessService instance;
-	private static final long serialVersionUID = 8239241104971796396L;
+	private static final long serialVersionUID = -7745879838206932661L;
 
 	private ProcessService() {
+		this.dao = new ProcessDAOImpl();
 	}
 
 	public static ProcessService getInstance() {
@@ -33,8 +35,7 @@ public final class ProcessService implements Serializable {
 
 	public void create(final Process process) throws IllegalArgumentException, HibernateException  {
 		JavaUtil.validateParameter(process, "#### Parameter required: ProcessService.create.process");
-		final ProcessDAO dao = new ProcessDAOImpl();
-		dao.create(process);
+		this.dao.create(process);
 	}
 
 	public void update(final Process process) throws IllegalArgumentException, HibernateException {
@@ -44,34 +45,14 @@ public final class ProcessService implements Serializable {
 //		dao.update(process);
 	}
 
-	public List<Process> getByResponsible(final Profile responsible) throws IllegalArgumentException, HibernateException {
-		JavaUtil.validateParameter(responsible, "#### Parameter required: ProcessService.getByResponsible.responsible");
-		final ProcessDAO dao = new ProcessDAOImpl();
-		return dao.getByResponsible(responsible);
-	}
-
-	public List<Process> getByPetitioner(final Profile petitioner) {
-		JavaUtil.validateParameter(petitioner, "#### Parameter required: ProcessService.getByPetitioner.petitioner");
-		final ProcessDAO dao = new ProcessDAOImpl();
-		return dao.getByPetitioner(petitioner);
-	}
-
-	public List<Process> getByDefendant(final Profile defendant) {
-		JavaUtil.validateParameter(defendant, "#### Parameter required: ProcessService.getByDefendant.defendant");
-		final ProcessDAO dao = new ProcessDAOImpl();
-		return dao.getByDefendant(defendant);
-	}
-
 	public Process getById(final Long processId) throws IllegalArgumentException, HibernateException {
 		JavaUtil.validateParameter(processId, "#### Parameter required: ProcessService.getById.processId");
-		final ProcessDAO dao = new ProcessDAOImpl();
-		return dao.getById(processId);
+		return this.dao.getById(processId);
 	}
 
 	public List<Process> getMyProcesses(final Profile profile) throws IllegalArgumentException, HibernateException {
 		JavaUtil.validateParameter(profile, "#### Parameter required: ProcessService.getMyProcesses.profile");
-		final ProcessDAO dao = new ProcessDAOImpl();
-		return dao.getMyProcesses(profile);
+		return this.dao.getMyProcesses(profile);
 	}
 
 }

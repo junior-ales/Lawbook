@@ -1,5 +1,7 @@
 package br.com.lawbook.managedbean;
 
+import java.util.Calendar;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
@@ -11,29 +13,30 @@ import br.com.lawbook.util.FacesUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 18NOV2011-06
+ * @version 27NOV2011-07
  */
 @ManagedBean
 @RequestScoped
 public class PostBean {
-	
+
 	private Post post;
 	private String postContent;
 	private Profile receiver;
+	private static final ProfileService PROFILE_SERVICE = ProfileService.getInstance();
 
 	public String getPostContent() {
-		return postContent;
+		return this.postContent;
 	}
 
-	public void setPostContent(String postContent) {
+	public void setPostContent(final String postContent) {
 		this.postContent = postContent;
 	}
 
 	public Profile getReceiver() {
-		return receiver;
+		return this.receiver;
 	}
 
-	public void setReceiver(Profile receiver) {
+	public void setReceiver(final Profile receiver) {
 		this.receiver = receiver;
 	}
 
@@ -45,12 +48,13 @@ public class PostBean {
 		this.post = new Post();
 		try {
 			this.post.setContent(this.postContent);
-			this.post.setSender(ProfileService.getInstance().getAuthorizedUserProfile());
+			this.post.setSender(PROFILE_SERVICE.getAuthorizedUserProfile());
 			this.post.setReceiver(this.receiver);
-			PostService.getInstance().create(post);
-			FacesUtil.infoMessage("=)", postContent);
+			this.post.setDateTime(Calendar.getInstance());
+			PostService.getInstance().create(this.post);
+			FacesUtil.infoMessage("=)", this.postContent);
 			this.postContent = null;
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
 		return "";

@@ -43,214 +43,215 @@ import br.com.lawbook.util.FacesUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 12NOV2011-07
- * 
+ * @version 27NOV2011-08
+ *
  */
 @ManagedBean
 @SessionScoped
 public class ScheduleBean implements Serializable {
 
-	private Profile authProfile;
 	private Event event;
+	private Boolean disabled;
+	private Profile authProfile;
+	private List<Event> upcomingEvents;
 	private LazyScheduleModel lazyEventModel;
 	private HashMap<String, Long> idEventMapping;
-	private Boolean disabled;
-	private List<Event> upcomingEvents;
-	private static final long serialVersionUID = 3659583666295112931L;
+	private static final long serialVersionUID = 7855410882230111356L;
+	private static final EventService EVENT_SERVICE = EventService.getInstance();
+	private static final ProfileService PROFILE_SERVICE = ProfileService.getInstance();
 
 	public ScheduleBean() {
 		this.event = new Event();
 		this.upcomingEvents = new ArrayList<Event>();
 		try {
-			this.authProfile = ProfileService.getInstance().getAuthorizedUserProfile();
+			this.authProfile = PROFILE_SERVICE.getAuthorizedUserProfile();
 			this.idEventMapping = new HashMap<String, Long>();
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			FacesUtil.warnMessage("=|", e.getMessage());
-		} catch (HibernateException e) {
+		} catch (final HibernateException e) {
 			FacesUtil.errorMessage("=(", e.getMessage());
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
 	}
-	
+
 	@PostConstruct
 	public void loadLazilyEvents() {
-		
-		this.upcomingEvents = EventService.getInstance().getUpcomingEvents(authProfile);
-		
+
+		this.upcomingEvents = EVENT_SERVICE.getUpcomingEvents(this.authProfile);
+
 		if(this.lazyEventModel == null) {
 			this.lazyEventModel = new LazyScheduleModel() {
 
 				private static final long serialVersionUID = -1716309540036635519L;
 
 				@Override
-				public void loadEvents(Date startDate, Date endDate) {
-					clear();
-					EventService eventService = EventService.getInstance();
+				public void loadEvents(final Date startDate, final Date endDate) {
+					this.clear();
 					try {
-						List<Event> events = eventService.getProfileEvents(authProfile, startDate, endDate);
-						for (Event e : events) {
-							addEvent(e);
-							idEventMapping.put(e.getId(), e.getEventId());
+						final List<Event> events = EVENT_SERVICE.getProfileEvents(ScheduleBean.this.authProfile, startDate, endDate);
+						for (final Event e : events) {
+							this.addEvent(e);
+							ScheduleBean.this.idEventMapping.put(e.getId(), e.getEventId());
 						}
-					} catch (IllegalArgumentException e) {
+					} catch (final IllegalArgumentException e) {
 						FacesUtil.warnMessage("=|", e.getMessage());
-					} catch (HibernateException e) {
+					} catch (final HibernateException e) {
 						FacesUtil.errorMessage("=(", e.getMessage());
 					}
 				}
 			};
 		}
 	}
-	
+
 	public ScheduleEvent getEvent() {
 		return this.event;
 	}
 
-	public void setEvent(ScheduleEvent event) {
+	public void setEvent(final ScheduleEvent event) {
 		this.event = (Event) event;
 	}
 
 	public Profile getAuthProfile() {
-		return authProfile;
+		return this.authProfile;
 	}
 
 	public LazyScheduleModel getLazyEventModel() {
-		return lazyEventModel;
+		return this.lazyEventModel;
 	}
-	
+
 	public List<Event> getUpcomingEvents() {
 		return this.upcomingEvents;
 	}
 
 	public Boolean getDeletable() {
-		return disabled;
+		return this.disabled;
 	}
 
-	public void addEvent(ActionEvent actionEvent) {
+	public void addEvent(final ActionEvent actionEvent) {
 		if (this.event.getTitle() == null || this.event.getTitle().isEmpty()) {
 			FacesUtil.warnMessage("=|", "Title is required");
 			return;
 		}
 		this.event.setCreator(this.authProfile);
-		
+
 		if(this.event.isAllDay()) {
-			Calendar c = Calendar.getInstance();
+			final Calendar c = Calendar.getInstance();
 			c.setTime(this.event.getStartDate());
 			c.set(Calendar.HOUR_OF_DAY, 12);
 			this.event.setStartDate(c.getTime());
 			c.set(Calendar.HOUR_OF_DAY, 14);
 			this.event.setEndDate(c.getTime());
 		}
-		
+
 		try {
-			if (this.event.getEventId() == null) 
-				createEvent();
+			if (this.event.getEventId() == null)
+				this.createEvent();
 			else
-				updateEvent();
-		} catch (IllegalArgumentException e) {
+				this.updateEvent();
+		} catch (final IllegalArgumentException e) {
 			FacesUtil.warnMessage("=|", e.getMessage());
-		} catch (HibernateException e) {
+		} catch (final HibernateException e) {
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
 	}
-	
-	public void deleteEvent(ActionEvent actionEvent) {
+
+	public void deleteEvent(final ActionEvent actionEvent) {
 		try {
-			EventService.getInstance().delete(this.event);
-			this.lazyEventModel.deleteEvent(this.getEvent()); 
+			EVENT_SERVICE.delete(this.event);
+			this.lazyEventModel.deleteEvent(this.getEvent());
 			FacesUtil.infoMessage("=)", "Event deleted");
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			FacesUtil.warnMessage("=|", e.getMessage());
-		} catch (HibernateException e) {
+		} catch (final HibernateException e) {
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
 	}
-	
-	public void onEventSelect(ScheduleEntrySelectEvent selectEvent) {
+
+	public void onEventSelect(final ScheduleEntrySelectEvent selectEvent) {
 		try {
 			this.disabled = false;
-			Long eventId = this.idEventMapping.get(selectEvent.getScheduleEvent().getId());
-			this.event = EventService.getInstance().getEventById(eventId);
-		} catch (IllegalArgumentException e) {
+			final Long eventId = this.idEventMapping.get(selectEvent.getScheduleEvent().getId());
+			this.event = EVENT_SERVICE.getEventById(eventId);
+		} catch (final IllegalArgumentException e) {
 			FacesUtil.warnMessage("=|", e.getMessage());
-		} catch (HibernateException e) {
+		} catch (final HibernateException e) {
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
 	}
-	
-	public void onDateSelect(DateSelectEvent selectEvent) {
+
+	public void onDateSelect(final DateSelectEvent selectEvent) {
 		this.disabled = true;
 		this.event = new Event("", selectEvent.getDate(), selectEvent.getDate());
 	}
-	
+
 	public String getDisabled() {
 		if(this.disabled == null) this.disabled = true;
 		return this.disabled.toString();
 	}
-	
-	public void onEventMove(ScheduleEntryMoveEvent event) {
+
+	public void onEventMove(final ScheduleEntryMoveEvent event) {
 		try {
-			Long eventId = this.idEventMapping.get(event.getScheduleEvent().getId());
-			this.event = EventService.getInstance().getEventById(eventId);
-			
+			final Long eventId = this.idEventMapping.get(event.getScheduleEvent().getId());
+			this.event = EVENT_SERVICE.getEventById(eventId);
+
 			Calendar c = Calendar.getInstance();
 			c.setTime(this.event.getStartDate());
 			c.add(Calendar.DAY_OF_MONTH, event.getDayDelta());
 			c.add(Calendar.MINUTE, event.getMinuteDelta());
 			this.event.setStartDate(c.getTime());
-			
+
 			c = Calendar.getInstance();
 			c.setTime(this.event.getEndDate());
 			c.add(Calendar.DAY_OF_MONTH, event.getDayDelta());
 			c.add(Calendar.MINUTE, event.getMinuteDelta());
 			this.event.setEndDate(c.getTime());
-			
+
 			this.event.setAllDay(event.getScheduleEvent().isAllDay());
-			
-			updateEvent();
-		} catch (IllegalArgumentException e) {
+
+			this.updateEvent();
+		} catch (final IllegalArgumentException e) {
 			FacesUtil.warnMessage("=|", e.getMessage());
-		} catch (HibernateException e) {
+		} catch (final HibernateException e) {
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
 	}
-	
-	public void onEventResize(ScheduleEntryResizeEvent event) {
+
+	public void onEventResize(final ScheduleEntryResizeEvent event) {
 		try {
-			Long eventId = this.idEventMapping.get(event.getScheduleEvent().getId());
-			this.event = EventService.getInstance().getEventById(eventId);
-			
-			Calendar c = Calendar.getInstance();
+			final Long eventId = this.idEventMapping.get(event.getScheduleEvent().getId());
+			this.event = EVENT_SERVICE.getEventById(eventId);
+
+			final Calendar c = Calendar.getInstance();
 			c.setTime(this.event.getEndDate());
 			c.add(Calendar.DAY_OF_MONTH, event.getDayDelta());
 			c.add(Calendar.MINUTE, event.getMinuteDelta());
 			this.event.setEndDate(c.getTime());
-			
+
 			this.event.setAllDay(event.getScheduleEvent().isAllDay());
-			
-			updateEvent();
-		} catch (IllegalArgumentException e) {
+
+			this.updateEvent();
+		} catch (final IllegalArgumentException e) {
 			FacesUtil.warnMessage("=|", e.getMessage());
-		} catch (HibernateException e) {
+		} catch (final HibernateException e) {
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
 	}
-	
+
 	private void updateEvent() throws IllegalArgumentException, HibernateException {
-		EventService.getInstance().update(this.event);
+		EVENT_SERVICE.update(this.event);
 		this.lazyEventModel.updateEvent(this.event);
 		this.idEventMapping.put(this.event.getId(), this.event.getEventId());
 		this.event = new Event();
 		FacesUtil.infoMessage("=)", "Event updated successfully");
 	}
-	
+
 	private void createEvent() throws IllegalArgumentException, HibernateException {
-		EventService.getInstance().create(this.event);
+		EVENT_SERVICE.create(this.event);
 		this.lazyEventModel.addEvent(this.event);
 		this.idEventMapping.put(this.event.getId(), this.event.getEventId());
 		this.event = new Event();
 		FacesUtil.infoMessage("=)", "Event created successfully");
 	}
-	
+
 }

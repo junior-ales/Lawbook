@@ -2,7 +2,6 @@ package br.com.lawbook.business.service;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -15,67 +14,62 @@ import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 18NOV2011-08
- * 
+ * @version 27NOV2011-09
+ *
  */
 public final class PostService implements Serializable{
-	
+
+	private final PostDAO dao;
 	private static PostService instance;
-	private static final long serialVersionUID = 5170825358674011787L;
+	private static final long serialVersionUID = -5158354733440897922L;
 
 	private PostService() {
+		this.dao = new PostDAOImpl();
 	}
-	
+
 	public static PostService getInstance() {
 		if (instance == null) {
 			instance = new PostService();
 		}
 		return instance;
 	}
-	
-	public void create(Post post) throws HibernateException, IllegalArgumentException {
+
+	public void create(final Post post) throws HibernateException, IllegalArgumentException {
 		JavaUtil.validateParameter(post, "PostService: save: post");
-		post.setDateTime(Calendar.getInstance()); // when creating a new post, get the current timestamp
-		PostDAO dao = new PostDAOImpl();
-		dao.create(post);
-	}
-	
-	public void delete(Post post) throws HibernateException, IllegalArgumentException {
-		JavaUtil.validateParameter(post, "PostService: delete: post");
-		PostDAO dao = new PostDAOImpl();
-		dao.delete(post);
-	}
-	
-	public Post getPostById(Long postId) throws HibernateException, IllegalArgumentException {
-		JavaUtil.validateParameter(postId, "PostService: getPostById: postId");
-		PostDAO dao = new PostDAOImpl();
-		return dao.getPostById(postId);
+		this.dao.create(post);
 	}
 
-	public List<Post> getStream(Profile profile, int first, int pageSize) throws HibernateException, IllegalArgumentException {
+	public void delete(final Post post) throws HibernateException, IllegalArgumentException {
+		JavaUtil.validateParameter(post, "PostService: delete: post");
+		this.dao.delete(post);
+	}
+
+	public Post getPostById(final Long postId) throws HibernateException, IllegalArgumentException {
+		JavaUtil.validateParameter(postId, "PostService: getPostById: postId");
+		return this.dao.getPostById(postId);
+	}
+
+	public List<Post> getStream(final Profile profile, final int first, final int pageSize) throws HibernateException, IllegalArgumentException {
 		JavaUtil.validateParameter(profile, "PostService: getStream: profile");
 		JavaUtil.validateParameter(first, "PostService: getStream: first");
 		JavaUtil.validateParameter(pageSize, "PostService: getStream: pageSize");
-		
-		List<Long> sendersId = new ArrayList<Long>();
-		for (Profile p : profile.getFriends()) sendersId.add(p.getId());
-		
-		PostDAO dao = new PostDAOImpl();
-		return dao.getStreamPosts(profile.getId(), sendersId, first, pageSize);
+
+		final List<Long> sendersId = new ArrayList<Long>();
+		for (final Profile p : profile.getFriends()) sendersId.add(p.getId());
+
+		return this.dao.getStreamPosts(profile.getId(), sendersId, first, pageSize);
 	}
 
-	public List<Post> getWall(Profile profileOwner, Profile authProfile, int first, int pageSize) throws HibernateException, IllegalArgumentException {
+	public List<Post> getWall(final Profile profileOwner, final Profile authProfile, final int first, final int pageSize) throws HibernateException, IllegalArgumentException {
 		JavaUtil.validateParameter(profileOwner, "PostService: getWall: profileOwner");
 		JavaUtil.validateParameter(authProfile, "PostService: getWall: authProfile");
 		JavaUtil.validateParameter(first, "PostService: getWall: first");
 		JavaUtil.validateParameter(pageSize, "PostService: getWall: pageSize");
-		
-		PostDAO dao = new PostDAOImpl();
-		return dao.getProfileWall(profileOwner.getId(), authProfile.getId(), first, pageSize);
+
+		return this.dao.getProfileWall(profileOwner.getId(), authProfile.getId(), first, pageSize);
 	}
-	
+
 	public int getPostsCount() throws HibernateException {
-		PostDAO dao = new PostDAOImpl();
-		return Integer.parseInt(dao.getPostsCount().toString());
+		return Integer.parseInt(this.dao.getPostsCount().toString());
 	}
 }
