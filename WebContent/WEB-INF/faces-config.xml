@@ -24,5 +24,9 @@
 		<converter-id>authConv</converter-id>
 		<converter-class>br.com.lawbook.business.converter.AuthorityConverter</converter-class>
 	</converter>
+	<converter>
+		<converter-id>profConv</converter-id>
+		<converter-class>br.com.lawbook.business.converter.ProfileConverter</converter-class>
+	</converter>
 
 </faces-config>

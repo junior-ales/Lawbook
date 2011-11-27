@@ -1,0 +1,70 @@
+<ui:composition template="../template.xhtml"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:p="http://primefaces.prime.com.tr/ui"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:h="http://java.sun.com/jsf/html">
+	<ui:define name="optionsPanel">
+		<ui:include src="./parts/options.xhtml" />
+	</ui:define>
+	<ui:define name="postPanel">
+		<h3>Process Administration</h3>
+	</ui:define>
+	<ui:define name="contentPanel">
+		<p:ajaxStatus onstart="statusDialog.show()" oncomplete="statusDialog.hide()" />
+		<p:dialog widgetVar="statusDialog" resizable="false" modal="true"
+				  draggable="false" closable="false" header="#{label.please_wait}"> 
+				<h:graphicImage library="images" name="ajaxloadingbar.gif" />
+		</p:dialog>
+		
+		<p:panel id="newProcessPanel" header="New Process">
+			<h:panelGrid id="newProcessPanelGrid" columns="3" cellpadding="3" >
+		   		
+				<h:outputText value="Topic: " />
+                <p:inputText value="#{processBean.process.topic}" required="true" requiredMessage="Topic is required" size="18" />
+                <h:outputText value="*" style="color:red;" />  
+	            
+	            <h:outputText value="Legal Area: " />
+                <p:inputText value="#{processBean.process.legalArea}" required="true" requiredMessage="Legal Area is required" size="18" />
+                <h:outputText value="*" style="color:red;" />
+                	            
+				<h:outputText value="Opening Date: " />
+                <p:inputMask value="#{processBean.openingDate}" required="true" requiredMessage="Opening date is required" size="18" mask="99/99/9999">
+                	<f:convertDateTime timeZone="America/Sao_Paulo" locale="#{processBean.authProfile.locale}" pattern="dd/MM/yyyy"/>
+                </p:inputMask>
+                <h:outputText value="DD/MM/YYYY" />
+                
+                <h:outputText value="Description: " />
+                <p:inputTextarea value="#{processBean.process.description}" required="true" requiredMessage="Description is required" cols="18" />
+                <h:outputText value="*" style="color:red;" />
+                
+                <h:outputText value="Situation: " />
+                <p:inputText value="#{processBean.process.situation}" required="true" requiredMessage="Situation is required" size="18" />
+                <h:outputText value="*" style="color:red;" />
+                
+                <h:outputText value="Responsible: " />
+				<p:autoComplete id="responsibleName" forceSelection="true" minQueryLength="2" itemLabel="#{part.userName}"
+								value="#{processBean.part}" completeMethod="#{processBean.completeUsers}" var="part" onSelectUpdate="growl"
+								itemValue="#{part}" converter="userConv" size="18" selectListener="#{processBean.handleSelect}" />
+                <h:outputText value="*" style="color:red;" />
+                
+                <h:outputText value="Petitioner: " />
+				<p:autoComplete id="petitionerName" forceSelection="true" minQueryLength="2" itemLabel="#{part.userName}"
+								value="#{processBean.part}" completeMethod="#{processBean.completeUsers}" var="part" onSelectUpdate="growl"
+								itemValue="#{part}" converter="userConv" size="18" selectListener="#{processBean.handleSelect}" />
+                <h:outputText value="*" style="color:red;" />
+                
+                <h:outputText value="Defendant: " />
+				<p:autoComplete id="defendantName" forceSelection="true" minQueryLength="2" itemLabel="#{part.userName}"
+								value="#{processBean.part}" completeMethod="#{processBean.completeUsers}" var="part" onSelectUpdate="growl"
+								itemValue="#{part}" converter="userConv" size="18" selectListener="#{processBean.handleSelect}" />
+                <h:outputText value="*" style="color:red;" />
+                
+			</h:panelGrid>
+			<f:facet name="footer">
+				<h:outputText value="* Required fields" style="color:red;" />
+	            <p:commandButton value="Save" actionListener="#{processBean.saveProcess}" update="growl" style="position:relative;margin-left:300px;" />
+			</f:facet>
+		</p:panel>
+		
+	</ui:define>
+</ui:composition>

@@ -1,5 +1,6 @@
 package br.com.lawbook.dao.impl;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.hibernate.HibernateException;
@@ -13,7 +14,7 @@ import br.com.lawbook.util.HibernateUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 28OCT2011-05 
+ * @version 26NOV2011-06 
  * 
  */
 public class ProfileDAOImpl implements ProfileDAO {
@@ -106,6 +107,21 @@ public class ProfileDAOImpl implements ProfileDAO {
 		} catch (Exception e) {
 			LOG.severe(e.getMessage());
 			tx.rollback();
+			throw new HibernateException(e);
+		} finally {
+			session.close();
+			LOG.info("Hibernate Session closed");
+		}
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Profile> getAll() throws HibernateException {
+		Session session = HibernateUtil.getSession();
+		try {
+			return session.createCriteria(Profile.class).list();
+		} catch (Exception e) {
+			LOG.severe(e.getMessage());
 			throw new HibernateException(e);
 		} finally {
 			session.close();

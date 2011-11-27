@@ -16,7 +16,7 @@ import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 18NOV2011-14 
+ * @version 26NOV2011-15 
  */
 public final class ProfileService implements Serializable {
 	
@@ -85,6 +85,11 @@ public final class ProfileService implements Serializable {
 		JavaUtil.validateParameter(userId, "ProfileService: getProfileByUserId: userId");
 		ProfileDAO dao = new ProfileDAOImpl();
 		return dao.getProfileByUserId(userId);
+	}
+	
+	public List<Profile> getAll() throws HibernateException {
+		ProfileDAO dao = new ProfileDAOImpl();
+		return dao.getAll();
 	}
 	
 	public Profile getPublicProfile() {

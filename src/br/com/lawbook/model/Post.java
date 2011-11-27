@@ -2,7 +2,6 @@ package br.com.lawbook.model;
 
 import java.io.Serializable;
 import java.util.Calendar;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,19 +9,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.ForeignKey;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 30OCT2011-13 
+ * @version 26NOV2011-14 
  *
  */
 @Entity(name="lwb_post")
@@ -41,9 +36,6 @@ public class Post implements Serializable {
 	@Column(length = 255)
 	private String content;
 	private Calendar dateTime;
-	@OneToMany @ForeignKey(name="FK_POST_COMMENT", inverseName="FK_COMMENT_POST") @LazyCollection(LazyCollectionOption.FALSE) 
-	@JoinTable(name="lwb_post_comments", joinColumns = { @JoinColumn(name = "post_id") }, inverseJoinColumns = { @JoinColumn(name = "comment_id") })
-	private List<Comment> comments;
 	@Transient
 	private static final long serialVersionUID = 497092916483761201L;
 
@@ -80,11 +72,4 @@ public class Post implements Serializable {
 		}
 		this.dateTime = dateTime;
 	}
-	public List<Comment> getComments() {
-		return comments;
-	}
-	public void setComments(List<Comment> comments) {
-		this.comments = comments;
-	}
-	
 }

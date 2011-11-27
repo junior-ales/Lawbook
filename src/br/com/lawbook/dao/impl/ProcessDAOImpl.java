@@ -98,7 +98,9 @@ public class ProcessDAOImpl implements ProcessDAO {
 		Session session = HibernateUtil.getSession();
 		try {
 			StringBuilder stringQuery = new StringBuilder();
-			stringQuery.append("from lwb_process where defendant_id = :profileId or petitioner_id = :profileId or responsible_id = :profileId order by opening_date desc");
+			stringQuery.append("from lwb_process where defendant_id = :profileId ")
+					   .append("or petitioner_id = :profileId or responsible_id = :profileId ")
+					   .append("order by opening_date desc");
 			Query query = session.createQuery(stringQuery.toString());
 			query.setParameter("profileId", profile.getId());
 			return (List<Process>) query.list();

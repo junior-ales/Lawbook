@@ -25,28 +25,6 @@
 					<div>
 						<h:outputText value="#{post.content}" style="font-size: larger;" />
 					</div>
-					<div>
-						<p:dataTable var="postComment" value="#{post.comments}" emptyMessage="">
-							<p:column>
-								<div style="display: table; width: 100%;">
-									<div style="float: left; width: 70px;">
-										<h:graphicImage value="#{postComment.sender.avatar}" width="50" height="50" style="margin-left: 10px;" />
-									</div>
-									<div style="margin-left: 71px;">
-										<div style="">
-											<h:outputText value="#{postComment.sender.firstName} #{postComment.sender.lastName} " style="font-weight: bold; font-size: small;" />
-											<h:outputText value="#{postComment.dateTime.time}" style="font-size: small;">
-												<f:convertDateTime timeZone="America/Sao_Paulo" locale="#{profileBean.locale}" pattern="HH:mm dd/MMM/yyyy" />
-											</h:outputText>
-										</div>
-										<div style="">
-											<h:outputText value="#{postComment.content}" style="font-weight: bold; font-size: small;" />
-										</div>
-									</div>
-								</div>
-							</p:column>
-						</p:dataTable>
-					</div>
 				</div>
 			</div>
 			<div style="clear: both;"></div>

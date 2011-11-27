@@ -1,12 +1,14 @@
 package br.com.lawbook.dao;
 
+import java.util.List;
+
 import org.hibernate.HibernateException;
 
 import br.com.lawbook.model.Profile;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 28OCT2011-06
+ * @version 26NOV2011-07
  * 
  */
 public interface ProfileDAO {
@@ -22,5 +24,7 @@ public interface ProfileDAO {
 	Profile getProfileByUserId(Long userId) throws HibernateException;
 
 	Profile getProfileByUserName(String userName) throws HibernateException;
+
+	List<Profile> getAll() throws HibernateException;
 
 }

@@ -33,7 +33,6 @@ public class AdminBean implements Serializable {
 
 	private List<User> users;
 	private User chosenUser;
-	private String usernameComplete;
 	private String pass;
 	private String passConfirmation;
 	private final List<Authority> authorities;
@@ -68,7 +67,7 @@ public class AdminBean implements Serializable {
 		String outcome = "";
 		try {
 			this.validateUser();
-			this.chosenUser.getUserName().toLowerCase();
+			this.chosenUser.setUserName(this.chosenUser.getUserName().toLowerCase());
 			UserService.getInstance().create(this.chosenUser);
 			Long profileId = postProcessing();
 			this.users.add(this.chosenUser);
@@ -89,6 +88,7 @@ public class AdminBean implements Serializable {
 		profile.setAvatar("http://www.lawbook.com.br/lawbook/resources/images/defaultAvatar.png");
 		profile.setFirstName(this.chosenUser.getUserName());
 		profile.setLastName("");
+		profile.setLocale("pt_BR");
 		profile.setUserOwner(UserService.getInstance().getUserById(this.chosenUser.getId()));
 		PROFILE_SERVICE.create(profile);
 		
@@ -190,14 +190,6 @@ public class AdminBean implements Serializable {
 
 	public List<Authority> getAuthorities() {
 		return this.authorities;
-	}
-
-	public String getUsernameComplete() {
-		return this.usernameComplete;
-	}
-
-	public void setUsernameComplete(final String usernameComplete) {
-		this.usernameComplete = usernameComplete;
 	}
 
 	public String getPass() {
