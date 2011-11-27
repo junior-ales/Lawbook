@@ -20,7 +20,7 @@ public final class ProcessService implements Serializable {
 
 	private final ProcessDAO dao;
 	private static ProcessService instance;
-	private static final long serialVersionUID = -7745879838206932661L;
+	private static final long serialVersionUID = 5791197051721076105L;
 
 	private ProcessService() {
 		this.dao = new ProcessDAOImpl();
@@ -39,10 +39,8 @@ public final class ProcessService implements Serializable {
 	}
 
 	public void update(final Process process) throws IllegalArgumentException, HibernateException {
-		// TODO
-//		JavaUtil.validateParameter(process, "Parameter required: ProcessService.update.process");
-//		ProcessDAO dao = new ProcessDAOImpl();
-//		dao.update(process);
+		JavaUtil.validateParameter(process, "#### Parameter required: ProcessService.update.process");
+		this.dao.update(process);
 	}
 
 	public Process getById(final Long processId) throws IllegalArgumentException, HibernateException {

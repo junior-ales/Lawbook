@@ -9,7 +9,7 @@
 	<ui:define name="postPanel">
 		<p:inputTextarea id="newpostProfile" value="#{postBean.postContent}" 
 						 style="width:588px; height:60px; margin-bottom: 25px;" />
-	    <p:watermark for="newpostProfile" value="#{label.post_privately}#{profileBean.profileOwner.firstName}" />
+	    <p:watermark for="newpostProfile" value="#{label.post_privately} #{profileBean.profileOwner.firstName}" />
 
 	    <p:ajaxStatus onstart="statusDialog.show()" oncomplete="statusDialog.hide()" />
 		<p:dialog widgetVar="statusDialog" resizable="false" modal="true"

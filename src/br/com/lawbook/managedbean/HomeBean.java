@@ -36,6 +36,7 @@ public class HomeBean implements Serializable {
 
 	public HomeBean() {
 		try {
+			this.publicProfile = PROFILE_SERVICE.getPublicProfile();
 			this.authProfile = PROFILE_SERVICE.getAuthorizedUserProfile();
 		} catch (final Exception e) {
 			LOG.severe(e.getMessage());
@@ -83,13 +84,8 @@ public class HomeBean implements Serializable {
 		return this.authProfile;
 	}
 
-	public void setAuthProfile(final Profile profile) {
-		this.authProfile = profile;
-	}
-
 	public Profile getPublicProfile() {
-		if (this.publicProfile == null) this.publicProfile = PROFILE_SERVICE.getPublicProfile();
-		return this.publicProfile;
+		return publicProfile;
 	}
 
 }

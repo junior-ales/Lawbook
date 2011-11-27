@@ -1,9 +1,8 @@
 package br.com.lawbook.managedbean;
 
 import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -32,7 +31,8 @@ public class ProfileBean implements Serializable {
 	
 	private Profile authProfile;
 	private Profile profileOwner;
-	private String birth;
+	private Profile publicProfile;
+	private Date birth;
 	private LazyDataModel<Post> wall;
 	private static final ProfileService PROFILE_SERVICE = ProfileService.getInstance();
 	private static final PostService POST_SERVICE = PostService.getInstance();
@@ -42,10 +42,10 @@ public class ProfileBean implements Serializable {
 	public ProfileBean() {
 		this.profileOwner = new Profile();
 		try {
-			this.setAuthProfile(PROFILE_SERVICE.getAuthorizedUserProfile());
+			this.authProfile = PROFILE_SERVICE.getAuthorizedUserProfile();
+			this.publicProfile = PROFILE_SERVICE.getPublicProfile();
 			if (this.authProfile.getBirth() != null) {
-				final SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-				this.birth = df.format(this.authProfile.getBirth().getTime());
+				this.birth = this.authProfile.getBirth().getTime();
 			}
 		} catch (Exception e) {
 			FacesUtil.errorMessage("Authentication Error", "Problem with authentication process: " + e.getMessage());
@@ -117,8 +117,10 @@ public class ProfileBean implements Serializable {
 	
 	public void updateProfile() {
 		LOG.info("#### updateProfile()");
+		final Calendar auxDate = Calendar.getInstance();
+		auxDate.setTime(this.birth);
+		this.authProfile.setBirth(auxDate);
 		try {
-			this.authProfile.setBirth(getDate(this.birth));
 			PROFILE_SERVICE.update(this.authProfile);
 			FacesUtil.infoMessage("=)", "Profile updated successfully");
 		} catch (final IllegalArgumentException e) {
@@ -128,29 +130,10 @@ public class ProfileBean implements Serializable {
 		}
 	}
 	
-	private static Calendar getDate(final String dateString) {
-		final Calendar c = Calendar.getInstance();
-		final SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-		try {
-			c.setTime(df.parse(dateString));
-		} catch (final ParseException e) {
-			e.printStackTrace();
-		}
-		return c;
-	}
-	
 	public LazyDataModel<Post> getWall() {
 		return this.wall;
 	}
 
-	public Profile getAuthProfile() {
-		return authProfile;
-	}
-
-	private void setAuthProfile(Profile profile) {
-		this.authProfile = profile;
-	}
-	
 	public Profile getProfileOwner() {
 		return profileOwner;
 	}
@@ -158,12 +141,20 @@ public class ProfileBean implements Serializable {
 	public void setProfileOwner(Profile profileOwner) {
 		this.profileOwner = profileOwner;
 	}
+	
+	public Profile getAuthProfile() {
+		return authProfile;
+	}
+	
+	public Profile getPublicProfile() {
+		return publicProfile;
+	}
 
-	public String getBirth() {
+	public Date getBirth() {
 		return birth;
 	}
 
-	public void setBirth(String birth) {
+	public void setBirth(Date birth) {
 		this.birth = birth;
 	}
 	

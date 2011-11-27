@@ -60,6 +60,8 @@ public class ScheduleBean implements Serializable {
 	private static final EventService EVENT_SERVICE = EventService.getInstance();
 	private static final ProfileService PROFILE_SERVICE = ProfileService.getInstance();
 
+	// TODO insert a "p:calendar" tag in schedule.xhtml
+	
 	public ScheduleBean() {
 		this.event = new Event();
 		this.upcomingEvents = new ArrayList<Event>();

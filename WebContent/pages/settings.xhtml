@@ -31,10 +31,9 @@
                 <h:graphicImage id="imagePreview" height="50" width="50" url="#{profileBean.authProfile.avatar}" />
 	            
 	            <h:outputText value="Birthdate:  " />
-                <p:inputMask value="#{profileBean.birth}" size="18" mask="99/99/9999">
-                	<f:convertDateTime timeZone="America/Sao_Paulo" locale="#{profileBean.locale}" pattern="dd/MM/yyyy"/>
-                </p:inputMask>
-                <h:outputText value="DD/MM/YYYY" />  
+	            <p:calendar value="#{profileBean.birth}" showButtonPanel="true" size="18"
+                			locale="#{profileBean.authProfile.locale}" pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+                <h:outputText value="" />  
                 
                 <h:outputText value="About me:  " />
                 <p:inputTextarea value="#{profileBean.authProfile.aboutMe}" cols="18"  />

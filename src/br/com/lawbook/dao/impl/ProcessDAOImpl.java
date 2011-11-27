@@ -17,7 +17,7 @@ import br.com.lawbook.util.HibernateUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 23NOV2011-02
+ * @version 27NOV2011-03
  *
  */
 public class ProcessDAOImpl implements ProcessDAO {
@@ -40,55 +40,21 @@ public class ProcessDAOImpl implements ProcessDAO {
 			LOG.info("#### Hibernate Session closed");
 		}
 	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public List<Process> getByResponsible(final Profile responsible) throws HibernateException {
-		final Session session = HibernateUtil.getSession();
-		try {
-			final Criteria crit = session.createCriteria(Process.class);
-			crit.add(Restrictions.eq("responsible", responsible));
-			return crit.list();
-		} catch (final Exception e) {
-			LOG.severe(e.getMessage());
-			throw new HibernateException(e);
-		} finally {
-			session.close();
-			LOG.info("#### Hibernate Session closed");
-		}
-	}
 	
 	@Override
-	@SuppressWarnings("unchecked")
-	public List<Process> getByPetitioner(final Profile petitioner) throws HibernateException {
-		final Session session = HibernateUtil.getSession();
+	public void update(Process process) throws HibernateException {
+		Session session = HibernateUtil.getSession();
+		Transaction tx = session.beginTransaction();
 		try {
-			final Criteria crit = session.createCriteria(Process.class);
-			crit.add(Restrictions.eq("petitioner", petitioner));
-			return crit.list();
-		} catch (final Exception e) {
+			session.update(process);
+			tx.commit();
+		} catch (Exception e) {
 			LOG.severe(e.getMessage());
+			tx.rollback();
 			throw new HibernateException(e);
 		} finally {
 			session.close();
-			LOG.info("#### Hibernate Session closed");
-		}
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public List<Process> getByDefendant(final Profile defendant) throws HibernateException {
-		final Session session = HibernateUtil.getSession();
-		try {
-			final Criteria crit = session.createCriteria(Process.class);
-			crit.add(Restrictions.eq("defendant", defendant));
-			return crit.list();
-		} catch (final Exception e) {
-			LOG.severe(e.getMessage());
-			throw new HibernateException(e);
-		} finally {
-			session.close();
-			LOG.info("#### Hibernate Session closed");
+			LOG.info("Hibernate Session closed");
 		}
 	}
 	

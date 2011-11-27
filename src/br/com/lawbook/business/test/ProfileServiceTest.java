@@ -89,7 +89,7 @@ public class ProfileServiceTest {
 	
 	@Test
 	public void unfriend() {
-		// TODO according
+		// TODO unfriend
 		Profile p1 = ProfileService.getInstance().getProfileByUserName("admin");
 		Profile p2 = ProfileService.getInstance().getPublicProfile();
 		

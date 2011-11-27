@@ -32,16 +32,17 @@ public class ProcessBean implements Serializable {
 
 	private User part;
 	private Process process;
-	private Profile authProfile;
 	private Date openingDate;
-	private List<Process> processes;
 	private List<User> users;
-	private static final ProfileService PROFILE_SERVICE = ProfileService.getInstance();
-	private static final ProcessService PROCESS_SERVICE = ProcessService.getInstance();
+	private Profile authProfile;
+	private List<Process> processes;
 	private static final Logger LOG = Logger.getLogger("ProcessBean");
 	private static final long serialVersionUID = 1650461649670013799L;
+	private static final ProfileService PROFILE_SERVICE = ProfileService.getInstance();
+	private static final ProcessService PROCESS_SERVICE = ProcessService.getInstance();
 
 	// TODO ask someone legal areas and situations to add in drop-down lists in newProcess.xhtml
+	// TODO edit process page
 
 	public ProcessBean() {
 		LOG.info("#### ProcessBean created");

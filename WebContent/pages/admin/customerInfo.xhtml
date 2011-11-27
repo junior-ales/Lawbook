@@ -31,8 +31,9 @@
                 <h:graphicImage id="imagePreview" height="50" width="50" url="#{customerBean.customer.avatar}" />
 	            
 	            <h:outputText value="Birthdate:  " />
-                <p:inputMask value="#{customerBean.birth}" size="18" mask="99/99/9999" />
-                <h:outputText value="DD/MM/YYYY" />  
+                <p:calendar value="#{customerBean.birth}" showButtonPanel="true" size="18"
+                			locale="#{profileBean.authProfile.locale}" pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+                <h:outputText value="" />  
                 
                 <h:outputText value="About me:  " />
                 <p:inputTextarea value="#{customerBean.customer.aboutMe}" cols="18"  />

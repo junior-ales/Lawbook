@@ -12,18 +12,33 @@
 					<h:graphicImage value="#{post.sender.avatar}" width="75" height="75" style="margin-left: 25px;" />
 				</div>
 				<div style="margin-left: 131px;">
-					<div>
-						<h:commandLink value="#{post.sender.firstName} #{post.sender.lastName}" action="#{userBean.profileOutcome}" >
+					<div style="padding: 5px;">
+						<h:commandLink value="#{post.sender.firstName} #{post.sender.lastName}" action="#{userBean.profileOutcome}">
 							<f:setPropertyActionListener target="#{profileBean.profileOwner}" value="#{post.sender}" />
 						</h:commandLink>
-						<h:outputText value="#{post.dateTime.time}" style="font-size: small;">
-							<f:convertDateTime timeZone="America/Sao_Paulo" locale="#{profileBean.locale}" pattern="HH:mm dd/MMM/yyyy"/>
-						</h:outputText>
-						<p:commandButton actionListener="#{homeBean.removePost}" value="" update="@form"
-										 style="position: relative; top: -3px; left: 52%; width: 18px; height: 20px;" />
 					</div>
-					<div>
+					<div style="padding: 5px;">
 						<h:outputText value="#{post.content}" style="font-size: larger;" />
+					</div>
+					<div style="font-size:small;padding: 5px;">
+						<h:outputText value="#{post.dateTime.time}">
+							<f:convertDateTime timeZone="America/Sao_Paulo" locale="#{homeBean.authProfile.locale}" pattern="HH:mm dd/MMM/yyyy"/>
+						</h:outputText>
+						
+						<h:outputText value="&#8729;" style="font-weight:bold;margin-left:15px;" 
+									  rendered="#{post.receiver.id != homeBean.publicProfile.id}" />
+						
+						<h:outputText value="privately to " style="margin-left:15px;" 
+									  rendered="#{post.receiver.id != homeBean.publicProfile.id}" />
+						
+						<h:commandLink value="#{post.receiver.firstName}" action="#{userBean.profileOutcome}"
+						 			   rendered="#{post.receiver.id != homeBean.publicProfile.id}">
+							<f:setPropertyActionListener target="#{profileBean.profileOwner}" value="#{post.receiver}" />
+						</h:commandLink>
+						
+						<h:outputText value="&#8729;" style="font-weight:bold;margin-left:15px;" rendered="#{homeBean.authProfile.id == post.sender.id}" />
+						<p:commandLink actionListener="#{homeBean.removePost}" value="delete" update="@form" 
+										 rendered="#{homeBean.authProfile.id == post.sender.id}" style="margin-left:15px;"/>
 					</div>
 				</div>
 			</div>
