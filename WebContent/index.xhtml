@@ -99,7 +99,8 @@
                     <h:commandButton id="buttonSubmitLogin" value="Login" type="submit" style="margin-left: 10px;" onclick="errorPanel.hide()" />
 				</form>
 			</div>
-			<p:panel styleClass="errorPanel" visible="#{param.erro}" widgetVar="errorPanel">
+			<p:panel style="position:absolute;background-color:white;width:300px;top:50%;left:50%;margin:-200px 0 0 -150px;"
+					 visible="#{param.erro}" widgetVar="errorPanel">
 				<h:outputText value="Usuário ou senha incorretos!" style="color: red"/>
 			</p:panel>
 		</div>

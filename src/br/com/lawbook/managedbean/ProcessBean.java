@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 import org.hibernate.HibernateException;
 import org.primefaces.event.SelectEvent;
@@ -23,11 +23,11 @@ import br.com.lawbook.util.FacesUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 26NOV2011-02
+ * @version 28NOV2011-03
  *
  */
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class ProcessBean implements Serializable {
 
 	private User part;
@@ -55,11 +55,9 @@ public class ProcessBean implements Serializable {
 			if (FacesUtil.getExternalContext().getRequestServletPath().contains("processes")) {
 				this.processes = PROCESS_SERVICE.getAll();
 				LOG.info("#### All processes loaded");
-				LOG.info("#### Users not loaded");
 			} else {
 				this.processes = PROCESS_SERVICE.getMyProcesses(this.authProfile);
 				LOG.info("#### My processes loaded");
-				LOG.info("#### Users not loaded");
 			}
 		} catch (final IllegalArgumentException e) {
 			LOG.severe(e.getMessage());

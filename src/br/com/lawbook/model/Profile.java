@@ -23,7 +23,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 10NOV2011-18
+ * @version 28NOV2011-19
  * 
  */
 @Entity(name = "lwb_user_profile")
@@ -57,36 +57,36 @@ public class Profile implements Serializable {
 	private String avatar;
 	@Column(length = 5)
 	private String locale;
-	@Column(length = 11)
-	private Integer cpf;
 	@Column
-	private Integer rg;
+	private Long cpf;
+	@Column
+	private Long rg;
 	@Column(length = 100, name = "orgao_expedidor")
 	private String orgaoExpedidor;
 	@Column(length = 1)
 	private String gender;
 	@Column(length = 100, name = "marital_status")
 	private String maritalStatus;
-	@Column(length = 20)
-	private Integer phone;
-	@Column(length = 14)
-	private Integer cnpj;
+	@Column
+	private Long phone;
+	@Column
+	private Long cnpj;
 	@Transient
-	private static final long serialVersionUID = -4877055133321878944L;
+	private static final long serialVersionUID = -8954930935167848226L;
 
-	public Integer getCpf() {
+	public Long getCpf() {
 		return this.cpf;
 	}
 
-	public void setCpf(final Integer cpf) {
+	public void setCpf(final Long cpf) {
 		this.cpf = cpf;
 	}
 
-	public Integer getRg() {
+	public Long getRg() {
 		return this.rg;
 	}
 
-	public void setRg(final Integer rg) {
+	public void setRg(final Long rg) {
 		this.rg = rg;
 	}
 
@@ -198,19 +198,19 @@ public class Profile implements Serializable {
 		this.locale = locale;
 	}
 
-	public Integer getPhone() {
-		return phone;
+	public Long getPhone() {
+		return this.phone;
 	}
 
-	public void setPhone(Integer phone) {
+	public void setPhone(final Long phone) {
 		this.phone = phone;
 	}
 
-	public Integer getCnpj() {
-		return cnpj;
+	public Long getCnpj() {
+		return this.cnpj;
 	}
 
-	public void setCnpj(Integer cnpj) {
+	public void setCnpj(final Long cnpj) {
 		this.cnpj = cnpj;
 	}
 

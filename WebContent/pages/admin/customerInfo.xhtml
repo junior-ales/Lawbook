@@ -59,44 +59,70 @@
 				</f:facet>
 				
 				<h:outputText value="CPF: " />
-                <p:inputMask value="#{customerBean.cpf}" size="18" mask="999.999.999-99"
+                <p:inputMask id="id1" value="#{customerBean.cpf}" size="18" mask="999.999.999-99"
                 			 converterMessage="Use only numbers" maxlength="11" />  
-	            <h:outputText value="*" style="color:red;" />
+	            <h:outputText value="" />
 	            
 	            <h:outputText value="CNPJ: " />
-                <p:inputMask value="#{customerBean.cnpj}" size="18" mask="99.999.999/9999-99" 
+                <p:inputMask id="id2" value="#{customerBean.cnpj}" size="18" mask="99.999.999/9999-99" 
                 			 converterMessage="Use only numbers" maxlength="14" />  
-	            <h:outputText value="*" style="color:red;" />
+	            <h:outputText value="" />
 				
 				<h:outputText value="RG: " />
-                <p:inputText value="#{customerBean.rg}" size="18" />  
-	            <h:outputText value="*" style="color:red;" />
+                <p:inputText id="id3" value="#{customerBean.rg}" size="18" />  
+	            <h:outputText value="" />
 	            
 	            <h:outputText value="#{label.orgao_expedidor}" />
-                <p:inputText value="#{customerBean.customer.orgaoExpedidor}" size="18" />  
-	            <h:outputText value="*" style="color:red;" />
+                <p:inputText id="id4" value="#{customerBean.customer.orgaoExpedidor}" size="18" />  
+	            <h:outputText value="" />
 				
 				<h:outputText value="Genero: " />
-	            <h:selectOneMenu value="#{customerBean.customer.gender}" >
+	            <h:selectOneMenu id="id5" value="#{customerBean.customer.gender}" >
 		   			<f:selectItem itemLabel="Masculino" itemValue="m" />
 		   			<f:selectItem itemLabel="Feminino" itemValue="f" />
 		   		</h:selectOneMenu>
-				<h:outputText value="*" style="color:red;" />
+				<h:outputText value="" />
 				
 				<h:outputText value="Estado Civil: " />
-	            <h:selectOneMenu value="#{customerBean.customer.maritalStatus}" >
+	            <h:selectOneMenu id="id6" value="#{customerBean.customer.maritalStatus}" >
 		   			<f:selectItem itemLabel="Casado" itemValue="casado" />
 		   			<f:selectItem itemLabel="Divorciado" itemValue="divorciado" />
 		   			<f:selectItem itemLabel="Separado" itemValue="separado" />
 		   			<f:selectItem itemLabel="Solteiro" itemValue="solteiro" />
 		   			<f:selectItem itemLabel="Viuvo" itemValue="viuvo" />
 		   		</h:selectOneMenu>
-				<h:outputText value="*" style="color:red;" />
+				<h:outputText value="" />
 				
 				<h:outputText value="Telefone: " />
-                <p:inputMask value="#{customerBean.phone}" size="18" mask="(99)9999-9999"
+                <p:inputMask id="id7" value="#{customerBean.phone}" size="18" mask="(99)9999-9999"
                 			 converterMessage="Use only numbers" maxlength="11" />  
-	            <h:outputText value="*" style="color:red;" />
+	            <h:outputText value="" />
+	            
+	            <h:outputText value="Titulo: " />
+                <p:inputText id="id8" value="#{customerBean.local.name}" size="18" />  
+	            <h:outputText value="Ex: Residencia de fulano" style="font-size:small;" />
+	            
+	            <h:outputText value="Endereco: " />
+                <p:inputText id="id9" value="#{customerBean.local.mainAdd}" size="18" />  
+	            <h:outputText value="" />
+	            
+	            <h:outputText value="CEP: " />
+                <p:inputMask id="id10" value="#{customerBean.local.mainZipCode}" size="18" mask="99999-999"
+                			 converterMessage="Use only numbers" maxlength="8" />  
+	            <h:outputText value="" />
+	            
+	            <h:outputText value="Cidade: " />
+                <p:inputText id="id11" value="#{customerBean.local.city}" size="18" />  
+	            <h:outputText value="" />
+	            
+	            <h:outputText value="Estado: " />
+                <p:inputText id="id12" value="#{customerBean.local.state}" size="18" />  
+	            <h:outputText value="" />
+	            
+	            <h:outputText value="Pais: " />
+                <p:inputText id="id13" value="#{customerBean.local.country}" size="18" />  
+	            <h:outputText value="" />
+	            
 			</h:panelGrid>
 			<f:facet name="footer">
 				<h:outputText value="* Required fields" style="color:red;" />

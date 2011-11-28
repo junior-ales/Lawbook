@@ -21,7 +21,7 @@
 				<h:outputText id="aboutMeProfile" value="#{profileBean.profileOwner.aboutMe}" />
 				<br /><br />
 				<h:outputLabel for="locationProfile" value="Location" style="font-weight: bold;"/><br />
-				<h:outputText id="locationProfile" value="#{profileBean.profileOwner.location.city} #{profileBean.profileOwner.location.state}" />
+				<h:outputText id="locationProfile" value="#{profileBean.profileOwner.location.short}" />
 				<f:facet name="footer">
 					<p:commandButton value="+Connection" disabled="#{profileBean.disabled}" update="@form"
 									 actionListener="#{profileBean.addFriend}" style="font-size: large;" />
