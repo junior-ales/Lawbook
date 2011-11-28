@@ -8,15 +8,19 @@
 		<h:head>
 			<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 			<title>Lawbook</title>
-			<link rel="icon" href="../resources/images/icon.png" type="image/x-icon" />
+			<link rel="icon" href="http://www.lawbook.com.br/lawbook/resources/images/icon.png" type="image/x-icon" />
 		</h:head>
-		<h:body>
+		<h:body style="background-color: #e1e2e3;">
 			<!--<h:outputStylesheet name="style.css" library="css" />-->
 			<h:form id="formMaster" prependId="false">
 				<p:growl id="growl" showDetail="true" /> 
 				<div id="divMaster" style="width: 900px; margin-left: 20px;">
 					<div id="topPanel" style="background-color: white; float: none; width: 100%;">
-						<div id="menuBar_" style="float: right;">
+						<div id="menuBar_" style="float: right;width: 100%; text-align: right;">
+							<p:fieldset id="logoBar" style="position:absolute; left:782px; z-index:100;" toggleable="false">
+								<h:graphicImage url="http://www.lawbook.com.br/lawbook/resources/images/icon.png" />
+								<h:outputText value=" Lawbook" />
+							</p:fieldset>
 							<p:menubar id="mainDynamicMenu" model="#{userBean.menu}" />
 						</div>
 					</div>
