@@ -30,113 +30,188 @@ import org.hibernate.annotations.LazyCollectionOption;
 public class Profile implements Serializable {
 
 	@Id
-	@SequenceGenerator(name="lwb_user_profile_seq_id", sequenceName="lwb_user_profile_seq_id",allocationSize=1,initialValue=1)
-    @GeneratedValue(generator="lwb_user_profile_seq_id", strategy= GenerationType.SEQUENCE)
+	@SequenceGenerator(name = "lwb_user_profile_seq_id", sequenceName = "lwb_user_profile_seq_id", allocationSize = 1, initialValue = 1)
+	@GeneratedValue(generator = "lwb_user_profile_seq_id", strategy = GenerationType.SEQUENCE)
 	private Long id;
-	@OneToOne @ForeignKey(name="FK_USER_PROFILE_USER")
-	@JoinColumn(name="user_id", unique=true, nullable=false)
+	@OneToOne
+	@ForeignKey(name = "FK_USER_PROFILE_USER")
+	@JoinColumn(name = "user_id", unique = true, nullable = false)
 	private User userOwner;
 	@Column(length = 50)
 	private String firstName;
 	@Column(length = 50)
 	private String lastName;
 	private Calendar birth;
-	@ManyToOne @ForeignKey(name="FK_USER_PROFILE_LOCATION")
+	@ManyToOne
+	@ForeignKey(name = "FK_USER_PROFILE_LOCATION")
 	@JoinColumn(name = "location_id")
 	private Location location;
 	@Column(length = 255, name = "about_me")
 	private String aboutMe;
-	@ManyToMany @ForeignKey(name="FK_USER_PROFILE_FRIEND_LIST", inverseName="FK_FRIEND_LIST_USER_PROFILE") @LazyCollection(LazyCollectionOption.FALSE)
-	@JoinTable(name="lwb_friends", joinColumns = { @JoinColumn(name = "user_profile_id") }, inverseJoinColumns = { @JoinColumn(name = "friend_id") })
+	@ManyToMany
+	@ForeignKey(name = "FK_USER_PROFILE_FRIEND_LIST", inverseName = "FK_FRIEND_LIST_USER_PROFILE")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@JoinTable(name = "lwb_friends", joinColumns = { @JoinColumn(name = "user_profile_id") }, inverseJoinColumns = { @JoinColumn(name = "friend_id") })
 	private List<Profile> friends;
 	@Column(length = 255)
 	private String avatar;
 	@Column(length = 5)
 	private String locale;
+	@Column(length = 11)
+	private Integer cpf;
+	@Column
+	private Integer rg;
+	@Column(length = 100, name = "orgao_expedidor")
+	private String orgaoExpedidor;
+	@Column(length = 1)
+	private String gender;
+	@Column(length = 100, name = "marital_status")
+	private String maritalStatus;
+	@Column(length = 20)
+	private Integer phone;
+	@Column(length = 14)
+	private Integer cnpj;
 	@Transient
-	private static final long serialVersionUID = -514526194524102776L;
-	
-	public Long getId() {
-		return id;
+	private static final long serialVersionUID = -4877055133321878944L;
+
+	public Integer getCpf() {
+		return this.cpf;
 	}
 
-	public void setId(Long id) {
+	public void setCpf(final Integer cpf) {
+		this.cpf = cpf;
+	}
+
+	public Integer getRg() {
+		return this.rg;
+	}
+
+	public void setRg(final Integer rg) {
+		this.rg = rg;
+	}
+
+	public String getOrgaoExpedidor() {
+		return this.orgaoExpedidor;
+	}
+
+	public void setOrgaoExpedidor(final String orgaoExpedidor) {
+		this.orgaoExpedidor = orgaoExpedidor;
+	}
+
+	public String getGender() {
+		return this.gender;
+	}
+
+	public void setGender(final String gender) {
+		this.gender = gender;
+	}
+
+	public String getMaritalStatus() {
+		return this.maritalStatus;
+	}
+
+	public void setMaritalStatus(final String maritalStatus) {
+		this.maritalStatus = maritalStatus;
+	}
+
+	public Long getId() {
+		return this.id;
+	}
+
+	public void setId(final Long id) {
 		this.id = id;
 	}
 
 	public User getUserOwner() {
-		return userOwner;
+		return this.userOwner;
 	}
 
-	public void setUserOwner(User userOwner) {
+	public void setUserOwner(final User userOwner) {
 		this.userOwner = userOwner;
 	}
 
 	public String getFirstName() {
-		return firstName;
+		return this.firstName;
 	}
 
-	public void setFirstName(String firstName) {
+	public void setFirstName(final String firstName) {
 		this.firstName = firstName;
 	}
 
 	public String getLastName() {
-		return lastName;
+		return this.lastName;
 	}
 
-	public void setLastName(String lastName) {
+	public void setLastName(final String lastName) {
 		this.lastName = lastName;
 	}
 
 	public Calendar getBirth() {
-		return birth;
+		return this.birth;
 	}
 
-	public void setBirth(Calendar birth) {
+	public void setBirth(final Calendar birth) {
 		if (Calendar.getInstance().compareTo(birth) < 0) {
-			throw new IllegalArgumentException("A data de nascimento deve ser menor que a data de hoje");
+			throw new IllegalArgumentException(
+					"A data de nascimento deve ser menor que a data de hoje");
 		}
 		this.birth = birth;
 	}
 
 	public Location getLocation() {
-		return location;
+		return this.location;
 	}
 
-	public void setLocation(Location location) {
+	public void setLocation(final Location location) {
 		this.location = location;
 	}
 
 	public String getAboutMe() {
-		return aboutMe;
+		return this.aboutMe;
 	}
 
-	public void setAboutMe(String aboutMe) {
+	public void setAboutMe(final String aboutMe) {
 		this.aboutMe = aboutMe;
 	}
 
 	public List<Profile> getFriends() {
-		return friends;
+		return this.friends;
 	}
 
-	public void setFriends(List<Profile> friends) {
+	public void setFriends(final List<Profile> friends) {
 		this.friends = friends;
 	}
 
 	public String getAvatar() {
-		return avatar;
+		return this.avatar;
 	}
 
-	public void setAvatar(String avatar) {
+	public void setAvatar(final String avatar) {
 		this.avatar = avatar;
 	}
 
 	public String getLocale() {
-		return locale;
+		return this.locale;
 	}
 
-	public void setLocale(String locale) {
+	public void setLocale(final String locale) {
 		this.locale = locale;
+	}
+
+	public Integer getPhone() {
+		return phone;
+	}
+
+	public void setPhone(Integer phone) {
+		this.phone = phone;
+	}
+
+	public Integer getCnpj() {
+		return cnpj;
+	}
+
+	public void setCnpj(Integer cnpj) {
+		this.cnpj = cnpj;
 	}
 
 }

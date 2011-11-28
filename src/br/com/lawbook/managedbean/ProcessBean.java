@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 
 import org.hibernate.HibernateException;
 import org.primefaces.event.SelectEvent;
@@ -27,7 +27,7 @@ import br.com.lawbook.util.FacesUtil;
  *
  */
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class ProcessBean implements Serializable {
 
 	private User part;
@@ -37,28 +37,36 @@ public class ProcessBean implements Serializable {
 	private Profile authProfile;
 	private List<Process> processes;
 	private static final Logger LOG = Logger.getLogger("ProcessBean");
-	private static final long serialVersionUID = 1650461649670013799L;
+	private static final long serialVersionUID = -598147603244383104L;
 	private static final ProfileService PROFILE_SERVICE = ProfileService.getInstance();
 	private static final ProcessService PROCESS_SERVICE = ProcessService.getInstance();
 
-	// TODO ask someone legal areas and situations to add in drop-down lists in newProcess.xhtml
-	// TODO edit process page
+	// TODO create edit process page
 
 	public ProcessBean() {
 		LOG.info("#### ProcessBean created");
 		this.process = new Process();
+		if (FacesUtil.getExternalContext().getRequestServletPath().contains("admin")) { // testing if is an administration page
+			this.users = UserConverter.users;
+			LOG.info("#### Users loaded");
+		}
 		try {
-			this.setAuthProfile(PROFILE_SERVICE.getAuthorizedUserProfile());
-			if (FacesUtil.getExternalContext().getRequestServletPath().contains("admin")) { // testing if is an administration page
-				this.users = UserConverter.users;
-				LOG.info("#### Users loaded");
+			this.authProfile = PROFILE_SERVICE.getAuthorizedUserProfile();
+			if (FacesUtil.getExternalContext().getRequestServletPath().contains("processes")) {
+				this.processes = PROCESS_SERVICE.getAll();
+				LOG.info("#### All processes loaded");
+				LOG.info("#### Users not loaded");
 			} else {
 				this.processes = PROCESS_SERVICE.getMyProcesses(this.authProfile);
+				LOG.info("#### My processes loaded");
 				LOG.info("#### Users not loaded");
 			}
-		} catch (final Exception e) {
+		} catch (final IllegalArgumentException e) {
 			LOG.severe(e.getMessage());
-			FacesUtil.errorMessage("Authentication Error", "Problem with authentication process: " + e.getMessage());
+			FacesUtil.warnMessage("=|", e.getMessage());
+		} catch (final HibernateException e) {
+			LOG.severe(e.getMessage());
+			FacesUtil.errorMessage("=(", e.getMessage());
 		}
 	}
 
@@ -69,6 +77,25 @@ public class ProcessBean implements Serializable {
 			this.process.setOpeningDate(auxDate);
 			PROCESS_SERVICE.create(this.process);
 			FacesUtil.infoMessage("=)", "Process saved succesfully");
+		} catch (final IllegalArgumentException e) {
+			LOG.severe(e.getMessage());
+			FacesUtil.warnMessage("=|", e.getMessage());
+		} catch (final HibernateException e) {
+			LOG.severe(e.getMessage());
+			FacesUtil.errorMessage("=(", e.getMessage());
+		} finally {
+			this.process = new Process();
+			this.part = new User();
+		}
+	}
+
+	public void updateProcess() {
+		try {
+			final Calendar auxDate = Calendar.getInstance();
+			auxDate.setTime(this.openingDate);
+			this.process.setOpeningDate(auxDate);
+			PROCESS_SERVICE.update(this.process);
+			FacesUtil.infoMessage("=)", "Process updated succesfully");
 		} catch (final IllegalArgumentException e) {
 			LOG.severe(e.getMessage());
 			FacesUtil.warnMessage("=|", e.getMessage());
@@ -114,10 +141,6 @@ public class ProcessBean implements Serializable {
 
 	public Profile getAuthProfile() {
 		return this.authProfile;
-	}
-
-	private void setAuthProfile(final Profile profile) {
-		this.authProfile = profile;
 	}
 
 	public User getPart() {

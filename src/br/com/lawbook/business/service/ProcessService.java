@@ -13,7 +13,7 @@ import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 27NOV2011-02
+ * @version 27NOV2011-03
  *
  */
 public final class ProcessService implements Serializable {
@@ -41,6 +41,10 @@ public final class ProcessService implements Serializable {
 	public void update(final Process process) throws IllegalArgumentException, HibernateException {
 		JavaUtil.validateParameter(process, "#### Parameter required: ProcessService.update.process");
 		this.dao.update(process);
+	}
+
+	public List<Process> getAll() throws HibernateException {
+		return this.dao.getAll();
 	}
 
 	public Process getById(final Long processId) throws IllegalArgumentException, HibernateException {

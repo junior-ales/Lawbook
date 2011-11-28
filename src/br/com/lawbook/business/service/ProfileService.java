@@ -47,12 +47,12 @@ public final class ProfileService implements Serializable {
 		this.dao.update(profile);
 	}
 
-	public Profile getAuthorizedUserProfile() throws IllegalArgumentException, HibernateException, Exception {
+	public Profile getAuthorizedUserProfile() throws IllegalArgumentException, HibernateException {
 		final SecurityContext context = SecurityContextHolder.getContext();
-		if (context == null) throw new Exception("SecurityContext is null");
+		if (context == null) throw new IllegalArgumentException("SecurityContext is null");
 
 		final Authentication authentication = context.getAuthentication();
-        if (authentication == null) throw new Exception("Authentication is null");
+        if (authentication == null) throw new IllegalArgumentException("Authentication is null");
 
         final String username = ((org.springframework.security.core.userdetails.User)authentication.getPrincipal()).getUsername();
         return this.getProfileByUserName(username);
@@ -103,5 +103,73 @@ public final class ProfileService implements Serializable {
 		profile1.setFriends(friends);
 		this.update(profile1);
 	}
+	
+	public boolean cpfValidation(String strCpf) throws IllegalArgumentException {    
+        JavaUtil.validateParameter(strCpf, "Required paramenter: ProfileService.cpfValidation.strCpf");
+        if (strCpf.length() != 11) throw new IllegalArgumentException("Tamanho de CPF inválido");
+        
+        int d1, d2;    
+        int digito1, digito2, resto;    
+        int digitoCPF;    
+        String nDigResult;    
+    
+        d1 = d2 = 0;    
+        digito1 = digito2 = resto = 0;    
+    
+        for (int nCount = 1; nCount < strCpf.length() - 1; nCount++) {    
+            digitoCPF = Integer.valueOf(strCpf.substring(nCount - 1, nCount)).intValue();    
+            d1 = d1 + (11 - nCount) * digitoCPF;    
+            d2 = d2 + (12 - nCount) * digitoCPF;    
+        }    
+        resto = (d1 % 11);    
+        if (resto < 2)  
+            digito1 = 0;    
+        else     
+            digito1 = 11 - resto;    
+    
+        d2 += 2 * digito1;    
+        resto = (d2 % 11);  
+        
+        if (resto < 2) 
+        	digito2 = 0;    
+        else 
+        	digito2 = 11 - resto;    
+    
+        String nDigVerific = strCpf.substring(strCpf.length() - 2, strCpf.length());    
+        nDigResult = String.valueOf(digito1) + String.valueOf(digito2);    
+        return nDigVerific.equals(nDigResult);    
+    }    
+	
+     public boolean cnpjValidation(String cnpj) throws IllegalArgumentException {
+    	 JavaUtil.validateParameter(cnpj, "Required paramenter: ProfileService.cnpjValidation.cnpj");
+         if (cnpj.length() != 14) throw new IllegalArgumentException("Tamanho de CNPJ inválido");
 
+          int soma = 0;
+          String cnpj_calc = cnpj.substring(0, 12);
+
+          char chr_cnpj[] = cnpj.toCharArray();
+          for(int i = 0; i < 4; i++)
+               if(chr_cnpj[i] - 48 >= 0 && chr_cnpj[i] - 48 <= 9)
+                    soma += (chr_cnpj[i] - 48) * (6 - (i + 1));
+
+         for(int i = 0; i < 8; i++)
+              if(chr_cnpj[i + 4] - 48 >= 0 && chr_cnpj[i + 4] - 48 <= 9)
+                    soma += (chr_cnpj[i + 4] - 48) * (10 - (i + 1));
+
+         int dig = 11 - soma % 11;
+         cnpj_calc = (new StringBuilder(String.valueOf(cnpj_calc))).append(dig != 10 && dig != 11 ? Integer.toString(dig) : "0").toString();
+         soma = 0;
+         for(int i = 0; i < 5; i++)
+              if(chr_cnpj[i] - 48 >= 0 && chr_cnpj[i] - 48 <= 9)
+                   soma += (chr_cnpj[i] - 48) * (7 - (i + 1));
+
+         for(int i = 0; i < 8; i++)
+              if(chr_cnpj[i + 5] - 48 >= 0 && chr_cnpj[i + 5] - 48 <= 9)
+                   soma += (chr_cnpj[i + 5] - 48) * (10 - (i + 1));
+
+         dig = 11 - soma % 11;
+         cnpj_calc = (new StringBuilder(String.valueOf(cnpj_calc))).append(dig != 10 && dig != 11 ? Integer.toString(dig) : "0").toString();
+
+         return cnpj.equals(cnpj_calc);
+     }
 }

@@ -21,6 +21,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -57,6 +58,7 @@ public class ScheduleBean implements Serializable {
 	private LazyScheduleModel lazyEventModel;
 	private HashMap<String, Long> idEventMapping;
 	private static final long serialVersionUID = 7855410882230111356L;
+	private static final Logger LOG = Logger.getLogger("ScheduleBean");
 	private static final EventService EVENT_SERVICE = EventService.getInstance();
 	private static final ProfileService PROFILE_SERVICE = ProfileService.getInstance();
 
@@ -79,9 +81,8 @@ public class ScheduleBean implements Serializable {
 
 	@PostConstruct
 	public void loadLazilyEvents() {
-
-		this.upcomingEvents = EVENT_SERVICE.getUpcomingEvents(this.authProfile);
-
+		LOG.info("#### loadLazilyEvents()");
+		
 		if(this.lazyEventModel == null) {
 			this.lazyEventModel = new LazyScheduleModel() {
 
@@ -162,6 +163,7 @@ public class ScheduleBean implements Serializable {
 		try {
 			EVENT_SERVICE.delete(this.event);
 			this.lazyEventModel.deleteEvent(this.getEvent());
+			this.upcomingEvents = EVENT_SERVICE.getUpcomingEvents(this.authProfile);
 			FacesUtil.infoMessage("=)", "Event deleted");
 		} catch (final IllegalArgumentException e) {
 			FacesUtil.warnMessage("=|", e.getMessage());
@@ -239,12 +241,13 @@ public class ScheduleBean implements Serializable {
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
 	}
-
+	
 	private void updateEvent() throws IllegalArgumentException, HibernateException {
 		EVENT_SERVICE.update(this.event);
 		this.lazyEventModel.updateEvent(this.event);
 		this.idEventMapping.put(this.event.getId(), this.event.getEventId());
 		this.event = new Event();
+		this.upcomingEvents = EVENT_SERVICE.getUpcomingEvents(this.authProfile);
 		FacesUtil.infoMessage("=)", "Event updated successfully");
 	}
 
@@ -253,6 +256,7 @@ public class ScheduleBean implements Serializable {
 		this.lazyEventModel.addEvent(this.event);
 		this.idEventMapping.put(this.event.getId(), this.event.getEventId());
 		this.event = new Event();
+		this.upcomingEvents = EVENT_SERVICE.getUpcomingEvents(this.authProfile);		
 		FacesUtil.infoMessage("=)", "Event created successfully");
 	}
 

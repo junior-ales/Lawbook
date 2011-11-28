@@ -52,7 +52,7 @@ public class PostBean {
 			this.post.setReceiver(this.receiver);
 			this.post.setDateTime(Calendar.getInstance());
 			PostService.getInstance().create(this.post);
-			FacesUtil.infoMessage("=)", this.postContent);
+			FacesUtil.infoMessage("=)", "Posted successfully");
 			this.postContent = null;
 		} catch (final Exception e) {
 			FacesUtil.errorMessage("=(", e.getMessage());

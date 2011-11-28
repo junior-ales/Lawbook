@@ -31,7 +31,7 @@
 	</div>
 	<p:fieldset style="width: 200px;" legend="#{profileBean.profileOwner.firstName}'s Connections" toggleable="false">
 		<p:dataGrid id="friendsDataGridProfile" value="#{profileBean.profileOwner.friends}" 
-					var="friend" columns="1" rows="6" paginator="false">
+					var="friend" columns="1" paginator="false">
 			<p:column>
 				<p:graphicImage value="#{friend.avatar}" width="75" height="75" />
 				<h:commandLink id="friendNameLink" value=" #{friend.firstName}" action="#{userBean.profileOutcome}" >

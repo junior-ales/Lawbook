@@ -15,7 +15,6 @@
 				  draggable="false" closable="false" header="#{label.please_wait}"> 
 				<h:graphicImage library="images" name="ajaxloadingbar.gif" />
 		</p:dialog>
-		
 		<p:panel id="newProcessPanel" header="New Process">
 			<h:panelGrid id="newProcessPanelGrid" columns="3" cellpadding="3" >
 		   		
@@ -24,7 +23,17 @@
                 <h:outputText value="*" style="color:red;" />  
 	            
 	            <h:outputText value="Legal Area: " />
-                <p:inputText value="#{processBean.process.legalArea}" required="true" requiredMessage="Legal Area is required" size="24" />
+	            <h:selectOneMenu value="#{processBean.process.legalArea}" required="true" requiredMessage="Legal Area is required">
+		   			<f:selectItem itemLabel="Administrative" itemValue="administrative" />
+		   			<f:selectItem itemLabel="Banking" itemValue="banking" />
+		   			<f:selectItem itemLabel="Billing" itemValue="billing" />
+		   			<f:selectItem itemLabel="Civel" itemValue="civel" />
+		   			<f:selectItem itemLabel="Criminal" itemValue="criminal" />
+		   			<f:selectItem itemLabel="Family" itemValue="family" />
+		   			<f:selectItem itemLabel="Labor" itemValue="labor" />
+		   			<f:selectItem itemLabel="Other" itemValue="other" />
+		   			<f:selectItem itemLabel="Social Security" itemValue="social_security" />
+		   		</h:selectOneMenu>
                 <h:outputText value="*" style="color:red;" />
                 	            
 				<h:outputText value="Opening Date: " />
@@ -38,7 +47,10 @@
                 <h:outputText value="*" style="color:red;" />
                 
                 <h:outputText value="Situation: " />
-                <p:inputText value="#{processBean.process.situation}" required="true" requiredMessage="Situation is required" size="24" />
+                <h:selectOneMenu value="#{processBean.process.situation}" required="true" requiredMessage="Situation is required">
+                	<f:selectItem itemLabel="Archived" itemValue="archived" />
+                	<f:selectItem itemLabel="Underway" itemValue="underway" />
+                </h:selectOneMenu>
                 <h:outputText value="*" style="color:red;" />
                 
                 <h:outputText value="Responsible username: " />
@@ -65,9 +77,8 @@
 			</h:panelGrid>
 			<f:facet name="footer">
 				<h:outputText value="* Required fields" style="color:red;" />
-	            <p:commandButton value="Save" actionListener="#{processBean.saveProcess}" update="growl" style="position:relative;margin-left:300px;" />
+	            <p:commandButton value="Save" actionListener="#{processBean.saveProcess}" update="@form" style="position:relative;margin-left:300px;" />
 			</f:facet>
 		</p:panel>
-		
 	</ui:define>
 </ui:composition>

@@ -19,7 +19,7 @@ import br.com.lawbook.model.Profile;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 18NOV2011-11
+ * @version 27NOV2011-12
  * 
  */
 public class ProfileServiceTest {
@@ -28,7 +28,6 @@ public class ProfileServiceTest {
 	
 	@BeforeClass
 	public static void create() {
-		
 		UserService userService = UserService.getInstance();
 		
 		Profile publicProfile = new Profile();
@@ -114,6 +113,16 @@ public class ProfileServiceTest {
 		}
 		LOG.warning("Users aren't friends");
 		
+	}
+	
+	@Test
+	public void cpfTest() {
+		assertTrue(ProfileService.getInstance().cpfValidation("55555555555"));
+	}
+	
+	@Test
+	public void cnpjTest() {
+		assertTrue(ProfileService.getInstance().cnpjValidation("69456485000129"));
 	}
 	
 	private static Calendar getDate(String dateString) {

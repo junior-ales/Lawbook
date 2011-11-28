@@ -84,27 +84,33 @@ public class AdminBean implements Serializable {
 	}
 
 	private Long postProcessing() throws IllegalArgumentException, HibernateException {
-		Profile profile = new Profile();
-		profile.setAvatar("http://www.lawbook.com.br/lawbook/resources/images/defaultAvatar.png");
-		profile.setFirstName(this.chosenUser.getUserName());
-		profile.setLastName("");
-		profile.setLocale("pt_BR");
-		profile.setUserOwner(UserService.getInstance().getUserById(this.chosenUser.getId()));
-		PROFILE_SERVICE.create(profile);
-		
-		List<Profile> friends = new ArrayList<Profile>();
+		Profile newProfile = new Profile();
+		newProfile.setAvatar("http://www.lawbook.com.br/lawbook/resources/images/defaultAvatar.png");
+		newProfile.setFirstName(this.chosenUser.getUserName());
+		newProfile.setLastName("");
+		newProfile.setLocale("pt_BR");
+		newProfile.setUserOwner(UserService.getInstance().getUserById(this.chosenUser.getId()));
+		PROFILE_SERVICE.create(newProfile);
+		LOG.info("#### postProcessing() Profile Created");
+		Profile adminProfile = new Profile();
+		List<Profile> newProfileFriends = new ArrayList<Profile>();
+		List<Profile> adminFriends = new ArrayList<Profile>();
 		for (User user : users) {
 			for (Authority auth : user.getAuthority()) {
-				if (auth.equals("MANAGER")) {
-					friends.add(PROFILE_SERVICE.getProfileByUserId(user.getId()));
+				if (auth.getName().equalsIgnoreCase("ADMIN")) {
+					adminProfile = PROFILE_SERVICE.getProfileByUserId(user.getId());
+					newProfileFriends.add(adminProfile);
+					adminFriends = adminProfile.getFriends();
+					adminFriends.add(newProfile);
+					PROFILE_SERVICE.update(adminProfile);
+					LOG.info("#### postProcessing() " + adminProfile.getFirstName() + "'s Connections updated");
 				}
 			}
 		}
-		friends.add(PROFILE_SERVICE.getProfileByUserName("admin"));
-		profile.setFriends(friends);
-		PROFILE_SERVICE.update(profile);
-		
-		return profile.getId();
+		newProfile.setFriends(newProfileFriends);
+		PROFILE_SERVICE.update(newProfile);
+		LOG.info("#### postProcessing() " + newProfile.getFirstName() + "'s Connections added successfully");
+		return newProfile.getId();
 	}
 
 	public void updateUser() {
@@ -126,6 +132,7 @@ public class AdminBean implements Serializable {
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
 	}
+	
 	public String updateCustomerInfo() {
 		LOG.info("#### updateCustomerInfo()");
 		String outcome = "";

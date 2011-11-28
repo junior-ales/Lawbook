@@ -8,6 +8,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import br.com.lawbook.dao.ProcessDAO;
@@ -17,7 +18,7 @@ import br.com.lawbook.util.HibernateUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 27NOV2011-03
+ * @version 27NOV2011-04
  *
  */
 public class ProcessDAOImpl implements ProcessDAO {
@@ -51,6 +52,21 @@ public class ProcessDAOImpl implements ProcessDAO {
 		} catch (Exception e) {
 			LOG.severe(e.getMessage());
 			tx.rollback();
+			throw new HibernateException(e);
+		} finally {
+			session.close();
+			LOG.info("Hibernate Session closed");
+		}
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Process> getAll() throws HibernateException {
+		Session session = HibernateUtil.getSession();
+		try {
+			return session.createCriteria(Process.class).addOrder(Order.desc("openingDate")).list();
+		} catch (Exception e) {
+			LOG.severe(e.getMessage());
 			throw new HibernateException(e);
 		} finally {
 			session.close();

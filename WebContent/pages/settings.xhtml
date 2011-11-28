@@ -39,7 +39,7 @@
                 <p:inputTextarea value="#{profileBean.authProfile.aboutMe}" cols="18"  />
                 <h:outputText value="" />  
 	            
-	            <h:outputText value="Language: " />
+	            <h:outputText value="Idioma: " />
 	            <h:selectOneMenu value="#{profileBean.authProfile.locale}" >
 		   			<f:selectItem itemLabel="English" itemValue="en_US" />
 		   			<f:selectItem itemLabel="Portuguese" itemValue="pt_BR" />
@@ -49,7 +49,8 @@
 			</h:panelGrid>
 			<f:facet name="footer">
 				<h:outputText value="* Required fields" style="color:red;" />
-	            <p:commandButton value="Save" actionListener="#{profileBean.updateProfile}" update="growl" style="position:relative;margin-left:300px;" />
+	            <p:commandButton value="Mudar Senha" action="changePassword?faces-redirect=true" ajax="false" update="growl" style="position:relative;margin-left:140px;" />
+	            <p:commandButton value="Salvar" actionListener="#{profileBean.updateProfile}" update="growl" style="position:relative;" />
 			</f:facet>
 		</p:panel>
 	</ui:define>

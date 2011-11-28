@@ -15,9 +15,13 @@
 				  draggable="false" closable="false" header="#{label.please_wait}"> 
 				<h:graphicImage library="images" name="ajaxloadingbar.gif" />
 		</p:dialog>
-		<p:panel id="editUserPanel" style="margin-top:25px;" header="#{customerBean.customer.firstName}'s Profile Data">
+		<p:panel id="editUserPanel" style="margin-top:25px;" header="#{customerBean.customer.firstName}'s Data">
 			<h:panelGrid id="editUserPanelGrid" columns="3" cellpadding="3" style="width:100%;">
-		   		
+		   			
+		   		<f:facet name="header">
+					<h:outputText value="Profile Data" />
+				</f:facet>
+		   			
 				<h:outputText value="First Name: " />
                 <p:inputText value="#{customerBean.customer.firstName}" size="18" required="true" requiredMessage="First name is required" />  
 	            <h:outputText value="*" style="color:red;" />
@@ -33,7 +37,7 @@
 	            <h:outputText value="Birthdate:  " />
                 <p:calendar value="#{customerBean.birth}" showButtonPanel="true" size="18"
                 			locale="#{profileBean.authProfile.locale}" pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
-                <h:outputText value="" />  
+                <h:outputText value="DD/MM/YYYY" />  
                 
                 <h:outputText value="About me:  " />
                 <p:inputTextarea value="#{customerBean.customer.aboutMe}" cols="18"  />
@@ -45,7 +49,54 @@
 		   			<f:selectItem itemLabel="Portuguese" itemValue="pt_BR" />
 		   		</h:selectOneMenu>
 		   		<h:outputText value="Changes will be applied at next login" style="font-size:small;" />  
+
+			</h:panelGrid>
+			<hr />
+			<h:panelGrid id="editUserPersonalDataGrid" columns="3" cellpadding="3" style="width:100%;">
+				
+				<f:facet name="header">
+					<h:outputText value="Personal Data" />
+				</f:facet>
+				
+				<h:outputText value="CPF: " />
+                <p:inputMask value="#{customerBean.cpf}" size="18" mask="999.999.999-99"
+                			 converterMessage="Use only numbers" maxlength="11" />  
+	            <h:outputText value="*" style="color:red;" />
 	            
+	            <h:outputText value="CNPJ: " />
+                <p:inputMask value="#{customerBean.cnpj}" size="18" mask="99.999.999/9999-99" 
+                			 converterMessage="Use only numbers" maxlength="14" />  
+	            <h:outputText value="*" style="color:red;" />
+				
+				<h:outputText value="RG: " />
+                <p:inputText value="#{customerBean.rg}" size="18" />  
+	            <h:outputText value="*" style="color:red;" />
+	            
+	            <h:outputText value="#{label.orgao_expedidor}" />
+                <p:inputText value="#{customerBean.customer.orgaoExpedidor}" size="18" />  
+	            <h:outputText value="*" style="color:red;" />
+				
+				<h:outputText value="Genero: " />
+	            <h:selectOneMenu value="#{customerBean.customer.gender}" >
+		   			<f:selectItem itemLabel="Masculino" itemValue="m" />
+		   			<f:selectItem itemLabel="Feminino" itemValue="f" />
+		   		</h:selectOneMenu>
+				<h:outputText value="*" style="color:red;" />
+				
+				<h:outputText value="Estado Civil: " />
+	            <h:selectOneMenu value="#{customerBean.customer.maritalStatus}" >
+		   			<f:selectItem itemLabel="Casado" itemValue="casado" />
+		   			<f:selectItem itemLabel="Divorciado" itemValue="divorciado" />
+		   			<f:selectItem itemLabel="Separado" itemValue="separado" />
+		   			<f:selectItem itemLabel="Solteiro" itemValue="solteiro" />
+		   			<f:selectItem itemLabel="Viuvo" itemValue="viuvo" />
+		   		</h:selectOneMenu>
+				<h:outputText value="*" style="color:red;" />
+				
+				<h:outputText value="Telefone: " />
+                <p:inputMask value="#{customerBean.phone}" size="18" mask="(99)9999-9999"
+                			 converterMessage="Use only numbers" maxlength="11" />  
+	            <h:outputText value="*" style="color:red;" />
 			</h:panelGrid>
 			<f:facet name="footer">
 				<h:outputText value="* Required fields" style="color:red;" />

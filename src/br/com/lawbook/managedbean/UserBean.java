@@ -49,7 +49,7 @@ public class UserBean {
 		item.setUrl("/pages/home.jsf");
 		this.menu.addMenuItem(item);
 
-		// TODO Profile menu option doesn't fire in administration pages
+		// TODO Profile menu option doesn't fire in administration pages, try the same approach used in customerInfo.xhtml
 		item = new MenuItem();
 		item.setId("menuItemProfile");
 		item.setValue(rs.getString("template_menu_profile"));

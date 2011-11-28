@@ -9,7 +9,7 @@ import br.com.lawbook.model.Profile;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 27NOV2011-02
+ * @version 27NOV2011-03
  *
  */
 public interface ProcessDAO {
@@ -17,6 +17,8 @@ public interface ProcessDAO {
 	void create(Process process) throws HibernateException;
 	
 	void update(Process process) throws HibernateException;
+	
+	List<Process> getAll() throws HibernateException;
 
 	Process getById(Long processId) throws HibernateException;
 

@@ -20,9 +20,9 @@
 	                dateSelectListener="#{scheduleBean.onDateSelect}"
 	                eventMoveListener="#{scheduleBean.onEventMove}"
 	                eventResizeListener="#{scheduleBean.onEventResize}"
-	                onEventMoveUpdate="growl" onEventResizeUpdate="growl"
-	                onDateSelectUpdate="eventDetails" onDateSelectComplete="eventDialog.show()"
-	                onEventSelectUpdate="eventDetails" onEventSelectComplete="eventDialog.show()">
+	                onEventMoveUpdate="growl upcomingEventsTable" onEventResizeUpdate="growl upcomingEventsTable"
+	                onDateSelectUpdate="eventDetails upcomingEventsTable" onDateSelectComplete="eventDialog.show()"
+	                onEventSelectUpdate="eventDetails upcomingEventsTable" onEventSelectComplete="eventDialog.show()">
 	    </p:schedule>
 	
 	    <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip" width="625" resizable="false">

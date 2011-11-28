@@ -25,18 +25,14 @@ public class UserDAOImpl implements UserDAO {
 	
 	@Override
 	public void create(User user) throws IllegalArgumentException, HibernateException {
-		
 		Session session = HibernateUtil.getSession();
-		
 		if (this.checkIfExist(user, session)) {
 			session.close();
 			LOG.info("Hibernate Session closed");
 			String msg = "Username (" + user.getUserName() + ") or email ("+ user.getEmail() + ") already exist";
 			throw new IllegalArgumentException(msg);
 		}
-			
 		Transaction tx = session.beginTransaction();
-		
 		try {
 			session.save(user);
 			tx.commit();
@@ -48,7 +44,6 @@ public class UserDAOImpl implements UserDAO {
 			session.close();
 			LOG.info("Hibernate Session closed");
 		}
-		
 	}
 
 	@Override

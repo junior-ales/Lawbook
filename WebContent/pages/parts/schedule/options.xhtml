@@ -13,7 +13,7 @@
 			</p:submenu>
 		</p:menu>
 		<p:dataTable id="upcomingEventsTable" value="#{scheduleBean.upcomingEvents}" rows="6" emptyMessage="No upcoming events"
-					 var="upcomingEvent" paginator="false" style="position:relative;top:20px;" >
+					 var="upcomingEvent" paginator="false" style="position:relative;top:20px;" widgetVar="upcomingEventsTable">
 			<p:column headerText="Upcoming Events">
 				<h:outputText value="#{upcomingEvent.startDate}" style="font-size: small;">
 					<f:convertDateTime timeZone="America/Sao_Paulo" locale="#{profileBean.locale}" pattern="HH:mm dd/MMM"/>
