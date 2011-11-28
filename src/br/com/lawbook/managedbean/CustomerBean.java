@@ -43,7 +43,7 @@ public class CustomerBean implements Serializable {
 
 	public CustomerBean() {
 		LOG.info("#### CustomerBean created");
-		rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale())
+		rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
 		try {
 			this.profileId = Long.valueOf(FacesUtil.getExternalContext().getRequestParameterMap().get("newUserProfileId"));
 			this.customer = PROFILE_SERVICE.getProfileById(this.profileId);
