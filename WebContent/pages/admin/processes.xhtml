@@ -1,0 +1,71 @@
+<ui:composition template="../template.xhtml"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:p="http://primefaces.prime.com.tr/ui"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:h="http://java.sun.com/jsf/html">
+	<ui:define name="optionsPanel">
+		<ui:include src="./parts/options.xhtml" />
+	</ui:define>
+	<ui:define name="postPanel">
+		<h3>Process Administration</h3>
+	</ui:define>
+	<ui:define name="contentPanel">
+		<p:ajaxStatus onstart="statusDialog.show()" oncomplete="statusDialog.hide()" />
+		<p:dialog widgetVar="statusDialog" resizable="false" modal="true"
+				  draggable="false" closable="false" header="#{label.please_wait}"> 
+				<h:graphicImage library="images" name="ajaxloadingbar.gif" />
+		</p:dialog>
+		<p:dataTable id="userProcesses" var="proc" value="#{processBean.processes}" rows="8" 
+					 paginator="true" paginatorTemplate="{PreviousPageLink} {NextPageLink}" paginatorPosition="bottom"  
+					 rowsPerPageTemplate="4,8,12" widgetVar="userProcesses">
+			<p:column>
+				<p:rowToggler />
+			</p:column>
+			<p:column headerText="Topic">
+				<h:outputText value="#{proc.topic}" />
+			</p:column>
+			<p:column headerText="Legal Area">
+				<h:outputText value="#{proc.legalArea}" />
+			</p:column>
+			
+			<p:column headerText="Opening Date" >
+				<h:outputText value="#{proc.openingDate.time}">
+					<f:convertDateTime timeZone="America/Sao_Paulo" locale="#{processBean.authProfile.locale}" pattern="dd/MMM/yyyy" />
+				</h:outputText>
+			</p:column>
+			
+			<p:rowExpansion>
+				<p:panel>
+					<h:panelGrid columns="2" border="0">
+						<h:outputText value="Situation: " />
+						<h:outputText value="#{proc.situation}" />
+					
+						<h:outputText value="Responsible: " />
+						<h:commandLink value="#{proc.responsible.firstName} #{proc.responsible.lastName}" action="#{userBean.profileOutcome}" >
+							<f:setPropertyActionListener target="#{profileBean.profileOwner}" value="#{proc.responsible}" />
+						</h:commandLink>
+						
+						<h:outputText value="Petitioner" />
+						<h:commandLink value="#{proc.petitioner.firstName} #{proc.petitioner.lastName}" action="#{userBean.profileOutcome}" >
+							<f:setPropertyActionListener target="#{profileBean.profileOwner}" value="#{proc.petitioner}" />
+						</h:commandLink>
+						
+						<h:outputText value="Defendant" />
+						<h:commandLink value="#{proc.defendant.firstName} #{proc.defendant.lastName}" action="#{userBean.profileOutcome}" >
+							<f:setPropertyActionListener target="#{profileBean.profileOwner}" value="#{proc.defendant}" />
+						</h:commandLink>
+						
+						<h:outputText value="Process Description:" />
+						<h:outputText value="#{proc.description}" />
+					</h:panelGrid>
+					<f:facet name="footer">
+			            <p:commandButton value="Edit Process" ajax="false" action="editProcess?faces-redirect=true" style="position:relative;margin-left:300px;">
+			            	<f:setPropertyActionListener target="#{processBean.process}" value="#{proc}" />
+			            	<f:setPropertyActionListener target="#{proc.openingDate}" value="#{proc.openingDate}" />
+			            </p:commandButton>
+					</f:facet>
+				</p:panel>
+			</p:rowExpansion>
+		</p:dataTable>
+	</ui:define>
+</ui:composition>
