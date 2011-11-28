@@ -28,7 +28,7 @@
 						<h:outputText value="&#8729;" style="font-weight:bold;margin-left:15px;" 
 									  rendered="#{post.receiver.id != homeBean.publicProfile.id}" />
 						
-						<h:outputText value="privately to " style="margin-left:15px;" 
+						<h:outputText value="#{label.msg_privatelyTo} " style="margin-left:15px;" 
 									  rendered="#{post.receiver.id != homeBean.publicProfile.id}" />
 						
 						<h:commandLink value="#{post.receiver.firstName}" action="#{userBean.profileOutcome}"
@@ -37,7 +37,7 @@
 						</h:commandLink>
 						
 						<h:outputText value="&#8729;" style="font-weight:bold;margin-left:15px;" rendered="#{homeBean.authProfile.id == post.sender.id}" />
-						<p:commandLink actionListener="#{homeBean.removePost}" value="delete" update="@form" 
+						<p:commandLink actionListener="#{homeBean.removePost}" value="#{label.link_delete}" update="@form" 
 										 rendered="#{homeBean.authProfile.id == post.sender.id}" style="margin-left:15px;"/>
 					</div>
 				</div>

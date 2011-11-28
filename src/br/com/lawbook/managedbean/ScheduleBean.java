@@ -21,11 +21,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
 import org.hibernate.HibernateException;
@@ -57,10 +59,12 @@ public class ScheduleBean implements Serializable {
 	private List<Event> upcomingEvents;
 	private LazyScheduleModel lazyEventModel;
 	private HashMap<String, Long> idEventMapping;
-	private static final long serialVersionUID = 7855410882230111356L;
+	private static final long serialVersionUID = 8737854846784246329L;
 	private static final Logger LOG = Logger.getLogger("ScheduleBean");
 	private static final EventService EVENT_SERVICE = EventService.getInstance();
 	private static final ProfileService PROFILE_SERVICE = ProfileService.getInstance();
+	private final ResourceBundle rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", 
+			   							FacesContext.getCurrentInstance().getViewRoot().getLocale());
 
 	// TODO insert a "p:calendar" tag in schedule.xhtml
 	
@@ -133,7 +137,7 @@ public class ScheduleBean implements Serializable {
 
 	public void addEvent(final ActionEvent actionEvent) {
 		if (this.event.getTitle() == null || this.event.getTitle().isEmpty()) {
-			FacesUtil.warnMessage("=|", "Title is required");
+			FacesUtil.warnMessage("=|", this.rs.getString("msg_reqTitle"));
 			return;
 		}
 		this.event.setCreator(this.authProfile);
@@ -164,7 +168,7 @@ public class ScheduleBean implements Serializable {
 			EVENT_SERVICE.delete(this.event);
 			this.lazyEventModel.deleteEvent(this.getEvent());
 			this.upcomingEvents = EVENT_SERVICE.getUpcomingEvents(this.authProfile);
-			FacesUtil.infoMessage("=)", "Event deleted");
+			FacesUtil.infoMessage("=)", this.rs.getString("msg_eventDeleted"));
 		} catch (final IllegalArgumentException e) {
 			FacesUtil.warnMessage("=|", e.getMessage());
 		} catch (final HibernateException e) {
@@ -248,7 +252,7 @@ public class ScheduleBean implements Serializable {
 		this.idEventMapping.put(this.event.getId(), this.event.getEventId());
 		this.event = new Event();
 		this.upcomingEvents = EVENT_SERVICE.getUpcomingEvents(this.authProfile);
-		FacesUtil.infoMessage("=)", "Event updated successfully");
+		FacesUtil.infoMessage("=)", this.rs.getString("msg_eventUpdatedSuccess"));
 	}
 
 	private void createEvent() throws IllegalArgumentException, HibernateException {
@@ -257,7 +261,7 @@ public class ScheduleBean implements Serializable {
 		this.idEventMapping.put(this.event.getId(), this.event.getEventId());
 		this.event = new Event();
 		this.upcomingEvents = EVENT_SERVICE.getUpcomingEvents(this.authProfile);		
-		FacesUtil.infoMessage("=)", "Event created successfully");
+		FacesUtil.infoMessage("=)", this.rs.getString("msg_eventCreatedSuccess"));
 	}
 
 }

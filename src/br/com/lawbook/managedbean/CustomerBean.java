@@ -3,10 +3,12 @@ package br.com.lawbook.managedbean;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import org.hibernate.HibernateException;
 
@@ -37,9 +39,11 @@ public class CustomerBean implements Serializable {
 	private static final Logger LOG = Logger.getLogger("CustomerBean");
 	private static final ProfileService PROFILE_SERVICE = ProfileService.getInstance();
 	private static final LocationService LOCATION_SERVICE = LocationService.getInstance();
+	private ResourceBundle rs;
 
 	public CustomerBean() {
 		LOG.info("#### CustomerBean created");
+		rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale())
 		try {
 			this.profileId = Long.valueOf(FacesUtil.getExternalContext().getRequestParameterMap().get("newUserProfileId"));
 			this.customer = PROFILE_SERVICE.getProfileById(this.profileId);
@@ -77,7 +81,7 @@ public class CustomerBean implements Serializable {
 			if (!this.cpf.isEmpty()) {
 				this.cpf = this.cpf.replaceAll("[^0-9]", "");
 				if (!PROFILE_SERVICE.cpfValidation(this.cpf)) {
-					FacesUtil.warnMessage("=|", "Invalid CPF");
+					FacesUtil.warnMessage("=|", this.rs.getString("msg_invalidCPF"));
 					return;
 				}
 				this.customer.setCpf(Long.valueOf(this.cpf));
@@ -86,7 +90,7 @@ public class CustomerBean implements Serializable {
 			if (!this.cnpj.isEmpty()) {
 				this.cnpj = this.cnpj.replaceAll("[^0-9]", "");
 				if (!PROFILE_SERVICE.cnpjValidation(this.cnpj)) {
-					FacesUtil.warnMessage("=|", "Invalid CNPJ");
+					FacesUtil.warnMessage("=|", this.rs.getString("msg_invalidCNPJ"));
 					return;
 				}
 				this.customer.setCnpj(Long.valueOf(this.cnpj));
@@ -119,7 +123,8 @@ public class CustomerBean implements Serializable {
 			this.phone = "";
 
 			LOG.info("#### updateProfile(): Profile updated successfully");
-			FacesUtil.infoMessage("=)", "Profile updated successfully");
+			rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+			FacesUtil.infoMessage("=)", this.rs.getString("msg_profileUpdatedSuccess"));
 		} catch (final NumberFormatException e) {
 			FacesUtil.warnMessage("=|", e.getMessage());
 		} catch (final IllegalArgumentException e) {

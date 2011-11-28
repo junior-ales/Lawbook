@@ -6,11 +6,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
 import org.hibernate.HibernateException;
@@ -41,14 +43,16 @@ public class ProfileBean implements Serializable {
 	private String passConfirmation;
 	private LazyDataModel<Post> wall;
 	private static final Logger LOG = Logger.getLogger("ProfileBean");
-	private static final long serialVersionUID = 6760329807100121484L;
+	private static final long serialVersionUID = 3362774812993963437L;
 	private static final UserService USER_SERVICE = UserService.getInstance();
 	private static final PostService POST_SERVICE = PostService.getInstance();
 	private static final ProfileService PROFILE_SERVICE = ProfileService.getInstance();
+	private ResourceBundle rs;
 
 	public ProfileBean() {
 		LOG.info("#### ProfileBean() created");
 		this.profileOwner = new Profile();
+		rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
 		try {
 			this.authProfile = PROFILE_SERVICE.getAuthorizedUserProfile();
 			this.publicProfile = PROFILE_SERVICE.getPublicProfile();
@@ -82,13 +86,13 @@ public class ProfileBean implements Serializable {
 		if (!this.profileOwner.getId().equals(this.authProfile.getId())) {
 			post = (Post) this.wall.getRowData();
 			if (!this.authProfile.getId().equals(post.getSender().getId())) {
-				FacesUtil.warnMessage("=|", "You cannot delete this post");
+				FacesUtil.warnMessage("=|", this.rs.getString("msg_notDeletable"));
 				return;
 			}
 		}
 		try {
 			POST_SERVICE.delete(post);
-			FacesUtil.infoMessage("=)", "Post deleted!");
+			FacesUtil.infoMessage("=)", this.rs.getString("msg_deleted"));
 		} catch (final IllegalArgumentException e) {
 			FacesUtil.warnMessage("=|", e.getMessage());
 		} catch (final HibernateException e) {
@@ -102,7 +106,7 @@ public class ProfileBean implements Serializable {
 			PROFILE_SERVICE.friendship(this.authProfile, this.profileOwner);
 			this.authProfile = PROFILE_SERVICE.getAuthorizedUserProfile();
 			LOG.info("#### updateProfile()");
-			FacesUtil.infoMessage("=)", "Connection successfully added!");
+			FacesUtil.infoMessage("=)", this.rs.getString("msg_connAdded"));
 		} catch (final IllegalArgumentException e) {
 			FacesUtil.warnMessage("=|", e.getMessage());
 		} catch (final HibernateException e) {
@@ -131,7 +135,8 @@ public class ProfileBean implements Serializable {
 		this.authProfile.setBirth(auxDate);
 		try {
 			PROFILE_SERVICE.update(this.authProfile);
-			FacesUtil.infoMessage("=)", "Profile updated successfully");
+			rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+			FacesUtil.infoMessage("=)", this.rs.getString("msg_profileUpdatedSuccess"));
 		} catch (final IllegalArgumentException e) {
 			FacesUtil.warnMessage("=|", e.getMessage());
 		} catch (final HibernateException e) {
@@ -143,22 +148,23 @@ public class ProfileBean implements Serializable {
 		LOG.info("#### updateUser()");
 		try {
 			if (!this.passConfirmation.equals(this.pass)) {
-				FacesUtil.warnMessage("=|", "Password and his confirmation doesn't match");
+				FacesUtil.warnMessage("=|", this.rs.getString("msg_passDifferent"));
 				return;
 			}
 			final User user = this.authProfile.getUserOwner();
 			if (this.pass == null || this.pass.trim().equals("")) {
-				JavaUtil.validateParameter(user.getPassword(), "Password is required");
+				JavaUtil.validateParameter(user.getPassword(), this.rs.getString("msg_reqPass"));
 			}
 			else {
 				if (this.pass.length() < 5) {
-					throw new IllegalArgumentException("Password must have at least 5 characters");
+					throw new IllegalArgumentException(this.rs.getString("msg_reqMinLength"));
 				}
 				user.setPassword(JavaUtil.encode(this.pass));
 			}
 			USER_SERVICE.update(user);
 			LOG.info("#### User password updated successfully");
-			FacesUtil.infoMessage("=)", "User password updated successfully");
+			rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+			FacesUtil.infoMessage("=)", this.rs.getString("msg_userUpdatedSuccess"));
 		} catch (final IllegalArgumentException e) {
 			FacesUtil.warnMessage("=|", e.getMessage());
 		} catch (final HibernateException e) {

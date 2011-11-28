@@ -4,10 +4,12 @@ import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 
 import org.hibernate.HibernateException;
 import org.primefaces.event.SelectEvent;
@@ -24,27 +26,29 @@ import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 26NOV2011-05
+ * @version 28NOV2011-06
  *
  */
 @ManagedBean
 @RequestScoped
 public class AdminBean implements Serializable {
 
-	private List<User> users;
-	private User chosenUser;
 	private String pass;
+	private Long[] authsId;
+	private User chosenUser;
+	private Boolean disabled;
+	private List<User> users;
 	private String passConfirmation;
 	private final List<Authority> authorities;
-	private Long[] authsId;
-	private Boolean disabled;
-	private static final ProfileService PROFILE_SERVICE = ProfileService.getInstance();
 	private static final Logger LOG = Logger.getLogger("AdminBean");
-	private static final long serialVersionUID = -539046698174305790L;
+	private static final long serialVersionUID = 3360787798342290714L;
+	private static final ProfileService PROFILE_SERVICE = ProfileService.getInstance();
+	private ResourceBundle rs;
 
 	public AdminBean() {
 		LOG.info("#### AdminBean created");
 		this.chosenUser = new User();
+		rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
 		this.users = UserConverter.users;
 		this.authorities = AuthorityConverter.authorities;
 		this.authsId = new Long[this.authorities.size()];
@@ -69,9 +73,10 @@ public class AdminBean implements Serializable {
 			this.validateUser();
 			this.chosenUser.setUserName(this.chosenUser.getUserName().toLowerCase());
 			UserService.getInstance().create(this.chosenUser);
-			Long profileId = postProcessing();
+			final Long profileId = this.postProcessing();
 			this.users.add(this.chosenUser);
-			FacesUtil.infoMessage("=)", "User created successfully");
+			rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+			FacesUtil.infoMessage("=)", this.rs.getString("msg_userCreatedSuccess"));
 			outcome = "customerInfo?newUserProfileId=" + profileId + "&faces-redirect=true";
 		} catch (final IllegalArgumentException e) {
 			FacesUtil.warnMessage("=|", e.getMessage());
@@ -84,7 +89,7 @@ public class AdminBean implements Serializable {
 	}
 
 	private Long postProcessing() throws IllegalArgumentException, HibernateException {
-		Profile newProfile = new Profile();
+		final Profile newProfile = new Profile();
 		newProfile.setAvatar("http://www.lawbook.com.br/lawbook/resources/images/defaultAvatar.png");
 		newProfile.setFirstName(this.chosenUser.getUserName());
 		newProfile.setLastName("");
@@ -93,10 +98,10 @@ public class AdminBean implements Serializable {
 		PROFILE_SERVICE.create(newProfile);
 		LOG.info("#### postProcessing() Profile Created");
 		Profile adminProfile = new Profile();
-		List<Profile> newProfileFriends = new ArrayList<Profile>();
+		final List<Profile> newProfileFriends = new ArrayList<Profile>();
 		List<Profile> adminFriends = new ArrayList<Profile>();
-		for (User user : users) {
-			for (Authority auth : user.getAuthority()) {
+		for (final User user : this.users) {
+			for (final Authority auth : user.getAuthority()) {
 				if (auth.getName().equalsIgnoreCase("ADMIN")) {
 					adminProfile = PROFILE_SERVICE.getProfileByUserId(user.getId());
 					newProfileFriends.add(adminProfile);
@@ -123,7 +128,8 @@ public class AdminBean implements Serializable {
 					this.users.set(i, this.chosenUser);
 				}
 			}
-			FacesUtil.infoMessage("=)", "User updated successfully");
+			rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+			FacesUtil.infoMessage("=)", this.rs.getString("msg_userUpdatedSuccess"));
 		} catch (final IllegalArgumentException e) {
 			FacesUtil.warnMessage("=|", e.getMessage());
 		} catch (final HibernateException e) {
@@ -137,27 +143,27 @@ public class AdminBean implements Serializable {
 		LOG.info("#### updateCustomerInfo()");
 		String outcome = "";
 		if (this.chosenUser != null) {
-			Long id = PROFILE_SERVICE.getProfileByUserId(this.chosenUser.getId()).getId();
+			final Long id = PROFILE_SERVICE.getProfileByUserId(this.chosenUser.getId()).getId();
 			outcome = "customerInfo?newUserProfileId=" + id + "&faces-redirect=true";
 		}
 		else
-			FacesUtil.warnMessage("=|", "Select an user before editing his informations");
+			FacesUtil.warnMessage("=|", this.rs.getString("msg_reqSelectUser"));
 		return outcome;
 	}
 
 	public void validateUser() throws IllegalArgumentException, NoSuchAlgorithmException {
 		LOG.info("#### validateUser()");
-		JavaUtil.validateParameter(this.chosenUser.getEmail(), "Email is required");
-		JavaUtil.validateParameter(this.chosenUser.getUserName(), "Username is required");
+		JavaUtil.validateParameter(this.chosenUser.getEmail(), this.rs.getString("msg_reqEmail"));
+		JavaUtil.validateParameter(this.chosenUser.getUserName(), this.rs.getString("msg_reqUsername"));
 		if (!this.passConfirmation.equals(this.pass)) {
-			throw new IllegalArgumentException("Password and his confirmation doesn't match");
+			throw new IllegalArgumentException(this.rs.getString("msg_passDifferent"));
 		}
 		if (this.pass == null || this.pass.trim().equals("")) {
-			JavaUtil.validateParameter(this.chosenUser.getPassword(), "Password is required");
+			JavaUtil.validateParameter(this.chosenUser.getPassword(), this.rs.getString("msg_reqPass"));
 		}
 		else {
 			if (this.pass.length() < 5) {
-				throw new IllegalArgumentException("Password must have at least 5 characters");
+				throw new IllegalArgumentException(this.rs.getString("msg_reqMinLength"));
 			}
 			this.chosenUser.setPassword(JavaUtil.encode(this.pass));
 		}

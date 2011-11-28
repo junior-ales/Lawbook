@@ -18,39 +18,39 @@
 		<p:panel id="editUserPanel" style="margin-top:25px;">
 			<h:panelGrid id="editUserPanelGrid" columns="3" cellpadding="3" style="width:100%;">
 		   		
-				<h:outputText value="First Name: " />
+				<h:outputText value="#{label.profile_first_name} " />
                 <p:inputText value="#{profileBean.authProfile.firstName}" size="18" required="true" requiredMessage="First name is required" />  
 	            <h:outputText value="*" style="color:red;" />
 	            
-	            <h:outputText value="Last Name:  " />
+	            <h:outputText value="#{label.profile_last_name}:  " />
                 <p:inputText value="#{profileBean.authProfile.lastName}" size="18"  />
                 <h:outputText value="" />  
                 
-                <h:outputText value="Avatar:  " />
+                <h:outputText value="#{label.profile_avatar}:  " />
                 <p:inputText value="#{profileBean.authProfile.avatar}" size="18"  />
                 <h:graphicImage id="imagePreview" height="50" width="50" url="#{profileBean.authProfile.avatar}" />
 	            
-	            <h:outputText value="Birthdate:  " />
+	            <h:outputText value="#{label.profile_birthdate}:  " />
 	            <p:calendar value="#{profileBean.birth}" showButtonPanel="true" size="18"
                 			locale="#{profileBean.authProfile.locale}" pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
                 <h:outputText value="" />  
                 
-                <h:outputText value="About me:  " />
+                <h:outputText value="#{label.profile_aboutme}:  " />
                 <p:inputTextarea value="#{profileBean.authProfile.aboutMe}" cols="18"  />
                 <h:outputText value="" />  
 	            
-	            <h:outputText value="Idioma: " />
+	            <h:outputText value="#{label.profile_language}: " />
 	            <h:selectOneMenu value="#{profileBean.authProfile.locale}" >
-		   			<f:selectItem itemLabel="English" itemValue="en_US" />
-		   			<f:selectItem itemLabel="Portuguese" itemValue="pt_BR" />
+		   			<f:selectItem itemLabel="#{label.profile_english}" itemValue="en_US" />
+		   			<f:selectItem itemLabel="#{label.profile_portuguese}" itemValue="pt_BR" />
 		   		</h:selectOneMenu>
-		   		<h:outputText value="Changes will be applied at next login" style="font-size:small;" />  
+		   		<h:outputText value="#{label.profile_nextLoginMsg}" style="font-size:small;" />  
 	            
 			</h:panelGrid>
 			<f:facet name="footer">
-				<h:outputText value="* Required fields" style="color:red;" />
-	            <p:commandButton value="Mudar Senha" action="changePassword?faces-redirect=true" ajax="false" update="growl" style="position:relative;margin-left:140px;" />
-	            <p:commandButton value="Salvar" actionListener="#{profileBean.updateProfile}" update="growl" style="position:relative;" />
+				<h:outputText value="* #{label.profile_requiredFields}" style="color:red;" />
+	            <p:commandButton value="#{label.button_changePass}" action="changePassword?faces-redirect=true" ajax="false" update="growl" style="position:relative;margin-left:50px;" />
+	            <p:commandButton value="#{label.button_save}" actionListener="#{profileBean.updateProfile}" update="growl" style="position:relative;" />
 			</f:facet>
 		</p:panel>
 	</ui:define>

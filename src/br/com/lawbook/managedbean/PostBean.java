@@ -1,9 +1,11 @@
 package br.com.lawbook.managedbean;
 
 import java.util.Calendar;
+import java.util.ResourceBundle;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 
 import br.com.lawbook.business.service.PostService;
 import br.com.lawbook.business.service.ProfileService;
@@ -23,6 +25,8 @@ public class PostBean {
 	private String postContent;
 	private Profile receiver;
 	private static final ProfileService PROFILE_SERVICE = ProfileService.getInstance();
+	private final ResourceBundle rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", 
+													   FacesContext.getCurrentInstance().getViewRoot().getLocale());
 
 	public String getPostContent() {
 		return this.postContent;
@@ -42,7 +46,7 @@ public class PostBean {
 
 	public String savePost() {
 		if (this.postContent.trim().equals("")) {
-			FacesUtil.warnMessage("=|", "Post must contain some text");
+			FacesUtil.warnMessage("=|", rs.getString("msg_noContentPost"));
 			return "";
 		}
 		this.post = new Post();
@@ -52,7 +56,7 @@ public class PostBean {
 			this.post.setReceiver(this.receiver);
 			this.post.setDateTime(Calendar.getInstance());
 			PostService.getInstance().create(this.post);
-			FacesUtil.infoMessage("=)", "Posted successfully");
+			FacesUtil.infoMessage("=)", rs.getString("msg_postSuccess"));
 			this.postContent = null;
 		} catch (final Exception e) {
 			FacesUtil.errorMessage("=(", e.getMessage());

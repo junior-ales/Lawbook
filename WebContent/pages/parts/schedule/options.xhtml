@@ -9,12 +9,12 @@
 		</div>
 		<p:menu style="margin-left:20px; width:180px; top:10px;">
 			<p:submenu label="#{scheduleBean.authProfile.firstName} #{scheduleBean.authProfile.lastName}" >
-				<p:menuitem value="New Event" actionListener="#{scheduleBean.onDateSelect}" onclick="eventDialog.show()" />
+				<p:menuitem value="#{label.schedule_new_event}" actionListener="#{scheduleBean.onDateSelect}" onclick="eventDialog.show()" />
 			</p:submenu>
 		</p:menu>
-		<p:dataTable id="upcomingEventsTable" value="#{scheduleBean.upcomingEvents}" rows="6" emptyMessage="No upcoming events"
+		<p:dataTable id="upcomingEventsTable" value="#{scheduleBean.upcomingEvents}" rows="6" emptyMessage="#{label.schedule_no_upcoming_events}"
 					 var="upcomingEvent" paginator="false" style="position:relative;top:20px;" widgetVar="upcomingEventsTable">
-			<p:column headerText="Upcoming Events">
+			<p:column headerText="#{label.schedule_upcoming_events}">
 				<h:outputText value="#{upcomingEvent.startDate}" style="font-size: small;">
 					<f:convertDateTime timeZone="America/Sao_Paulo" locale="#{profileBean.locale}" pattern="HH:mm dd/MMM"/>
 				</h:outputText>
