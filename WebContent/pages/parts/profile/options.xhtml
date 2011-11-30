@@ -12,7 +12,7 @@
 				<h:outputLabel for="completeNameProfile" value="#{label.profile_name}" style="font-weight: bold;"/><br />
 				<h:outputText id="completeNameProfile" value="#{profileBean.profileOwner.firstName} #{profileBean.profileOwner.lastName}" />
 				<br /><br />
-				<h:outputLabel for="birthProfile" value="#{label.profile_birthdate}" style="font-weight: bold;"/><br />
+				<h:outputLabel for="birthProfile" value="#{label.birthdate}" style="font-weight: bold;"/><br />
 				<h:outputText id="birthProfile" value="#{profileBean.profileOwner.birth.time}">
 					<f:convertDateTime timeZone="America/Sao_Paulo" locale="#{profileBean.locale}" pattern="dd/MMM/yyyy"/>
 				</h:outputText>

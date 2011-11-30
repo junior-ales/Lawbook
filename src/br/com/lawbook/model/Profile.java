@@ -23,7 +23,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 28NOV2011-19
+ * @version 29NOV2011-20
  * 
  */
 @Entity(name = "lwb_user_profile")
@@ -151,10 +151,6 @@ public class Profile implements Serializable {
 	}
 
 	public void setBirth(final Calendar birth) {
-		if (Calendar.getInstance().compareTo(birth) < 0) {
-			throw new IllegalArgumentException(
-					"A data de nascimento deve ser menor que a data de hoje");
-		}
 		this.birth = birth;
 	}
 

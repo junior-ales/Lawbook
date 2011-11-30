@@ -7,7 +7,7 @@
 		<ui:include src="./parts/options.xhtml" />
 	</ui:define>
 	<ui:define name="postPanel">
-		<h3>Customer Information</h3>
+		<h3><h:outputText value="#{label.customer_information}" /></h3>
 	</ui:define>
 	<ui:define name="contentPanel">
 		<p:ajaxStatus onstart="statusDialog.show()" oncomplete="statusDialog.hide()" />
@@ -15,60 +15,62 @@
 				  draggable="false" closable="false" header="#{label.please_wait}"> 
 				<h:graphicImage library="images" name="ajaxloadingbar.gif" />
 		</p:dialog>
-		<p:panel id="editUserPanel" style="margin-top:25px;" header="#{customerBean.customer.firstName}'s Data">
+		<p:panel id="editUserPanel" style="margin-top:25px;">
+			<f:facet name="header">
+				<h:outputFormat value="#{label.user_data}">
+					<f:param value="#{customerBean.customer.firstName}" />
+				</h:outputFormat>
+			</f:facet>
 			<h:panelGrid id="editUserPanelGrid" columns="3" cellpadding="3" style="width:100%;">
-		   			
 		   		<f:facet name="header">
-					<h:outputText value="Profile Data" />
+					<h:outputText value="#{label.profile_data}" />
 				</f:facet>
-		   			
-				<h:outputText value="First Name: " />
-                <p:inputText value="#{customerBean.customer.firstName}" size="18" required="true" requiredMessage="First name is required" />  
+				<h:outputText value="#{label.profile_first_name}: " />
+                <p:inputText value="#{customerBean.customer.firstName}" size="18" required="true" requiredMessage="#{label.msg_reqFirstName}" />  
 	            <h:outputText value="*" style="color:red;" />
 	            
-	            <h:outputText value="Last Name:  " />
+	            <h:outputText value="#{label.last_name}: " />
                 <p:inputText value="#{customerBean.customer.lastName}" size="18"  />
                 <h:outputText value="" />  
                 
-                <h:outputText value="Avatar:  " />
+                <h:outputText value="#{label.avatar}: " />
                 <p:inputText value="#{customerBean.customer.avatar}" size="18"  />
                 <h:graphicImage id="imagePreview" height="50" width="50" url="#{customerBean.customer.avatar}" />
 	            
-	            <h:outputText value="Birthdate:  " />
+	            <h:outputText value="#{label.birthdate}:  " />
                 <p:calendar value="#{customerBean.birth}" showButtonPanel="true" size="18"
                 			locale="#{profileBean.authProfile.locale}" pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
                 <h:outputText value="DD/MM/YYYY" />  
                 
-                <h:outputText value="About me:  " />
+                <h:outputText value="#{label.about_me}:  " />
                 <p:inputTextarea value="#{customerBean.customer.aboutMe}" cols="18"  />
                 <h:outputText value="" />  
 	            
-	            <h:outputText value="Language: " />
+	            <h:outputText value="#{label.language}: " />
 	            <h:selectOneMenu value="#{customerBean.customer.locale}" >
-		   			<f:selectItem itemLabel="English" itemValue="en_US" />
-		   			<f:selectItem itemLabel="Portuguese" itemValue="pt_BR" />
+		   			<f:selectItem itemLabel="#{label.english}" itemValue="en_US" />
+		   			<f:selectItem itemLabel="#{label.portuguese}" itemValue="pt_BR" />
 		   		</h:selectOneMenu>
-		   		<h:outputText value="Changes will be applied at next login" style="font-size:small;" />  
+		   		<h:outputText value="#{label.msg_next_login}" style="font-size:small;" />  
 
 			</h:panelGrid>
 			<hr />
 			<h:panelGrid id="editUserPersonalDataGrid" columns="3" cellpadding="3" style="width:100%;">
-				
 				<f:facet name="header">
-					<h:outputText value="Personal Data" />
+					<h:outputText value="#{label.personal_data}" />
 				</f:facet>
 				
-				<h:outputText value="CPF: " />
+				<h:outputText value="#{label.cpf}: " />
                 <p:inputMask id="id1" value="#{customerBean.cpf}" size="18" mask="999.999.999-99"
-                			 converterMessage="Use only numbers" maxlength="11" />  
+                			 converterMessage="#{label.msg_only_numbers}" maxlength="11" />  
 	            <h:outputText value="" />
 	            
-	            <h:outputText value="CNPJ: " />
+	            <h:outputText value="#{label.cnpj}: " />
                 <p:inputMask id="id2" value="#{customerBean.cnpj}" size="18" mask="99.999.999/9999-99" 
-                			 converterMessage="Use only numbers" maxlength="14" />  
+                			 converterMessage="#{label.msg_only_numbers}" maxlength="14" />  
 	            <h:outputText value="" />
 				
-				<h:outputText value="RG: " />
+				<h:outputText value="#{label.rg}: " />
                 <p:inputText id="id3" value="#{customerBean.rg}" size="18" />  
 	            <h:outputText value="" />
 	            
@@ -76,56 +78,56 @@
                 <p:inputText id="id4" value="#{customerBean.customer.orgaoExpedidor}" size="18" />  
 	            <h:outputText value="" />
 				
-				<h:outputText value="Genero: " />
+				<h:outputText value="#{label.gender}: " />
 	            <h:selectOneMenu id="id5" value="#{customerBean.customer.gender}" >
-		   			<f:selectItem itemLabel="Masculino" itemValue="m" />
-		   			<f:selectItem itemLabel="Feminino" itemValue="f" />
+		   			<f:selectItem itemLabel="#{label.male}" itemValue="m" />
+		   			<f:selectItem itemLabel="#{label.female}" itemValue="f" />
 		   		</h:selectOneMenu>
 				<h:outputText value="" />
 				
-				<h:outputText value="Estado Civil: " />
+				<h:outputText value="#{label.marital_status}: " />
 	            <h:selectOneMenu id="id6" value="#{customerBean.customer.maritalStatus}" >
-		   			<f:selectItem itemLabel="Casado" itemValue="casado" />
-		   			<f:selectItem itemLabel="Divorciado" itemValue="divorciado" />
-		   			<f:selectItem itemLabel="Separado" itemValue="separado" />
-		   			<f:selectItem itemLabel="Solteiro" itemValue="solteiro" />
-		   			<f:selectItem itemLabel="Viuvo" itemValue="viuvo" />
+		   			<f:selectItem itemLabel="#{label.married}" itemValue="married" />
+		   			<f:selectItem itemLabel="#{label.divorced}" itemValue="divorced" />
+		   			<f:selectItem itemLabel="#{label.separated}" itemValue="separated" />
+		   			<f:selectItem itemLabel="#{label.single}" itemValue="single" />
+		   			<f:selectItem itemLabel="#{label.widower}" itemValue="widower" />
 		   		</h:selectOneMenu>
 				<h:outputText value="" />
 				
-				<h:outputText value="Telefone: " />
+				<h:outputText value="#{label.phone}: " />
                 <p:inputMask id="id7" value="#{customerBean.phone}" size="18" mask="(99)9999-9999"
-                			 converterMessage="Use only numbers" maxlength="11" />  
+                			 converterMessage="#{label.msg_only_numbers}" maxlength="11" />  
 	            <h:outputText value="" />
 	            
-	            <h:outputText value="Titulo: " />
+	            <h:outputText value="#{label.title}: " />
                 <p:inputText id="id8" value="#{customerBean.local.name}" size="18" />  
-	            <h:outputText value="Ex: Residencia de fulano" style="font-size:small;" />
+	            <h:outputText value="#{label.title_example}" style="font-size:small;" />
 	            
-	            <h:outputText value="Endereco: " />
+	            <h:outputText value="#{label.address}: " />
                 <p:inputText id="id9" value="#{customerBean.local.mainAdd}" size="18" />  
 	            <h:outputText value="" />
 	            
-	            <h:outputText value="CEP: " />
+	            <h:outputText value="#{label.zip_code}: " />
                 <p:inputMask id="id10" value="#{customerBean.local.mainZipCode}" size="18" mask="99999-999"
-                			 converterMessage="Use only numbers" maxlength="8" />  
+                			 converterMessage="#{label.msg_only_numbers}" maxlength="8" />  
 	            <h:outputText value="" />
 	            
-	            <h:outputText value="Cidade: " />
+	            <h:outputText value="#{label.city}: " />
                 <p:inputText id="id11" value="#{customerBean.local.city}" size="18" />  
 	            <h:outputText value="" />
 	            
-	            <h:outputText value="Estado: " />
+	            <h:outputText value="#{label.state}: " />
                 <p:inputText id="id12" value="#{customerBean.local.state}" size="18" />  
 	            <h:outputText value="" />
 	            
-	            <h:outputText value="Pais: " />
+	            <h:outputText value="#{label.country}: " />
                 <p:inputText id="id13" value="#{customerBean.local.country}" size="18" />  
 	            <h:outputText value="" />
 	            
 			</h:panelGrid>
 			<f:facet name="footer">
-				<h:outputText value="* Required fields" style="color:red;" />
+				<h:outputText value="* #{label.required_fields}" style="color:red;" />
 	            <p:commandButton value="Save" actionListener="#{customerBean.updateProfile}" update="imagePreview growl" style="position:relative;margin-left:300px;" />
 			</f:facet>
 		</p:panel>

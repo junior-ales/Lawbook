@@ -37,7 +37,7 @@
 						</h:commandLink>
 						
 						<h:outputText value="&#8729;" style="font-weight:bold;margin-left:15px;" rendered="#{homeBean.authProfile.id == post.sender.id}" />
-						<p:commandLink actionListener="#{homeBean.removePost}" value="#{label.link_delete}" update="@form" 
+						<p:commandLink actionListener="#{homeBean.removePost}" value="#{label.delete}" update="@form" 
 										 rendered="#{homeBean.authProfile.id == post.sender.id}" style="margin-left:15px;"/>
 					</div>
 				</div>

@@ -17,7 +17,7 @@ import org.hibernate.annotations.ForeignKey;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 26NOV2011-14 
+ * @version 29NOV2011-15 
  *
  */
 @Entity(name="lwb_post")
@@ -67,9 +67,6 @@ public class Post implements Serializable {
 		return dateTime;
 	}
 	public void setDateTime(Calendar dateTime) {
-		if (Calendar.getInstance().compareTo(dateTime) < 0) {
-			throw new IllegalArgumentException("Datetime parameter cannot be a future datetime");
-		}
 		this.dateTime = dateTime;
 	}
 }

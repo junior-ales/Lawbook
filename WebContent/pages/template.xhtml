@@ -4,7 +4,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.prime.com.tr/ui">
-	<f:view locale="#{profileBean.locale}">
+	<f:view locale="#{homeBean.authProfile.locale}">
 		<h:head>
 			<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 			<title>Lawbook</title>
@@ -17,9 +17,9 @@
 				<div id="divMaster" style="width: 900px; margin-left: 20px;">
 					<div id="topPanel" style="background-color: white; float: none; width: 100%;">
 						<div id="menuBar_" style="float: right;width: 100%; text-align: right;">
-							<p:fieldset id="logoBar" style="position:absolute; left:782px; z-index:100;" toggleable="false">
+							<p:fieldset id="logoBar" style="position:absolute; left:762px; margin-top:2px; z-index:100; border: none;">
 								<h:graphicImage url="http://www.lawbook.com.br/lawbook/resources/images/icon.png" />
-								<h:outputText value=" Lawbook" />
+								<h:outputText value="Lawbook" style="font-weight: bold;position:relative;margin-left:10px;top:-3px;" />
 							</p:fieldset>
 							<p:menubar id="mainDynamicMenu" model="#{userBean.menu}" />
 						</div>
