@@ -7,7 +7,7 @@
 		<ui:include src="./parts/options.xhtml" />
 	</ui:define>
 	<ui:define name="postPanel">
-		<h3>Process Administration</h3>
+		<h3><h:outputText value="#{label.process_administration}" /></h3>
 	</ui:define>
 	<ui:define name="contentPanel">
 		<p:ajaxStatus onstart="statusDialog.show()" oncomplete="statusDialog.hide()" />
@@ -18,57 +18,57 @@
 		<p:panel id="editProcessPanel" header="Edit Process">
 			<h:panelGrid id="editProcessPanelGrid" columns="3" cellpadding="3" >
 		   		
-				<h:outputText value="Topic: " />
-                <p:inputText value="#{processBean.process.topic}" required="true" requiredMessage="Topic is required" size="24" />
+				<h:outputText value="#{label.topic}: " />
+                <p:inputText value="#{processBean.process.topic}" required="true" requiredMessage="#{label.msg_reqTopic}" size="24" />
                 <h:outputText value="*" style="color:red;" />  
 	            
-	            <h:outputText value="Legal Area: " />
-	            <h:selectOneMenu value="#{processBean.process.legalArea}" required="true" requiredMessage="Legal Area is required">
-		   			<f:selectItem itemLabel="Administrative" itemValue="administrative" />
-		   			<f:selectItem itemLabel="Banking" itemValue="banking" />
-		   			<f:selectItem itemLabel="Billing" itemValue="billing" />
-		   			<f:selectItem itemLabel="Civel" itemValue="civel" />
-		   			<f:selectItem itemLabel="Criminal" itemValue="criminal" />
-		   			<f:selectItem itemLabel="Family" itemValue="family" />
-		   			<f:selectItem itemLabel="Labor" itemValue="labor" />
-		   			<f:selectItem itemLabel="Other" itemValue="other" />
-		   			<f:selectItem itemLabel="Social Security" itemValue="social_security" />
+	            <h:outputText value="#{label.legal_area}: " />
+	            <h:selectOneMenu value="#{processBean.process.legalArea}" required="true" requiredMessage="#{label.msq_reqLegalArea}">
+		   			<f:selectItem itemLabel="#{label.administrative}" itemValue="administrative" />
+		   			<f:selectItem itemLabel="#{label.banking}" itemValue="banking" />
+		   			<f:selectItem itemLabel="#{label.billing}" itemValue="billing" />
+		   			<f:selectItem itemLabel="#{label.civel}" itemValue="civel" />
+		   			<f:selectItem itemLabel="#{label.criminal}" itemValue="criminal" />
+		   			<f:selectItem itemLabel="#{label.family}" itemValue="family" />
+		   			<f:selectItem itemLabel="#{label.labor}" itemValue="labor" />
+		   			<f:selectItem itemLabel="#{label.other}" itemValue="other" />
+		   			<f:selectItem itemLabel="#{label.social_security}" itemValue="social_security" />
 		   		</h:selectOneMenu>
                 <h:outputText value="*" style="color:red;" />
                 	            
-				<h:outputText value="Opening Date: " />
-                <p:calendar value="#{processBean.openingDate}" showButtonPanel="true" 
+				<h:outputText value="#{label.opening_date}: " />
+                <p:calendar value="#{processBean.openingDate}" showButtonPanel="true" navigator="true" yearRange="c-100:c+10"
                 			locale="#{processBean.authProfile.locale}" pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" 
-                			required="true" requiredMessage="Opening date is required" size="24" />
+                			required="true" requiredMessage="#{label.msg_reqOpeningDate}" size="24" />
                 <h:outputText value="*" style="color:red;" />
                 
-                <h:outputText value="Description: " />
+                <h:outputText value="#{label.description}: " />
                 <p:inputTextarea value="#{processBean.process.description}" required="true" requiredMessage="Description is required" cols="24" />
                 <h:outputText value="*" style="color:red;" />
                 
-                <h:outputText value="Situation: " />
-                <h:selectOneMenu value="#{processBean.process.situation}" required="true" requiredMessage="Situation is required">
-                	<f:selectItem itemLabel="Archived" itemValue="archived" />
-                	<f:selectItem itemLabel="Underway" itemValue="underway" />
+                <h:outputText value="#{label.situation}: " />
+                <h:selectOneMenu value="#{processBean.process.situation}" required="true" requiredMessage="#{label.msg_reqSituation}">
+                	<f:selectItem itemLabel="#{label.archived}" itemValue="archived" />
+                	<f:selectItem itemLabel="#{label.underway}" itemValue="underway" />
                 </h:selectOneMenu>
                 <h:outputText value="*" style="color:red;" />
                 
-                <h:outputText value="Responsible username: " />
-				<p:autoComplete id="responsibleName" forceSelection="true" requiredMessage="Responsible is required"  
+                <h:outputText value="#{label.resp_username}: " />
+				<p:autoComplete id="responsibleName" forceSelection="true" requiredMessage="#{label.msg_reqResp}"  
 								minQueryLength="2" itemLabel="#{part.userName}" completeMethod="#{processBean.completeUsers}" 
 								value="#{processBean.part}" var="part" onSelectUpdate="growl" size="24" required="true" 
 								itemValue="#{part}" converter="userConv" selectListener="#{processBean.handleSelect}" />
                 <h:outputText value="*" style="color:red;" />
                 
-                <h:outputText value="Petitioner username: " />
-				<p:autoComplete id="petitionerName" forceSelection="true" requiredMessage="Petitioner is required"  
+                <h:outputText value="#{label.pet_username}: " />
+				<p:autoComplete id="petitionerName" forceSelection="true" requiredMessage="#{label.msg_reqPet}"  
 								minQueryLength="2" itemLabel="#{part.userName}" completeMethod="#{processBean.completeUsers}" 
 								value="#{processBean.part}" var="part" onSelectUpdate="growl" size="24" required="true" 
 								itemValue="#{part}" converter="userConv" selectListener="#{processBean.handleSelect}" />
                 <h:outputText value="*" style="color:red;" />
                 
-                <h:outputText value="Defendant username: " />
-				<p:autoComplete id="defendantName" forceSelection="true" requiredMessage="Defendant is required"  
+                <h:outputText value="#{label.def_username}: " />
+				<p:autoComplete id="defendantName" forceSelection="true" requiredMessage="#{label.msg_reqDef}"
 								minQueryLength="2" itemLabel="#{part.userName}" completeMethod="#{processBean.completeUsers}" 
 								value="#{processBean.part}" var="part" onSelectUpdate="growl" size="24" required="true" 
 								itemValue="#{part}" converter="userConv" selectListener="#{processBean.handleSelect}" />
@@ -76,8 +76,8 @@
                 
 			</h:panelGrid>
 			<f:facet name="footer">
-				<h:outputText value="* Required fields" style="color:red;" />
-	            <p:commandButton value="Update" actionListener="#{processBean.updateProcess}" 
+				<h:outputText value="* #{label.required_fields}" style="color:red;" />
+	            <p:commandButton value="#{label.update}" actionListener="#{processBean.updateProcess}" 
 	            				 update="@form" style="position:relative;margin-left:300px;" />
 			</f:facet>
 		</p:panel>

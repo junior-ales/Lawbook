@@ -32,7 +32,7 @@
 		   		
 	            <h:outputText value="#{label.email}:  " />
 	            <h:panelGroup>
-	                <p:inputText value="#{adminBean.chosenUser.email}" required="true" requiredMessage="#{label.msg_reqEmail}" size="29" style="text-transform:lowercase;" />
+	                <p:inputText value="#{adminBean.chosenUser.email}" required="true" requiredMessage="#{label.msg_reqEmail}" size="29" />
 	                <h:outputText value="*" style="color:red;" />  
 	            </h:panelGroup>  
 	            
@@ -54,7 +54,8 @@
 			</h:panelGrid>
 			<f:facet name="footer">
 				<h:outputText value="* #{label.required_fields}:" style="color:red;" />
-	            <p:commandButton value="#{label.save}" action="#{adminBean.saveUser}" update="growl" style="position:relative;margin-left:300px;" />
+	            <p:commandButton value="#{label.save}" ajax="false" action="#{adminBean.saveUser}" 
+	            				 update="growl" style="position:relative;margin-left:300px;" />
 			</f:facet>
 		</p:panel>
 	</ui:define>

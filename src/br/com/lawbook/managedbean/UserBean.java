@@ -72,7 +72,7 @@ public class UserBean {
 				if (auth.getName().equals("ADMIN")) {
 					item = new MenuItem();
 					item.setId("menuItemAdmin");
-					item.setValue(rs.getString("template_menu_account_admin"));
+					item.setValue(rs.getString("administration"));
 					item.setUrl("/pages/admin/administration.jsf");
 					sub.getChildren().add(item);
 				}

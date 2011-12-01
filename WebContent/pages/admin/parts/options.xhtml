@@ -9,13 +9,13 @@
 		</div>
 		<div style="padding-top: 10px; padding-bottom:10px;">
 			<p:menu style="width: 180px;" >
-				<p:submenu label="Users">
-					<p:menuitem value="New User"  url="./newUser.jsf" />
-					<p:menuitem value="Edit Users" url="./editUser.jsf" />
+				<p:submenu label="#{label.users}">
+					<p:menuitem value="#{label.new_user}"  url="./newUser.jsf" />
+					<p:menuitem value="#{label.edit_user}" url="./editUser.jsf" />
 				</p:submenu>
-				<p:submenu label="Process">
-					<p:menuitem value="New Process" url="./newProcess.jsf" />
-					<p:menuitem value="Edit Process" url="./processes.jsf" />
+				<p:submenu label="#{label.processes}">
+					<p:menuitem value="#{label.new_process}" url="./newProcess.jsf" />
+					<p:menuitem value="#{label.edit_process}" url="./processes.jsf" />
 				</p:submenu>
 			</p:menu>
 		</div>

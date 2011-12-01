@@ -7,7 +7,7 @@
 		<ui:include src="/pages/parts/home/options.xhtml" />
 	</ui:define>
 	<ui:define name="postPanel">
-		<h3>Account Settings</h3>
+		<h3><h:outputText value="#{label.account_settings}" /></h3>
 	</ui:define>
 	<ui:define name="contentPanel">
 		<p:ajaxStatus onstart="statusDialog.show()" oncomplete="statusDialog.hide()" />
@@ -18,7 +18,7 @@
 		<p:panel id="editUserPanel" style="margin-top:25px;">
 			<h:panelGrid id="editUserPanelGrid" columns="3" cellpadding="3" style="width:100%;">
 		   		
-				<h:outputText value="#{label.first_name} " />
+				<h:outputText value="#{label.first_name}: " />
                 <p:inputText value="#{profileBean.authProfile.firstName}" size="18" required="true" requiredMessage="First name is required" />  
 	            <h:outputText value="*" style="color:red;" />
 	            
@@ -31,7 +31,7 @@
                 <h:graphicImage id="imagePreview" height="50" width="50" url="#{profileBean.authProfile.avatar}" />
 	            
 	            <h:outputText value="#{label.birthdate}:  " />
-	            <p:calendar value="#{profileBean.birth}" showButtonPanel="true" size="18"
+	            <p:calendar value="#{profileBean.birth}" showButtonPanel="true" size="18" navigator="true" yearRange="c-100:c+10"
                 			locale="#{profileBean.authProfile.locale}" pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
                 <h:outputText value="" />  
                 

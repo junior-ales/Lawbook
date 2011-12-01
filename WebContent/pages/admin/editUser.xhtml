@@ -7,7 +7,7 @@
 		<ui:include src="./parts/options.xhtml" />
 	</ui:define>
 	<ui:define name="postPanel">
-		<h3>User Administration</h3>
+		<h3><h:outputText value="#{label.user_administration}" /></h3>
 	</ui:define>
 	<ui:define name="contentPanel">
 		<p:ajaxStatus style="position:relative; top:-50px; left:280px; width:16px;height:16px;">
@@ -18,48 +18,49 @@
 				<h:outputText value="" /> 
 			</f:facet>
 		</p:ajaxStatus>
-		<h:outputLabel value="Search by username: " style="font-weight:bold;" for="searchUsers" />
+		<h:outputLabel value="#{label.search_username}: " style="font-weight:bold;" for="searchUsers" />
 		<p:autoComplete id="searchUsers" forceSelection="true" minQueryLength="2" itemLabel="#{user.userName}"
 						value="#{adminBean.chosenUser}" completeMethod="#{adminBean.completeUsers}" var="user" 
 						itemValue="#{user}" converter="userConv" onSelectUpdate="editUserPanel" 
 						size="30" selectListener="#{adminBean.handleSelect}" />
-		<p:panel id="editUserPanel" style="margin-top:25px;" header="Edit User">
+		<p:panel id="editUserPanel" style="margin-top:25px;" header="#{label.edit_user}">
 			<h:panelGrid id="editUserPanelGrid" columns="2" cellpadding="3" >
-	            <h:outputText value="Role:  " />
-	            <h:selectManyCheckbox value="#{adminBean.authsId}" required="true" requiredMessage="Authority is required">
+	            <h:outputText value="#{label.role}:  " />
+	            <h:selectManyCheckbox value="#{adminBean.authsId}" required="true" requiredMessage="#{label.msg_reqAuthority}">
 		   			<f:selectItems value="#{adminBean.authorities}" var="auth" itemLabel="#{auth.name}" itemValue="#{auth.id}" />
 		   		</h:selectManyCheckbox>
 		   		
-				<h:outputText value="Username: " />
+				<h:outputText value="#{label.username}: " />
 		   		<h:panelGroup>
-	                <p:inputText value="#{adminBean.chosenUser.userName}" required="true" requiredMessage="Username is required" size="29" style="color: gray;" />
+	                <p:inputText value="#{adminBean.chosenUser.userName}" required="true" requiredMessage="#{label.msg_reqUsername}" size="29" />
 	                <h:outputText value="*" style="color:red;" />  
 			   		<h:outputText value="*" style="position:relative;top:-32px;left:-11px;color:red;" />
 		   		</h:panelGroup>
 	            
-	            <h:outputText value="Email:  " />
+	            <h:outputText value="#{label.email}:  " />
 	            <h:panelGroup>
-	                <p:inputText value="#{adminBean.chosenUser.email}" required="true" requiredMessage="Email is required" size="29" style="color: gray;" />
+	                <p:inputText value="#{adminBean.chosenUser.email}" required="true" requiredMessage="#{label.msg_reqEmail}" size="29" />
 	                <h:outputText value="*" style="color:red;" />  
 	            </h:panelGroup>
 	            
-	            <h:outputText value="Password:  " />
-                <p:password feedback="true" minLength="5" value="#{adminBean.pass}" size="29" required="false" style="color: gray;" />  
+	            <h:outputText value="#{label.password}:  " />
+                <p:password feedback="true" minLength="5" value="#{adminBean.pass}" size="29" required="false" />  
 
-	            <h:outputText value="Confirmation:  " />
-                <p:password feedback="true" minLength="5" value="#{adminBean.passConfirmation}" size="29" required="false" style="color: gray;" />  
+	            <h:outputText value="#{label.confirmation}:  " />
+                <p:password feedback="true" minLength="5" value="#{adminBean.passConfirmation}" size="29" required="false" />  
 	            
-	            <h:outputText value="Enabled:  " />
+	            <h:outputText value="#{label.enabled}:  " />
 	            <h:panelGroup>
 	                <h:selectBooleanCheckbox value="#{adminBean.chosenUser.enable}" />
-	                <h:outputText value="Changes will be applied at next login" style="margin-left:80px;font-size:small;" />
+	                <h:outputText value="#{label.msg_next_login}" style="margin-left:80px;font-size:small;" />
 	            </h:panelGroup>
 		            
 			</h:panelGrid>
 			<f:facet name="footer">
-				<h:outputText value="* Required fields" style="color:red;" />
-				<p:commandButton value="Edit Customer Info" action="#{adminBean.updateCustomerInfo}" update="growl" style="position:relative;margin-left:100px;" />
-	            <p:commandButton value="Save" actionListener="#{adminBean.updateUser}" update="growl" />
+				<h:outputText value="* #{label.required_fields}" style="color:red;" />
+				<p:commandButton value="#{label.edit_customer_info}" action="#{adminBean.updateCustomerInfo}" 
+								 ajax="false" update="growl" style="position:relative;margin-left:100px;" />
+	            <p:commandButton value="#{label.save}" actionListener="#{adminBean.updateUser}" update="growl" />
 			</f:facet>
 		</p:panel>
 	</ui:define>

@@ -25,7 +25,7 @@
 		   		<f:facet name="header">
 					<h:outputText value="#{label.profile_data}" />
 				</f:facet>
-				<h:outputText value="#{label.profile_first_name}: " />
+				<h:outputText value="#{label.first_name}: " />
                 <p:inputText value="#{customerBean.customer.firstName}" size="18" required="true" requiredMessage="#{label.msg_reqFirstName}" />  
 	            <h:outputText value="*" style="color:red;" />
 	            
@@ -38,9 +38,9 @@
                 <h:graphicImage id="imagePreview" height="50" width="50" url="#{customerBean.customer.avatar}" />
 	            
 	            <h:outputText value="#{label.birthdate}:  " />
-                <p:calendar value="#{customerBean.birth}" showButtonPanel="true" size="18"
+                <p:calendar value="#{customerBean.birth}" showButtonPanel="true" size="18" navigator="true" yearRange="c-100:c+10"
                 			locale="#{profileBean.authProfile.locale}" pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
-                <h:outputText value="DD/MM/YYYY" />  
+                <h:outputText value="#{label.date_example}" />  
                 
                 <h:outputText value="#{label.about_me}:  " />
                 <p:inputTextarea value="#{customerBean.customer.aboutMe}" cols="18"  />
@@ -128,7 +128,8 @@
 			</h:panelGrid>
 			<f:facet name="footer">
 				<h:outputText value="* #{label.required_fields}" style="color:red;" />
-	            <p:commandButton value="Save" actionListener="#{customerBean.updateProfile}" update="imagePreview growl" style="position:relative;margin-left:300px;" />
+	            <p:commandButton value="#{label.save}" actionListener="#{customerBean.updateProfile}" 
+	            				 update="imagePreview growl" style="position:relative;margin-left:300px;" />
 			</f:facet>
 		</p:panel>
 	</ui:define>
