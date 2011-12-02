@@ -105,6 +105,13 @@ public class ProcessBean implements Serializable {
 			this.part = new User();
 		}
 	}
+	
+	public String editProcess() {
+		String outcome = "";
+		LOG.warning("Edit Process unimplemented yet");
+		FacesUtil.warnMessage("=|", "Edit Process unimplemented yet");
+		return outcome;
+	}
 
 	public List<User> completeUsers(String query) {
 		if (query == null) query = "";

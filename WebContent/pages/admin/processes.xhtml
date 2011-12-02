@@ -59,9 +59,8 @@
 						<h:outputText value="#{proc.description}" />
 					</h:panelGrid>
 					<f:facet name="footer">
-			            <p:commandButton value="#{label.edit_process}" ajax="false" action="editProcess?faces-redirect=true" style="position:relative;margin-left:330px;">
-			            	<f:setPropertyActionListener target="#{processBean.process}" value="#{proc}" />
-			            </p:commandButton>
+			            <p:commandButton value="#{label.edit_process}" action="#{processBean.editProcess}" 
+			            				 style="position:relative;margin-left:330px;" ajax="false" />
 					</f:facet>
 				</p:panel>
 			</p:rowExpansion>
