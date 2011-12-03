@@ -25,7 +25,7 @@ import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 01DEC2011-07
+ * @version 03DEC2011-08
  *
  */
 @ManagedBean

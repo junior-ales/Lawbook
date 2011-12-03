@@ -1,6 +1,5 @@
 package br.com.lawbook.managedbean;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -9,8 +8,9 @@ import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.model.ListDataModel;
 
 import org.hibernate.HibernateException;
 import org.primefaces.event.SelectEvent;
@@ -25,21 +25,20 @@ import br.com.lawbook.util.FacesUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 01DEC2011-04
+ * @version 03DEC2011-05
  *
  */
 @ManagedBean
-@ViewScoped
-public class ProcessBean implements Serializable {
+@RequestScoped
+public class ProcessBean {
 
-	private static final long serialVersionUID = -4302328893337520681L;
 	private User part;
 	private Process process;
 	private Date openingDate;
 	private List<User> users;
 	private Profile authProfile;
-	private List<Process> processes;
 	private final ResourceBundle rs;
+	private ListDataModel<Process> processes;
 	private static final Logger LOG = Logger.getLogger("br.com.lawbook.managedbean");
 	private static final ProfileService PROFILE_SERVICE = ProfileService.getInstance();
 	private static final ProcessService PROCESS_SERVICE = ProcessService.getInstance();
@@ -47,18 +46,19 @@ public class ProcessBean implements Serializable {
 	public ProcessBean() {
 		this.rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
 		this.process = new Process();
-		if (FacesUtil.getExternalContext().getRequestServletPath().contains("admin")) { // testing if is an administration page
-			this.users = UserConverter.users;
-			LOG.info(this.getClass().getSimpleName() + ": Users loaded");
-		}
+		this.part = new User();
+		this.authProfile = PROFILE_SERVICE.getAuthorizedUserProfile();
+		this.users = UserConverter.users;
+		LOG.info(this.getClass().getSimpleName() + ": Users loaded");
+		final String mode = FacesUtil.getExternalContext().getRequestParameterMap().get("mode");
 		try {
-			this.authProfile = PROFILE_SERVICE.getAuthorizedUserProfile();
-			if (FacesUtil.getExternalContext().getRequestServletPath().contains("processes")) {
-				this.processes = PROCESS_SERVICE.getAll();
-				LOG.info(this.getClass().getSimpleName() + ": All processes loaded");
-			} else {
-				this.processes = PROCESS_SERVICE.getMyProcesses(this.authProfile);
-				LOG.info(this.getClass().getSimpleName() + ": My processes loaded");
+			if (mode.equals("edit")) {
+				final Long processId = Long.valueOf(FacesUtil.getExternalContext().getRequestParameterMap().get("processId"));
+				this.process = PROCESS_SERVICE.getById(processId);
+			}
+			else if (!mode.equals("new")) {
+				LOG.severe(this.getClass().getSimpleName() + ": Error on constructor. Invalid process bean mode.");
+				FacesUtil.errorMessage("=(", this.rs.getString("msg_reqParam"));
 			}
 		} catch (final IllegalArgumentException e) {
 			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
@@ -71,6 +71,7 @@ public class ProcessBean implements Serializable {
 	}
 
 	public void saveProcess() {
+		LOG.info(this.getClass().getSimpleName() + ": saveProcess()");
 		try {
 			final Calendar auxDate = Calendar.getInstance();
 			auxDate.setTime(this.openingDate);
@@ -89,6 +90,7 @@ public class ProcessBean implements Serializable {
 	}
 
 	public void updateProcess() {
+		LOG.info(this.getClass().getSimpleName() + ": updateProcess()");
 		try {
 			final Calendar auxDate = Calendar.getInstance();
 			auxDate.setTime(this.openingDate);
@@ -105,15 +107,9 @@ public class ProcessBean implements Serializable {
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
 	}
-	
-	public String editProcess() {
-		String outcome = "";
-		LOG.warning("Edit Process unimplemented yet");
-		FacesUtil.warnMessage("=|", "Edit Process unimplemented yet");
-		return outcome;
-	}
 
 	public List<User> completeUsers(String query) {
+		LOG.info(this.getClass().getSimpleName() + ": completeUsers(String query)");
 		if (query == null) query = "";
         final List<User> results = new ArrayList<User>();
         for (final User u : this.users) {
@@ -140,7 +136,7 @@ public class ProcessBean implements Serializable {
 
 	}
 
-	public List<Process> getProcesses() {
+	public ListDataModel<Process> getProcesses() {
 		return this.processes;
 	}
 

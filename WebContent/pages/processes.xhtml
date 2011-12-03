@@ -1,10 +1,10 @@
-<ui:composition template="../template.xhtml"
+<ui:composition template="./template.xhtml"
 				xmlns:ui="http://java.sun.com/jsf/facelets"
 				xmlns:p="http://primefaces.prime.com.tr/ui"
 				xmlns:f="http://java.sun.com/jsf/core"
 				xmlns:h="http://java.sun.com/jsf/html">
 	<ui:define name="optionsPanel">
-		<ui:include src="./parts/options.xhtml" />
+		<ui:include src="./parts/home/options.xhtml" />
 	</ui:define>
 	<ui:define name="postPanel">
 		<h3><h:outputText value="#{label.home_processes}" /></h3>
@@ -58,9 +58,8 @@
 			</p:column>
 			
 			<p:column rendered="#{param.mode == 'choose'}">
-	            <p:commandButton value="#{label.edit_process}" actionListener="#{processesBean.prepareEditProcess}" action="#{processesBean.editProcess}">
-	            	<f:param name="mode" value="choose" />
-	            </p:commandButton>
+	            <p:commandButton value="#{label.edit_process}" actionListener="#{processesBean.prepareEditProcess}" 
+	            				 action="#{processesBean.editProcess}" />
 			</p:column>
 		</p:dataTable>
 	</ui:define>

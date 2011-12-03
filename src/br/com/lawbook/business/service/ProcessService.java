@@ -9,11 +9,11 @@ import br.com.lawbook.dao.ProcessDAO;
 import br.com.lawbook.dao.impl.ProcessDAOImpl;
 import br.com.lawbook.model.Process;
 import br.com.lawbook.model.Profile;
-import br.com.lawbook.util.JavaUtil;
+import static br.com.lawbook.util.JavaUtil.*;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 27NOV2011-03
+ * @version 03DEC2011-04
  *
  */
 public final class ProcessService implements Serializable {
@@ -34,12 +34,12 @@ public final class ProcessService implements Serializable {
 	}
 
 	public void create(final Process process) throws IllegalArgumentException, HibernateException  {
-		JavaUtil.validateParameter(process, "#### Parameter required: ProcessService.create.process");
+		validateParameter(process, "#### Parameter required: ProcessService.create.process");
 		this.dao.create(process);
 	}
 
 	public void update(final Process process) throws IllegalArgumentException, HibernateException {
-		JavaUtil.validateParameter(process, "#### Parameter required: ProcessService.update.process");
+		validateParameter(process, "#### Parameter required: ProcessService.update.process");
 		this.dao.update(process);
 	}
 
@@ -48,13 +48,17 @@ public final class ProcessService implements Serializable {
 	}
 
 	public Process getById(final Long processId) throws IllegalArgumentException, HibernateException {
-		JavaUtil.validateParameter(processId, "#### Parameter required: ProcessService.getById.processId");
+		validateParameter(processId, "#### Parameter required: ProcessService.getById.processId");
 		return this.dao.getById(processId);
 	}
 
 	public List<Process> getMyProcesses(final Profile profile) throws IllegalArgumentException, HibernateException {
-		JavaUtil.validateParameter(profile, "#### Parameter required: ProcessService.getMyProcesses.profile");
+		validateParameter(profile, "#### Parameter required: ProcessService.getMyProcesses.profile");
 		return this.dao.getMyProcesses(profile);
+	}
+
+	public int getProcessCount() throws HibernateException {
+		return Integer.parseInt(this.dao.getProcessesCount().toString());
 	}
 
 }

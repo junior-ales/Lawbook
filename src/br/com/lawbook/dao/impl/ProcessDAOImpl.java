@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import br.com.lawbook.dao.ProcessDAO;
@@ -18,7 +19,7 @@ import br.com.lawbook.util.HibernateUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 27NOV2011-04
+ * @version 03DEC2011-05
  *
  */
 public class ProcessDAOImpl implements ProcessDAO {
@@ -108,6 +109,26 @@ public class ProcessDAOImpl implements ProcessDAO {
 		} finally {
 			session.close();
 			LOG.info("#### Hibernate Session closed");
+		}
+	}
+
+	@Override
+	public Long getProcessesCount() throws HibernateException {
+		Session session = HibernateUtil.getSession();
+		Transaction tx = session.beginTransaction();
+		try {
+			Criteria crit = session.createCriteria(Process.class);
+			crit.setProjection(Projections.rowCount());
+			Long count = (Long) crit.uniqueResult();
+			tx.commit();
+			return count;
+		} catch (Exception e) {
+			LOG.severe(e.getMessage());
+			tx.rollback();
+			throw new HibernateException(e);
+		} finally {
+			session.close();
+			LOG.info("Hibernate Session closed");
 		}
 	}
 
