@@ -35,6 +35,7 @@ import br.com.lawbook.util.JavaUtil;
 @SessionScoped
 public class ProfileBean implements Serializable {
 
+	private static final long serialVersionUID = -3899574847108383874L;
 	private Date birth;
 	private String pass;
 	private Profile authProfile;
@@ -42,17 +43,15 @@ public class ProfileBean implements Serializable {
 	private Profile publicProfile;
 	private String passConfirmation;
 	private LazyDataModel<Post> wall;
-	private static final Logger LOG = Logger.getLogger("ProfileBean");
-	private static final long serialVersionUID = 3362774812993963437L;
+	private static final Logger LOG = Logger.getLogger("br.com.lawbook.managedbean");
 	private static final UserService USER_SERVICE = UserService.getInstance();
 	private static final PostService POST_SERVICE = PostService.getInstance();
 	private static final ProfileService PROFILE_SERVICE = ProfileService.getInstance();
 	private ResourceBundle rs;
 
 	public ProfileBean() {
-		LOG.info("#### ProfileBean() created");
 		this.profileOwner = new Profile();
-		rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+		this.rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
 		try {
 			this.authProfile = PROFILE_SERVICE.getAuthorizedUserProfile();
 			this.publicProfile = PROFILE_SERVICE.getPublicProfile();
@@ -62,10 +61,12 @@ public class ProfileBean implements Serializable {
 		} catch (final Exception e) {
 			FacesUtil.errorMessage("Authentication Error", "Problem with authentication process: " + e.getMessage());
 		}
+		LOG.info(this.getClass().getSimpleName() + ": ManagedBean Created" );
 	}
 
 	@PostConstruct
 	public void loadLazyWall() {
+		LOG.info(this.getClass().getSimpleName() + ": loadLazyWall()");
 		if (this.wall == null) {
 			this.wall = new LazyDataModel<Post>() {
 				private static final long serialVersionUID = -4238038748234463347L;
@@ -81,7 +82,7 @@ public class ProfileBean implements Serializable {
 	}
 
 	public void removePost(final ActionEvent actionEvent) {
-		LOG.info("#### removePost(ActionEvent event)");
+		LOG.info(this.getClass().getSimpleName() + ": removePost(ActionEvent event)");
 		Post post = new Post();
 		if (!this.profileOwner.getId().equals(this.authProfile.getId())) {
 			post = (Post) this.wall.getRowData();
@@ -94,22 +95,26 @@ public class ProfileBean implements Serializable {
 			POST_SERVICE.delete(post);
 			FacesUtil.infoMessage("=)", this.rs.getString("msg_deleted"));
 		} catch (final IllegalArgumentException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.warnMessage("=|", e.getMessage());
 		} catch (final HibernateException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
 	}
 
 	public void addFriend(final ActionEvent event) {
-		LOG.info("#### addFriend(ActionEvent event)");
+		LOG.info(this.getClass().getSimpleName() + ": addFriend(ActionEvent event)");
 		try {
 			PROFILE_SERVICE.friendship(this.authProfile, this.profileOwner);
 			this.authProfile = PROFILE_SERVICE.getAuthorizedUserProfile();
-			LOG.info("#### updateProfile()");
+			LOG.info(this.getClass().getSimpleName() + ": updateProfile()");
 			FacesUtil.infoMessage("=)", this.rs.getString("msg_connAdded"));
 		} catch (final IllegalArgumentException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.warnMessage("=|", e.getMessage());
 		} catch (final HibernateException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
 	}
@@ -129,23 +134,25 @@ public class ProfileBean implements Serializable {
 	}
 
 	public void updateProfile() {
-		LOG.info("#### updateProfile()");
+		LOG.info(this.getClass().getSimpleName() + ": updateProfile()");
 		final Calendar auxDate = Calendar.getInstance();
 		auxDate.setTime(this.birth);
 		this.authProfile.setBirth(auxDate);
 		try {
 			PROFILE_SERVICE.update(this.authProfile);
-			rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+			this.rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
 			FacesUtil.infoMessage("=)", this.rs.getString("msg_profileUpdatedSuccess"));
 		} catch (final IllegalArgumentException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.warnMessage("=|", e.getMessage());
 		} catch (final HibernateException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
 	}
 
 	public void updateUser() {
-		LOG.info("#### updateUser()");
+		LOG.info(this.getClass().getSimpleName() + ": updateUser()");
 		try {
 			if (!this.passConfirmation.equals(this.pass)) {
 				FacesUtil.warnMessage("=|", this.rs.getString("msg_passDifferent"));
@@ -162,14 +169,17 @@ public class ProfileBean implements Serializable {
 				user.setPassword(JavaUtil.encode(this.pass));
 			}
 			USER_SERVICE.update(user);
-			LOG.info("#### User password updated successfully");
-			rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+			LOG.info(this.getClass().getSimpleName() + ": User password updated successfully");
+			this.rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
 			FacesUtil.infoMessage("=)", this.rs.getString("msg_userUpdatedSuccess"));
 		} catch (final IllegalArgumentException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.warnMessage("=|", e.getMessage());
 		} catch (final HibernateException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.errorMessage("=(", e.getMessage());
 		} catch (final NoSuchAlgorithmException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
 	}

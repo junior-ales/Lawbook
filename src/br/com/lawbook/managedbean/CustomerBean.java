@@ -20,13 +20,14 @@ import br.com.lawbook.util.FacesUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 28NOV2011-04
+ * @version 01DEC2011-05
  *
  */
 @ManagedBean
 @ViewScoped
 public class CustomerBean implements Serializable {
 
+	private static final long serialVersionUID = 8168538165063080055L;
 	private Date birth;
 	private String rg;
 	private String cpf;
@@ -35,21 +36,19 @@ public class CustomerBean implements Serializable {
 	private Long profileId;
 	private Location local;
 	private Profile customer;
-	private static final long serialVersionUID = 4793288994547648055L;
-	private static final Logger LOG = Logger.getLogger("CustomerBean");
+	private static final Logger LOG = Logger.getLogger("br.com.lawbook.managedbean");
 	private static final ProfileService PROFILE_SERVICE = ProfileService.getInstance();
 	private static final LocationService LOCATION_SERVICE = LocationService.getInstance();
 	private ResourceBundle rs;
 
 	public CustomerBean() {
-		LOG.info("#### CustomerBean created");
-		rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+		this.rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
 		try {
 			this.profileId = Long.valueOf(FacesUtil.getExternalContext().getRequestParameterMap().get("newUserProfileId"));
 			this.customer = PROFILE_SERVICE.getProfileById(this.profileId);
 			this.birth = new Date();
 			this.local = new Location();
-			
+
 			if (this.customer.getBirth() != null) this.birth = this.customer.getBirth().getTime();
 			if (this.customer.getRg() != null) this.rg = this.customer.getRg().toString();
 			if (this.customer.getCpf() != null) this.cpf = this.customer.getCpf().toString();
@@ -58,26 +57,29 @@ public class CustomerBean implements Serializable {
 			if (this.customer.getLocation() != null) this.local = this.customer.getLocation();
 
 		} catch (final IllegalArgumentException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.warnMessage("=|", e.getMessage());
 		} catch (final HibernateException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
+		LOG.info(this.getClass().getSimpleName() + ": ManagedBean created");
 	}
 
 	public void updateProfile() {
-		LOG.info("#### updateProfile()");
+		LOG.info(this.getClass().getSimpleName() + ": updateProfile()");
 		try {
 			if (!this.rg.isEmpty()) {
 				this.customer.setRg(Long.valueOf(this.rg));
-				LOG.info("#### updateProfile(): rg");
+				LOG.info(this.getClass().getSimpleName() + ": updateProfile(): rg");
 			}
-			
+
 			if (!this.phone.isEmpty()) {
 				this.phone = this.phone.replaceAll("[^0-9]", "");
 				this.customer.setPhone(Long.valueOf(this.phone));
-				LOG.info("#### updateProfile(): phone");
+				LOG.info(this.getClass().getSimpleName() + ": updateProfile(): phone");
 			}
-			
+
 			if (!this.cpf.isEmpty()) {
 				this.cpf = this.cpf.replaceAll("[^0-9]", "");
 				if (!PROFILE_SERVICE.cpfValidation(this.cpf)) {
@@ -85,7 +87,7 @@ public class CustomerBean implements Serializable {
 					return;
 				}
 				this.customer.setCpf(Long.valueOf(this.cpf));
-				LOG.info("#### updateProfile(): cpf");
+				LOG.info(this.getClass().getSimpleName() + ": updateProfile(): cpf");
 			}
 			if (!this.cnpj.isEmpty()) {
 				this.cnpj = this.cnpj.replaceAll("[^0-9]", "");
@@ -94,24 +96,24 @@ public class CustomerBean implements Serializable {
 					return;
 				}
 				this.customer.setCnpj(Long.valueOf(this.cnpj));
-				LOG.info("#### updateProfile(): cnpj");
+				LOG.info(this.getClass().getSimpleName() + ": updateProfile(): cnpj");
 			}
-			
+
 			if (this.local.getId() == null) {
 				LOCATION_SERVICE.save(this.local);
-				LOG.info("#### updateProfile(): Location saved successfully");
+				LOG.info(this.getClass().getSimpleName() + ": updateProfile(): Location saved successfully");
 			} else {
 				LOCATION_SERVICE.update(this.local);
-				LOG.info("#### updateProfile(): Location updated successfully");
+				LOG.info(this.getClass().getSimpleName() + ": updateProfile(): Location updated successfully");
 			}
 			this.customer.setLocation(this.local);
-			LOG.info("#### updateProfile(): local");
-			
+			LOG.info(this.getClass().getSimpleName() + ": updateProfile(): local");
+
 			final Calendar auxDate = Calendar.getInstance();
 			auxDate.setTime(this.birth);
 			this.customer.setBirth(auxDate);
-			LOG.info("#### updateProfile(): birth");
-			
+			LOG.info(this.getClass().getSimpleName() + ": updateProfile(): birth");
+
 			PROFILE_SERVICE.update(this.customer);
 
 			this.customer = new Profile();
@@ -122,14 +124,17 @@ public class CustomerBean implements Serializable {
 			this.cnpj = "";
 			this.phone = "";
 
-			LOG.info("#### updateProfile(): Profile updated successfully");
-			rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+			LOG.info(this.getClass().getSimpleName() + ": updateProfile(): Profile updated successfully");
+			this.rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
 			FacesUtil.infoMessage("=)", this.rs.getString("msg_profileUpdatedSuccess"));
 		} catch (final NumberFormatException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.warnMessage("=|", e.getMessage());
 		} catch (final IllegalArgumentException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.warnMessage("=|", e.getMessage());
 		} catch (final HibernateException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
 	}

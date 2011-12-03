@@ -1,6 +1,7 @@
 package br.com.lawbook.managedbean;
 
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
@@ -35,6 +36,7 @@ public class UserBean {
 
 	private final MenuModel menu;
 	private static final UserService USER_SERVICE = UserService.getInstance();
+	private static final Logger LOG = Logger.getLogger("br.com.lawbook.managedbean");
 
 	public UserBean() {
 		this.menu = new DefaultMenuModel();
@@ -79,10 +81,13 @@ public class UserBean {
 			}
 		} catch (final IllegalArgumentException e) {
 			FacesUtil.warnMessage("=|", e.getMessage());
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 		} catch (final HibernateException e) {
 			FacesUtil.errorMessage("=(", e.getMessage());
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 		} catch (final Exception e) {
 			FacesUtil.errorMessage("=(", e.getMessage());
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 		}
 
 		item = new MenuItem();
@@ -98,6 +103,7 @@ public class UserBean {
 		sub.getChildren().add(item);
 
 		this.menu.addSubmenu(sub);
+		LOG.info(this.getClass().getSimpleName() + ": ManagedBean Created" );
 	}
 
 	public MenuModel getMenu() {

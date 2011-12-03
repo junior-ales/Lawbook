@@ -3,11 +3,13 @@ package br.com.lawbook.managedbean;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
 import org.primefaces.model.LazyDataModel;
@@ -26,26 +28,30 @@ import br.com.lawbook.util.FacesUtil;
 @SessionScoped
 public class HomeBean implements Serializable {
 
+	private static final long serialVersionUID = 2357208428945366980L;
+	private final ResourceBundle rs;
 	private Profile authProfile;
 	private Profile publicProfile;
 	private LazyDataModel<Post> stream;
-	private static final Logger LOG = Logger.getLogger("HomeBean");
-	private static final long serialVersionUID = -7732382195991593343L;
+	private static final Logger LOG = Logger.getLogger("br.com.lawbook.managedbean");
 	private static final PostService POST_SERVICE = PostService.getInstance();
 	private static final ProfileService PROFILE_SERVICE = ProfileService.getInstance();
 
 	public HomeBean() {
+		this.rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
 		try {
 			this.publicProfile = PROFILE_SERVICE.getPublicProfile();
 			this.authProfile = PROFILE_SERVICE.getAuthorizedUserProfile();
 		} catch (final Exception e) {
-			LOG.severe(e.getMessage());
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.errorMessage("Authentication Error", "Problem with authentication process: " + e.getMessage());
 		}
+		LOG.info(this.getClass().getSimpleName() + ": ManagedBean Created" );
 	}
 
 	@PostConstruct
 	public void loadLazyStream() {
+		LOG.info(this.getClass().getSimpleName() + ": loadLazyStream()");
 		if (this.stream == null) {
 			this.stream = new LazyDataModel<Post>() {
 
@@ -62,16 +68,17 @@ public class HomeBean implements Serializable {
 	}
 
 	public void removePost(final ActionEvent event) {
+		LOG.info(this.getClass().getSimpleName() + ": removePost(ActionEvent event)");
 		final Post post = (Post) this.stream.getRowData();
 		try {
 			if (post.getSender().getId().equals(this.authProfile.getId())) {
 				POST_SERVICE.delete(post);
-				FacesUtil.infoMessage("=)", "Post deleted!");
+				FacesUtil.infoMessage("=)", this.rs.getString("msg_deleted"));
 			} else {
-				FacesUtil.warnMessage("=|", "You cannot delete this post");
+				FacesUtil.warnMessage("=|", this.rs.getString("msg_notDeletable"));
 			}
 		} catch (final Exception e) {
-			LOG.severe(e.getMessage());
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
 	}
@@ -85,7 +92,7 @@ public class HomeBean implements Serializable {
 	}
 
 	public Profile getPublicProfile() {
-		return publicProfile;
+		return this.publicProfile;
 	}
 
 }

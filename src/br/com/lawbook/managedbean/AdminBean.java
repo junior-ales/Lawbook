@@ -1,6 +1,5 @@
 package br.com.lawbook.managedbean;
 
-import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,37 +25,36 @@ import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 28NOV2011-06
+ * @version 01DEC2011-07
  *
  */
 @ManagedBean
 @RequestScoped
-public class AdminBean implements Serializable {
+public class AdminBean {
 
 	private String pass;
 	private Long[] authsId;
 	private User chosenUser;
 	private Boolean disabled;
 	private List<User> users;
+	private ResourceBundle rs;
 	private String passConfirmation;
 	private final List<Authority> authorities;
-	private static final Logger LOG = Logger.getLogger("AdminBean");
-	private static final long serialVersionUID = 3360787798342290714L;
+	private static final Logger LOG = Logger.getLogger("br.com.lawbook.managedbean");
 	private static final ProfileService PROFILE_SERVICE = ProfileService.getInstance();
-	private ResourceBundle rs;
 
 	public AdminBean() {
-		LOG.info("#### AdminBean created");
 		this.chosenUser = new User();
-		rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+		this.rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
 		this.users = UserConverter.users;
 		this.authorities = AuthorityConverter.authorities;
 		this.authsId = new Long[this.authorities.size()];
+		LOG.info(this.getClass().getSimpleName() + ": ManagedBean created");
 
 	}
 
-	public List<User> completeUsers(String query) {
-		if (query == null) query = "";
+	public List<User> completeUsers(final String query) {
+		LOG.info(this.getClass().getSimpleName() + ": completeUsers(String " + query + ")");
         final List<User> results = new ArrayList<User>();
         for (final User u : this.users) {
             if (u.getUserName().startsWith(query)) {
@@ -67,7 +65,7 @@ public class AdminBean implements Serializable {
     }
 
 	public String saveUser() {
-		LOG.info("#### saveUser()");
+		LOG.info(this.getClass().getSimpleName() + ": saveUser()");
 		String outcome = "";
 		try {
 			this.validateUser();
@@ -75,20 +73,24 @@ public class AdminBean implements Serializable {
 			UserService.getInstance().create(this.chosenUser);
 			final Long profileId = this.postProcessing();
 			this.users.add(this.chosenUser);
-			rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+			this.rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
 			FacesUtil.infoMessage("=)", this.rs.getString("msg_userCreatedSuccess"));
 			outcome = "customerInfo?newUserProfileId=" + profileId + "&faces-redirect=true";
 		} catch (final IllegalArgumentException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.warnMessage("=|", e.getMessage());
 		} catch (final HibernateException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.errorMessage("=(", e.getMessage());
 		} catch (final NoSuchAlgorithmException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
 		return outcome;
 	}
 
 	private Long postProcessing() throws IllegalArgumentException, HibernateException {
+		LOG.info(this.getClass().getSimpleName() + ": postProcessing()");
 		final Profile newProfile = new Profile();
 		newProfile.setAvatar("http://www.lawbook.com.br/lawbook/resources/images/defaultAvatar.png");
 		newProfile.setFirstName(this.chosenUser.getUserName());
@@ -96,7 +98,7 @@ public class AdminBean implements Serializable {
 		newProfile.setLocale("pt_BR");
 		newProfile.setUserOwner(UserService.getInstance().getUserById(this.chosenUser.getId()));
 		PROFILE_SERVICE.create(newProfile);
-		LOG.info("#### postProcessing() Profile Created");
+		LOG.info(this.getClass().getSimpleName() + ": Profile Created");
 		Profile adminProfile = new Profile();
 		final List<Profile> newProfileFriends = new ArrayList<Profile>();
 		List<Profile> adminFriends = new ArrayList<Profile>();
@@ -108,18 +110,17 @@ public class AdminBean implements Serializable {
 					adminFriends = adminProfile.getFriends();
 					adminFriends.add(newProfile);
 					PROFILE_SERVICE.update(adminProfile);
-					LOG.info("#### postProcessing() " + adminProfile.getFirstName() + "'s Connections updated");
+					LOG.info(this.getClass().getSimpleName() + ": postProcessing() " + adminProfile.getFirstName() + "'s Connections updated");
 				}
 			}
 		}
 		newProfile.setFriends(newProfileFriends);
 		PROFILE_SERVICE.update(newProfile);
-		LOG.info("#### postProcessing() " + newProfile.getFirstName() + "'s Connections added successfully");
 		return newProfile.getId();
 	}
 
 	public void updateUser() {
-		LOG.info("#### updateUser()");
+		LOG.info(this.getClass().getSimpleName() + ": updateUser()");
 		try {
 			this.validateUser();
 			UserService.getInstance().update(this.chosenUser);
@@ -128,31 +129,35 @@ public class AdminBean implements Serializable {
 					this.users.set(i, this.chosenUser);
 				}
 			}
-			rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+			this.rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
 			FacesUtil.infoMessage("=)", this.rs.getString("msg_userUpdatedSuccess"));
 		} catch (final IllegalArgumentException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.warnMessage("=|", e.getMessage());
 		} catch (final HibernateException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.errorMessage("=(", e.getMessage());
 		} catch (final NoSuchAlgorithmException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
 	}
-	
+
 	public String updateCustomerInfo() {
-		LOG.info("#### updateCustomerInfo()");
+		LOG.info(this.getClass().getSimpleName() + ": updateCustomerInfo()");
 		String outcome = "";
 		if (this.chosenUser != null) {
 			final Long id = PROFILE_SERVICE.getProfileByUserId(this.chosenUser.getId()).getId();
 			outcome = "customerInfo?newUserProfileId=" + id + "&faces-redirect=true";
 		}
-		else
+		else {
 			FacesUtil.warnMessage("=|", this.rs.getString("msg_reqSelectUser"));
+		}
 		return outcome;
 	}
 
 	public void validateUser() throws IllegalArgumentException, NoSuchAlgorithmException {
-		LOG.info("#### validateUser()");
+		LOG.info(this.getClass().getSimpleName() + ": validateUser()");
 		JavaUtil.validateParameter(this.chosenUser.getEmail(), this.rs.getString("msg_reqEmail"));
 		JavaUtil.validateParameter(this.chosenUser.getUserName(), this.rs.getString("msg_reqUsername"));
 		if (!this.passConfirmation.equals(this.pass)) {
@@ -177,7 +182,7 @@ public class AdminBean implements Serializable {
 	}
 
 	public void handleSelect(final SelectEvent event) {
-		LOG.info("#### handleSelect(final SelectEvent event)");
+		LOG.info(this.getClass().getSimpleName() + ": handleSelect(SelectEvent event)");
 		final List<Authority> auths = this.chosenUser.getAuthority();
 		for (int i = 0; i < auths.size(); i++) {
 			this.authsId[i] = auths.get(i).getId();

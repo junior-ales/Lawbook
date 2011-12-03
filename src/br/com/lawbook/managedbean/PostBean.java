@@ -2,6 +2,7 @@ package br.com.lawbook.managedbean;
 
 import java.util.Calendar;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -15,18 +16,23 @@ import br.com.lawbook.util.FacesUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 27NOV2011-07
+ * @version 01DEC2011-08
  */
 @ManagedBean
 @RequestScoped
 public class PostBean {
 
 	private Post post;
-	private String postContent;
 	private Profile receiver;
+	private String postContent;
+	private final ResourceBundle rs;
+	private static final Logger LOG = Logger.getLogger("br.com.lawbook.managedbean");
 	private static final ProfileService PROFILE_SERVICE = ProfileService.getInstance();
-	private final ResourceBundle rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", 
-													   FacesContext.getCurrentInstance().getViewRoot().getLocale());
+
+	public PostBean() {
+		this.rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+		LOG.info(this.getClass().getSimpleName() + ": ManagedBean Created" );
+	}
 
 	public String getPostContent() {
 		return this.postContent;
@@ -46,7 +52,7 @@ public class PostBean {
 
 	public String savePost() {
 		if (this.postContent.trim().equals("")) {
-			FacesUtil.warnMessage("=|", rs.getString("msg_noContentPost"));
+			FacesUtil.warnMessage("=|", this.rs.getString("msg_noContentPost"));
 			return "";
 		}
 		this.post = new Post();
@@ -56,9 +62,10 @@ public class PostBean {
 			this.post.setReceiver(this.receiver);
 			this.post.setDateTime(Calendar.getInstance());
 			PostService.getInstance().create(this.post);
-			FacesUtil.infoMessage("=)", rs.getString("msg_postSuccess"));
+			FacesUtil.infoMessage("=)", this.rs.getString("msg_postSuccess"));
 			this.postContent = null;
 		} catch (final Exception e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
 		return "";

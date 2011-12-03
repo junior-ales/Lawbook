@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import org.hibernate.HibernateException;
 import org.primefaces.event.SelectEvent;
@@ -23,49 +25,49 @@ import br.com.lawbook.util.FacesUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 28NOV2011-03
+ * @version 01DEC2011-04
  *
  */
 @ManagedBean
 @ViewScoped
 public class ProcessBean implements Serializable {
 
+	private static final long serialVersionUID = -4302328893337520681L;
 	private User part;
 	private Process process;
 	private Date openingDate;
 	private List<User> users;
 	private Profile authProfile;
 	private List<Process> processes;
-	private static final Logger LOG = Logger.getLogger("ProcessBean");
-	private static final long serialVersionUID = -598147603244383104L;
+	private final ResourceBundle rs;
+	private static final Logger LOG = Logger.getLogger("br.com.lawbook.managedbean");
 	private static final ProfileService PROFILE_SERVICE = ProfileService.getInstance();
 	private static final ProcessService PROCESS_SERVICE = ProcessService.getInstance();
 
-	// TODO create edit process page
-
 	public ProcessBean() {
-		LOG.info("#### ProcessBean created");
+		this.rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
 		this.process = new Process();
 		if (FacesUtil.getExternalContext().getRequestServletPath().contains("admin")) { // testing if is an administration page
 			this.users = UserConverter.users;
-			LOG.info("#### Users loaded");
+			LOG.info(this.getClass().getSimpleName() + ": Users loaded");
 		}
 		try {
 			this.authProfile = PROFILE_SERVICE.getAuthorizedUserProfile();
 			if (FacesUtil.getExternalContext().getRequestServletPath().contains("processes")) {
 				this.processes = PROCESS_SERVICE.getAll();
-				LOG.info("#### All processes loaded");
+				LOG.info(this.getClass().getSimpleName() + ": All processes loaded");
 			} else {
 				this.processes = PROCESS_SERVICE.getMyProcesses(this.authProfile);
-				LOG.info("#### My processes loaded");
+				LOG.info(this.getClass().getSimpleName() + ": My processes loaded");
 			}
 		} catch (final IllegalArgumentException e) {
-			LOG.severe(e.getMessage());
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.warnMessage("=|", e.getMessage());
 		} catch (final HibernateException e) {
-			LOG.severe(e.getMessage());
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
+		LOG.info(this.getClass().getSimpleName() + ": ManagedBean Created" );
 	}
 
 	public void saveProcess() {
@@ -74,16 +76,15 @@ public class ProcessBean implements Serializable {
 			auxDate.setTime(this.openingDate);
 			this.process.setOpeningDate(auxDate);
 			PROCESS_SERVICE.create(this.process);
-			FacesUtil.infoMessage("=)", "Process saved succesfully");
-		} catch (final IllegalArgumentException e) {
-			LOG.severe(e.getMessage());
-			FacesUtil.warnMessage("=|", e.getMessage());
-		} catch (final HibernateException e) {
-			LOG.severe(e.getMessage());
-			FacesUtil.errorMessage("=(", e.getMessage());
-		} finally {
 			this.process = new Process();
 			this.part = new User();
+			FacesUtil.infoMessage("=)", this.rs.getString("msg_process_saved"));
+		} catch (final IllegalArgumentException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
+			FacesUtil.warnMessage("=|", e.getMessage());
+		} catch (final HibernateException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
+			FacesUtil.errorMessage("=(", e.getMessage());
 		}
 	}
 
@@ -93,16 +94,15 @@ public class ProcessBean implements Serializable {
 			auxDate.setTime(this.openingDate);
 			this.process.setOpeningDate(auxDate);
 			PROCESS_SERVICE.update(this.process);
-			FacesUtil.infoMessage("=)", "Process updated succesfully");
-		} catch (final IllegalArgumentException e) {
-			LOG.severe(e.getMessage());
-			FacesUtil.warnMessage("=|", e.getMessage());
-		} catch (final HibernateException e) {
-			LOG.severe(e.getMessage());
-			FacesUtil.errorMessage("=(", e.getMessage());
-		} finally {
 			this.process = new Process();
 			this.part = new User();
+			FacesUtil.infoMessage("=)", this.rs.getString("msg_process_updated"));
+		} catch (final IllegalArgumentException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
+			FacesUtil.warnMessage("=|", e.getMessage());
+		} catch (final HibernateException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
+			FacesUtil.errorMessage("=(", e.getMessage());
 		}
 	}
 
@@ -118,17 +118,17 @@ public class ProcessBean implements Serializable {
     }
 
 	public void handleSelect(final SelectEvent event) {
-		LOG.info("#### handleSelect(final SelectEvent event) ");
+		LOG.info(this.getClass().getSimpleName() + ": handleSelect(final SelectEvent event) ");
 		final Profile p = PROFILE_SERVICE.getProfileByUserName(this.part.getUserName());
 		if (event.getComponent().getId().equals("responsibleName")) {
 			this.process.setResponsible(p);
-			LOG.info("#### responsibleName set");
+			LOG.info(this.getClass().getSimpleName() + ": responsibleName set");
 		} else if(event.getComponent().getId().equals("petitionerName")) {
 			this.process.setPetitioner(p);
-			LOG.info("#### petitionerName set");
+			LOG.info(this.getClass().getSimpleName() + ": petitionerName set");
 		} else {
 			this.process.setDefendant(p);
-			LOG.info("#### defendantName set");
+			LOG.info(this.getClass().getSimpleName() + ": defendantName set");
 		}
 
 	}

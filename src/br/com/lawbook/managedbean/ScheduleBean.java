@@ -53,21 +53,21 @@ import br.com.lawbook.util.FacesUtil;
 @SessionScoped
 public class ScheduleBean implements Serializable {
 
+	private static final long serialVersionUID = 4765166088901893698L;
 	private Event event;
 	private Boolean disabled;
 	private Profile authProfile;
 	private List<Event> upcomingEvents;
 	private LazyScheduleModel lazyEventModel;
 	private HashMap<String, Long> idEventMapping;
-	private static final long serialVersionUID = 8737854846784246329L;
-	private static final Logger LOG = Logger.getLogger("ScheduleBean");
 	private static final EventService EVENT_SERVICE = EventService.getInstance();
+	private static final Logger LOG = Logger.getLogger("br.com.lawbook.managedbean");
 	private static final ProfileService PROFILE_SERVICE = ProfileService.getInstance();
-	private final ResourceBundle rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", 
+	private final ResourceBundle rs = ResourceBundle.getBundle("br.com.lawbook.util.messages",
 			   							FacesContext.getCurrentInstance().getViewRoot().getLocale());
 
 	// TODO insert a "p:calendar" tag in schedule.xhtml
-	
+
 	public ScheduleBean() {
 		this.event = new Event();
 		this.upcomingEvents = new ArrayList<Event>();
@@ -75,18 +75,22 @@ public class ScheduleBean implements Serializable {
 			this.authProfile = PROFILE_SERVICE.getAuthorizedUserProfile();
 			this.idEventMapping = new HashMap<String, Long>();
 		} catch (final IllegalArgumentException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.warnMessage("=|", e.getMessage());
 		} catch (final HibernateException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.errorMessage("=(", e.getMessage());
 		} catch (final Exception e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
+		LOG.info(this.getClass().getSimpleName() + ": ManagedBean Created" );
 	}
 
 	@PostConstruct
 	public void loadLazilyEvents() {
 		LOG.info("#### loadLazilyEvents()");
-		
+
 		if(this.lazyEventModel == null) {
 			this.lazyEventModel = new LazyScheduleModel() {
 
@@ -102,8 +106,10 @@ public class ScheduleBean implements Serializable {
 							ScheduleBean.this.idEventMapping.put(e.getId(), e.getEventId());
 						}
 					} catch (final IllegalArgumentException e) {
+						LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 						FacesUtil.warnMessage("=|", e.getMessage());
 					} catch (final HibernateException e) {
+						LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 						FacesUtil.errorMessage("=(", e.getMessage());
 					}
 				}
@@ -157,8 +163,10 @@ public class ScheduleBean implements Serializable {
 			else
 				this.updateEvent();
 		} catch (final IllegalArgumentException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.warnMessage("=|", e.getMessage());
 		} catch (final HibernateException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
 	}
@@ -170,8 +178,10 @@ public class ScheduleBean implements Serializable {
 			this.upcomingEvents = EVENT_SERVICE.getUpcomingEvents(this.authProfile);
 			FacesUtil.infoMessage("=)", this.rs.getString("msg_eventDeleted"));
 		} catch (final IllegalArgumentException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.warnMessage("=|", e.getMessage());
 		} catch (final HibernateException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
 	}
@@ -182,8 +192,10 @@ public class ScheduleBean implements Serializable {
 			final Long eventId = this.idEventMapping.get(selectEvent.getScheduleEvent().getId());
 			this.event = EVENT_SERVICE.getEventById(eventId);
 		} catch (final IllegalArgumentException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.warnMessage("=|", e.getMessage());
 		} catch (final HibernateException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
 	}
@@ -219,8 +231,10 @@ public class ScheduleBean implements Serializable {
 
 			this.updateEvent();
 		} catch (final IllegalArgumentException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.warnMessage("=|", e.getMessage());
 		} catch (final HibernateException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
 	}
@@ -240,12 +254,14 @@ public class ScheduleBean implements Serializable {
 
 			this.updateEvent();
 		} catch (final IllegalArgumentException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.warnMessage("=|", e.getMessage());
 		} catch (final HibernateException e) {
+			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
 	}
-	
+
 	private void updateEvent() throws IllegalArgumentException, HibernateException {
 		EVENT_SERVICE.update(this.event);
 		this.lazyEventModel.updateEvent(this.event);
@@ -260,7 +276,7 @@ public class ScheduleBean implements Serializable {
 		this.lazyEventModel.addEvent(this.event);
 		this.idEventMapping.put(this.event.getId(), this.event.getEventId());
 		this.event = new Event();
-		this.upcomingEvents = EVENT_SERVICE.getUpcomingEvents(this.authProfile);		
+		this.upcomingEvents = EVENT_SERVICE.getUpcomingEvents(this.authProfile);
 		FacesUtil.infoMessage("=)", this.rs.getString("msg_eventCreatedSuccess"));
 	}
 
