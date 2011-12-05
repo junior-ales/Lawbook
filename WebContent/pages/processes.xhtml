@@ -56,11 +56,6 @@
 			<p:column headerText="#{label.process_desc}:" >
 				<h:outputText value="#{proc.description}" />
 			</p:column>
-			
-			<p:column rendered="#{param.mode == 'choose'}">
-	            <p:commandButton value="#{label.edit_process}" actionListener="#{processesBean.prepareEditProcess}" 
-	            				 action="#{processesBean.editProcess}" />
-			</p:column>
 		</p:dataTable>
 	</ui:define>
 </ui:composition>

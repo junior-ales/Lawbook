@@ -11,12 +11,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import br.com.lawbook.dao.ProfileDAO;
 import br.com.lawbook.dao.impl.ProfileDAOImpl;
+import br.com.lawbook.model.Authority;
 import br.com.lawbook.model.Profile;
+import br.com.lawbook.model.User;
 import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 27NOV2011-16
+ * @version 03DEC2011-17
  */
 public final class ProfileService implements Serializable {
 
@@ -172,4 +174,14 @@ public final class ProfileService implements Serializable {
 
          return cnpj.equals(cnpj_calc);
      }
+
+	public boolean isAdmin(Profile authProfile) {
+		User u = authProfile.getUserOwner();
+		for (final Authority auth : u.getAuthority()) {
+			if (auth.getName().equalsIgnoreCase("ADMIN")) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

@@ -57,9 +57,9 @@
 				<h:outputText value="#{proc.description}" />
 			</p:column>
 			
-			<p:column rendered="#{param.mode == 'choose'}">
-	            <p:commandButton value="#{label.edit_process}" actionListener="#{processesBean.prepareEditProcess}" action="#{processesBean.editProcess}">
-	            	<f:param name="mode" value="choose" />
+			<p:column>
+	            <p:commandButton value="#{label.edit_process}" action="#{processesBean.editProcess}">
+	            	<f:param name="mode" value="edit" />
 	            </p:commandButton>
 			</p:column>
 		</p:dataTable>

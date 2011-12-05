@@ -3,10 +3,10 @@ package br.com.lawbook.managedbean;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.faces.model.ListDataModel;
 
 import org.hibernate.HibernateException;
@@ -19,17 +19,17 @@ import br.com.lawbook.util.FacesUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 03DEC2011-05
+ * @version 04DEC2011-06
  *
  */
 @ManagedBean
-@RequestScoped
+@ViewScoped
 public class ProcessesBean {
 
 	private Process process;
 	private Profile authProfile;
 	private final ResourceBundle rs;
-	private ListDataModel<Process> processes;
+	private transient ListDataModel<Process> processes;
 	private static final Logger LOG = Logger.getLogger("br.com.lawbook.managedbean");
 	private static final ProfileService PROFILE_SERVICE = ProfileService.getInstance();
 	private static final ProcessService PROCESS_SERVICE = ProcessService.getInstance();
@@ -38,24 +38,35 @@ public class ProcessesBean {
 		this.rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
 		this.process = new Process();
 		this.authProfile = PROFILE_SERVICE.getAuthorizedUserProfile();
-		load();
 		LOG.info(this.getClass().getSimpleName() + ": ManagedBean Created" );
 	}
 
-	private void load() {
-		LOG.info(this.getClass().getSimpleName() + ": load()" );
+	@PostConstruct
+	public void loadProcesses() {
+		LOG.info(this.getClass().getSimpleName() + ": loadProcesses()" );
 		String mode = FacesUtil.getExternalContext().getRequestParameterMap().get("mode");
-		LOG.info(this.getClass().getSimpleName() + ": mode = " + mode);
 		try {
 			if (mode.equals("list")) {  // list all authorized user related processes
 				this.processes = new ListDataModel<Process>(PROCESS_SERVICE.getMyProcesses(this.authProfile));
-			}
-			else if (mode.equals("choose")) { // list all process to choose what is going to be edited
-				this.processes = new ListDataModel<Process>(PROCESS_SERVICE.getAll()); 
+				LOG.info(this.getClass().getSimpleName() + ": My processes load successfully" );
+				return;
 			}
 			else {
-				LOG.severe(this.getClass().getSimpleName() + ": Error on constructor. Invalid process bean mode.");
-				FacesUtil.errorMessage("=(", this.rs.getString("msg_reqParam"));
+				if (!PROFILE_SERVICE.isAdmin(authProfile)) return;
+				if (mode.equals("choose")) { // list all process to choose what is going to be edited
+					this.processes = new ListDataModel<Process>(PROCESS_SERVICE.getAll());
+					LOG.info(this.getClass().getSimpleName() + ": All processes load successfully" );
+					return;
+				}
+				else if (mode.equals("edit")) {
+					this.process = (Process) this.processes.getRowData();
+					LOG.info(this.getClass().getSimpleName() + ": Edit process" );
+					return;
+				}
+				else {
+					LOG.severe(this.getClass().getSimpleName() + ": Error on constructor. Invalid process bean mode.");
+					FacesUtil.errorMessage("=(", this.rs.getString("msg_reqParam"));
+				}
 			}
 		} catch (final IllegalArgumentException e) {
 			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
@@ -64,11 +75,6 @@ public class ProcessesBean {
 			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
 			FacesUtil.errorMessage("=(", e.getMessage());
 		}
-	}
-	
-	public void prepareEditProcess(final ActionEvent event) {
-		LOG.info(this.getClass().getSimpleName() + ": prepareEditProcess(ActionEvent event)");
-		this.process = (Process) this.processes.getRowData();
 	}
 
 	public String editProcess() {
