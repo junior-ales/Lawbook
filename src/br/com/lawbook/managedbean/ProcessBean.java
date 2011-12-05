@@ -35,8 +35,8 @@ public class ProcessBean {
 	private User part;
 	private Process process;
 	private Date openingDate;
-	private List<User> users;
-	private Profile authProfile;
+	private final List<User> users;
+	private final Profile authProfile;
 	private final ResourceBundle rs;
 	private ListDataModel<Process> processes;
 	private static final Logger LOG = Logger.getLogger("br.com.lawbook.managedbean");

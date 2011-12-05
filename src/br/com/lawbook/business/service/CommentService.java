@@ -31,15 +31,15 @@ public final class CommentService {
 		return instance;
 	}
 	
-	public void save(Comment comment) throws IllegalArgumentException, HibernateException {
+	public void save(final Comment comment) throws IllegalArgumentException, HibernateException {
 		JavaUtil.validateParameter(comment, "CommentService: save: comment");
-		CommentDAO dao = new CommentDAOImpl();
+		final CommentDAO dao = new CommentDAOImpl();
 		dao.save(comment);
 	}
 	
-	public void delete(Comment comment) throws IllegalArgumentException, HibernateException {
+	public void delete(final Comment comment) throws IllegalArgumentException, HibernateException {
 		JavaUtil.validateParameter(comment, "CommentService: delete: comment");
-		CommentDAO dao = new CommentDAOImpl();
+		final CommentDAO dao = new CommentDAOImpl();
 		dao.delete(comment);
 	}
 	

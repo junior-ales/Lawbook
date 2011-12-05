@@ -106,7 +106,7 @@ public final class ProfileService implements Serializable {
 		this.update(profile1);
 	}
 	
-	public boolean cpfValidation(String strCpf) throws IllegalArgumentException {    
+	public boolean cpfValidation(final String strCpf) throws IllegalArgumentException {    
         JavaUtil.validateParameter(strCpf, "Required paramenter: ProfileService.cpfValidation.strCpf");
         if (strCpf.length() != 11) throw new IllegalArgumentException("Tamanho de CPF inválido");
         
@@ -137,19 +137,19 @@ public final class ProfileService implements Serializable {
         else 
         	digito2 = 11 - resto;    
     
-        String nDigVerific = strCpf.substring(strCpf.length() - 2, strCpf.length());    
+        final String nDigVerific = strCpf.substring(strCpf.length() - 2, strCpf.length());    
         nDigResult = String.valueOf(digito1) + String.valueOf(digito2);    
         return nDigVerific.equals(nDigResult);    
     }    
 	
-     public boolean cnpjValidation(String cnpj) throws IllegalArgumentException {
+     public boolean cnpjValidation(final String cnpj) throws IllegalArgumentException {
     	 JavaUtil.validateParameter(cnpj, "Required paramenter: ProfileService.cnpjValidation.cnpj");
          if (cnpj.length() != 14) throw new IllegalArgumentException("Tamanho de CNPJ inválido");
 
           int soma = 0;
           String cnpj_calc = cnpj.substring(0, 12);
 
-          char chr_cnpj[] = cnpj.toCharArray();
+          final char chr_cnpj[] = cnpj.toCharArray();
           for(int i = 0; i < 4; i++)
                if(chr_cnpj[i] - 48 >= 0 && chr_cnpj[i] - 48 <= 9)
                     soma += (chr_cnpj[i] - 48) * (6 - (i + 1));
@@ -175,8 +175,8 @@ public final class ProfileService implements Serializable {
          return cnpj.equals(cnpj_calc);
      }
 
-	public boolean isAdmin(Profile authProfile) {
-		User u = authProfile.getUserOwner();
+	public boolean isAdmin(final Profile authProfile) {
+		final User u = authProfile.getUserOwner();
 		for (final Authority auth : u.getAuthority()) {
 			if (auth.getName().equalsIgnoreCase("ADMIN")) {
 				return true;

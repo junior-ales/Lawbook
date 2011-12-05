@@ -19,7 +19,7 @@ import br.com.lawbook.util.HibernateUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 03DEC2011-05
+ * @version 05DEC2011-06
  *
  */
 public class ProcessDAOImpl implements ProcessDAO {
@@ -77,7 +77,7 @@ public class ProcessDAOImpl implements ProcessDAO {
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<Process> getMyProcesses(Profile profile) throws HibernateException {
+	public List<Process> getMyProcesses(Profile profile, int first, int pageSize) throws HibernateException {
 		Session session = HibernateUtil.getSession();
 		try {
 			StringBuilder stringQuery = new StringBuilder();
@@ -86,6 +86,8 @@ public class ProcessDAOImpl implements ProcessDAO {
 					   .append("order by opening_date desc");
 			Query query = session.createQuery(stringQuery.toString());
 			query.setParameter("profileId", profile.getId());
+			query.setFirstResult(first);
+			query.setMaxResults(pageSize);
 			return (List<Process>) query.list();
 		} catch (Exception e) {
 			LOG.severe(e.getMessage());

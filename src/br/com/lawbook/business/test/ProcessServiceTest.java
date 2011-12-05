@@ -58,7 +58,7 @@ public class ProcessServiceTest {
 
 	@Test
 	public void getById() {
-		final Long processId = processService.getMyProcesses(adminProfile).get(0).getId();
+		final Long processId = processService.getMyProcesses(adminProfile, 0, 10).get(0).getId();
 		final Process process = processService.getById(processId);
 		assertNotNull(process);
 		LOG.info("#### Process " + process.getId() + " fetched by responsible id successfully");
@@ -66,7 +66,7 @@ public class ProcessServiceTest {
 
 	@Test
 	public void getMyProcesses() {
-		final List<Process> processes = processService.getMyProcesses(adminProfile);
+		final List<Process> processes = processService.getMyProcesses(adminProfile, 0, 10);
 		assertFalse(processes.isEmpty());
 		LOG.info("#### All my processes fetched successfully");
 	}

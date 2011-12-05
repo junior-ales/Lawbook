@@ -15,7 +15,7 @@
 				  draggable="false" closable="false" header="#{label.please_wait}"> 
 				<h:graphicImage library="images" name="ajaxloadingbar.gif" />
 		</p:dialog>
-		<p:dataTable id="processes" var="proc" value="#{processesBean.processes}" rows="8"
+		<p:dataTable id="processes" var="proc" value="#{processesBean.processes}" rows="8" lazy="true"
 					 paginator="true" paginatorTemplate="{PreviousPageLink} {NextPageLink}" paginatorPosition="bottom"  
 					 rowsPerPageTemplate="4,8,12" widgetVar="userProcesses" emptyMessage="#{label.msg_noProcess}">
 			<p:column headerText="#{label.topic}">
