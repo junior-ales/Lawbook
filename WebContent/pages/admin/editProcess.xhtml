@@ -24,15 +24,15 @@
 	            
 	            <h:outputText value="#{label.legal_area}: " />
 	            <h:selectOneMenu value="#{processBean.process.legalArea}" required="true" requiredMessage="#{label.msq_reqLegalArea}">
-		   			<f:selectItem itemLabel="#{label.administrative}" itemValue="administrative" />
-		   			<f:selectItem itemLabel="#{label.banking}" itemValue="banking" />
-		   			<f:selectItem itemLabel="#{label.billing}" itemValue="billing" />
-		   			<f:selectItem itemLabel="#{label.civel}" itemValue="civel" />
-		   			<f:selectItem itemLabel="#{label.criminal}" itemValue="criminal" />
-		   			<f:selectItem itemLabel="#{label.family}" itemValue="family" />
-		   			<f:selectItem itemLabel="#{label.labor}" itemValue="labor" />
-		   			<f:selectItem itemLabel="#{label.other}" itemValue="other" />
-		   			<f:selectItem itemLabel="#{label.social_security}" itemValue="social_security" />
+		   			<f:selectItem itemLabel="#{label.administrative}" itemValue="#{label.administrative}" />
+		   			<f:selectItem itemLabel="#{label.banking}" itemValue="#{label.banking}" />
+		   			<f:selectItem itemLabel="#{label.billing}" itemValue="#{label.billing}" />
+		   			<f:selectItem itemLabel="#{label.civel}" itemValue="#{label.civel}" />
+		   			<f:selectItem itemLabel="#{label.criminal}" itemValue="#{label.criminal}" />
+		   			<f:selectItem itemLabel="#{label.family}" itemValue="#{label.family}" />
+		   			<f:selectItem itemLabel="#{label.labor}" itemValue="#{label.labor}" />
+		   			<f:selectItem itemLabel="#{label.other}" itemValue="#{label.other}" />
+		   			<f:selectItem itemLabel="#{label.social_security}" itemValue="#{label.social_security}" />
 		   		</h:selectOneMenu>
                 <h:outputText value="*" style="color:red;" />
                 	            
@@ -48,30 +48,39 @@
                 
                 <h:outputText value="#{label.situation}: " />
                 <h:selectOneMenu value="#{processBean.process.situation}" required="true" requiredMessage="#{label.msg_reqSituation}">
-                	<f:selectItem itemLabel="#{label.archived}" itemValue="archived" />
-                	<f:selectItem itemLabel="#{label.underway}" itemValue="underway" />
+                	<f:selectItem itemLabel="#{label.archived}" itemValue="#{label.archived}" />
+                	<f:selectItem itemLabel="#{label.underway}" itemValue="#{label.underway}" />
                 </h:selectOneMenu>
                 <h:outputText value="*" style="color:red;" />
                 
                 <h:outputText value="#{label.resp_username}: " />
-				<p:autoComplete id="responsibleName" forceSelection="true" requiredMessage="#{label.msg_reqResp}"  
-								minQueryLength="2" itemLabel="#{part.userName}" completeMethod="#{processBean.completeUsers}" 
-								value="#{processBean.part}" var="part" onSelectUpdate="growl" size="24" required="true" 
-								itemValue="#{part}" converter="userConv" selectListener="#{processBean.handleSelect}" />
+                <h:panelGroup>
+					<p:autoComplete id="responsibleName" forceSelection="true" requiredMessage="#{label.msg_reqResp}"  
+									minQueryLength="2" itemLabel="#{part.userName}" completeMethod="#{processBean.completeUsers}" 
+									value="#{processBean.part}" var="part" onSelectUpdate="growl" size="24" required="true" 
+									itemValue="#{part}" converter="userConv" selectListener="#{processBean.handleSelect}" />
+					<p:watermark for="responsibleName" value="#{processBean.process.responsible.firstName} #{processBean.process.responsible.lastName}" />
+                </h:panelGroup>
                 <h:outputText value="*" style="color:red;" />
                 
                 <h:outputText value="#{label.pet_username}: " />
-				<p:autoComplete id="petitionerName" forceSelection="true" requiredMessage="#{label.msg_reqPet}"  
-								minQueryLength="2" itemLabel="#{part.userName}" completeMethod="#{processBean.completeUsers}" 
-								value="#{processBean.part}" var="part" onSelectUpdate="growl" size="24" required="true" 
-								itemValue="#{part}" converter="userConv" selectListener="#{processBean.handleSelect}" />
+                <h:panelGroup>
+					<p:autoComplete id="petitionerName" forceSelection="true" requiredMessage="#{label.msg_reqPet}"  
+									minQueryLength="2" itemLabel="#{part.userName}" completeMethod="#{processBean.completeUsers}" 
+									value="#{processBean.part}" var="part" onSelectUpdate="growl" size="24" required="true" 
+									itemValue="#{part}" converter="userConv" selectListener="#{processBean.handleSelect}" />
+					<p:watermark for="petitionerName" value="#{processBean.process.petitioner.firstName} #{processBean.process.petitioner.lastName}" />
+                </h:panelGroup>
                 <h:outputText value="*" style="color:red;" />
                 
                 <h:outputText value="#{label.def_username}: " />
-				<p:autoComplete id="defendantName" forceSelection="true" requiredMessage="#{label.msg_reqDef}"
-								minQueryLength="2" itemLabel="#{part.userName}" completeMethod="#{processBean.completeUsers}" 
-								value="#{processBean.part}" var="part" onSelectUpdate="growl" size="24" required="true" 
-								itemValue="#{part}" converter="userConv" selectListener="#{processBean.handleSelect}" />
+                <h:panelGroup>
+					<p:autoComplete id="defendantName" forceSelection="true" requiredMessage="#{label.msg_reqDef}"
+									minQueryLength="2" itemLabel="#{part.userName}" completeMethod="#{processBean.completeUsers}" 
+									value="#{processBean.part}" var="part" onSelectUpdate="growl" size="24" required="true" 
+									itemValue="#{part}" converter="userConv" selectListener="#{processBean.handleSelect}" />
+	                <p:watermark for="defendantName" value="#{processBean.process.defendant.firstName} #{processBean.process.defendant.lastName}" />
+                </h:panelGroup>
                 <h:outputText value="*" style="color:red;" />
                 
 			</h:panelGrid>

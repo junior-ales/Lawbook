@@ -13,14 +13,14 @@ import static br.com.lawbook.util.JavaUtil.*;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 05DEC2011-05
+ * @version 06DEC2011-06
  *
  */
 public final class ProcessService implements Serializable {
 
 	private final ProcessDAO dao;
 	private static ProcessService instance;
-	private static final long serialVersionUID = -4463585239437254187L;
+	private static final long serialVersionUID = 5573579908690460566L;
 
 	private ProcessService() {
 		this.dao = new ProcessDAOImpl();
@@ -43,8 +43,10 @@ public final class ProcessService implements Serializable {
 		this.dao.update(process);
 	}
 
-	public List<Process> getAll() throws HibernateException {
-		return this.dao.getAll();
+	public List<Process> getAll(int first, int pageSize) throws HibernateException {
+		validateParameter(first, "#### Parameter required: ProcessService.getAll.first");
+		validateParameter(pageSize, "#### Parameter required: ProcessService.getAll.pageSize");
+		return this.dao.getAll(first, pageSize);
 	}
 
 	public Process getById(final Long processId) throws IllegalArgumentException, HibernateException {

@@ -3,13 +3,11 @@ package br.com.lawbook.managedbean;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
 
 import org.primefaces.model.LazyDataModel;
 
@@ -17,11 +15,10 @@ import br.com.lawbook.business.service.ProcessService;
 import br.com.lawbook.business.service.ProfileService;
 import br.com.lawbook.model.Process;
 import br.com.lawbook.model.Profile;
-import br.com.lawbook.util.FacesUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 05DEC2011-07
+ * @version 06DEC2011-08
  *
  */
 @ManagedBean
@@ -30,7 +27,6 @@ public class ProcessesBean implements Serializable{
 
 	private Process process;
 	private final Profile authProfile;
-	private final ResourceBundle rs;
 	private LazyDataModel<Process> processes;
 	private static final long serialVersionUID = 5306181199550735654L;
 	private static final Logger LOG = Logger.getLogger("br.com.lawbook.managedbean");
@@ -38,7 +34,7 @@ public class ProcessesBean implements Serializable{
 	private static final ProcessService PROCESS_SERVICE = ProcessService.getInstance();
 
 	public ProcessesBean() {
-		this.rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+		LOG.info(this.getClass().getSimpleName() + ": ProcessesBean()" );
 		this.process = new Process();
 		this.authProfile = PROFILE_SERVICE.getAuthorizedUserProfile();
 		LOG.info(this.getClass().getSimpleName() + ": ManagedBean Created" );
@@ -47,7 +43,7 @@ public class ProcessesBean implements Serializable{
 	@PostConstruct
 	public void loadProcesses() {
 		LOG.info(this.getClass().getSimpleName() + ": loadProcesses()" );
-		
+
 		if (this.processes == null) {
 			this.processes = new LazyDataModel<Process>() {
 				private static final long serialVersionUID = 6602869058744041528L;
@@ -61,18 +57,6 @@ public class ProcessesBean implements Serializable{
 			};
 			this.processes.setRowCount(PROCESS_SERVICE.getProcessCount());
 		}
-	}
-
-	public String editProcess() {
-		LOG.info(this.getClass().getSimpleName() + ": editProcess()");
-		String outcome = "";
-		if (this.process.getId() == null) {
-			LOG.warning("Occured a problem in process edition, process maybe isn't being set correctly");
-			FacesUtil.warnMessage("=|", rs.getString("msg_processProblem"));
-		} else {
-			outcome = "editProcess?processId=" + this.process.getId() + "&mode=edit&faces-redirect=true";
-		}
-		return outcome;
 	}
 
 	public LazyDataModel<Process> getProcesses() {

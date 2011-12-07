@@ -1,5 +1,6 @@
 package br.com.lawbook.managedbean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -8,9 +9,8 @@ import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.model.ListDataModel;
 
 import org.hibernate.HibernateException;
 import org.primefaces.event.SelectEvent;
@@ -25,20 +25,20 @@ import br.com.lawbook.util.FacesUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 03DEC2011-05
+ * @version 07DEC2011-06
  *
  */
 @ManagedBean
-@RequestScoped
-public class ProcessBean {
+@ViewScoped
+public class ProcessBean implements Serializable {
 
 	private User part;
 	private Process process;
 	private Date openingDate;
 	private final List<User> users;
 	private final Profile authProfile;
-	private final ResourceBundle rs;
-	private ListDataModel<Process> processes;
+	private transient final ResourceBundle rs;
+	private static final long serialVersionUID = -8351928510460458262L;
 	private static final Logger LOG = Logger.getLogger("br.com.lawbook.managedbean");
 	private static final ProfileService PROFILE_SERVICE = ProfileService.getInstance();
 	private static final ProcessService PROCESS_SERVICE = ProcessService.getInstance();
@@ -55,6 +55,7 @@ public class ProcessBean {
 			if (mode.equals("edit")) {
 				final Long processId = Long.valueOf(FacesUtil.getExternalContext().getRequestParameterMap().get("processId"));
 				this.process = PROCESS_SERVICE.getById(processId);
+				this.openingDate = this.process.getOpeningDate().getTime();
 			}
 			else if (!mode.equals("new")) {
 				LOG.severe(this.getClass().getSimpleName() + ": Error on constructor. Invalid process bean mode.");
@@ -134,10 +135,6 @@ public class ProcessBean {
 			LOG.info(this.getClass().getSimpleName() + ": defendantName set");
 		}
 
-	}
-
-	public ListDataModel<Process> getProcesses() {
-		return this.processes;
 	}
 
 	public Profile getAuthProfile() {
