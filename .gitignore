@@ -3,3 +3,4 @@ build/
 WebContent/WEB-INF/sun-resources.xml
 WebContent/WEB-INF/applicationContext.xml
 reports/
+.pmd
