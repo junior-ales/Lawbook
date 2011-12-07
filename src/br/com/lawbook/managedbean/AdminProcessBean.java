@@ -25,12 +25,12 @@ import br.com.lawbook.util.FacesUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 07DEC2011-06
+ * @version 07DEC2011-07
  *
  */
 @ManagedBean
 @ViewScoped
-public class ProcessBean implements Serializable {
+public class AdminProcessBean implements Serializable {
 
 	private User part;
 	private Process process;
@@ -38,12 +38,12 @@ public class ProcessBean implements Serializable {
 	private final List<User> users;
 	private final Profile authProfile;
 	private transient final ResourceBundle rs;
-	private static final long serialVersionUID = -8351928510460458262L;
+	private static final long serialVersionUID = -7422431632550978387L;
 	private static final Logger LOG = Logger.getLogger("br.com.lawbook.managedbean");
 	private static final ProfileService PROFILE_SERVICE = ProfileService.getInstance();
 	private static final ProcessService PROCESS_SERVICE = ProcessService.getInstance();
 
-	public ProcessBean() {
+	public AdminProcessBean() {
 		this.rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
 		this.process = new Process();
 		this.part = new User();
