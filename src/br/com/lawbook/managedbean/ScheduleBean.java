@@ -46,31 +46,31 @@ import br.com.lawbook.util.FacesUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 27NOV2011-08
+ * @version 09DEC2011-09
  *
  */
 @ManagedBean
 @SessionScoped
 public class ScheduleBean implements Serializable {
 
-	private static final long serialVersionUID = 4765166088901893698L;
 	private Event event;
 	private Boolean disabled;
 	private Profile authProfile;
 	private List<Event> upcomingEvents;
+	private transient ResourceBundle rs;
 	private LazyScheduleModel lazyEventModel;
 	private HashMap<String, Long> idEventMapping;
+	private static final long serialVersionUID = 9154003174394161805L;
 	private static final EventService EVENT_SERVICE = EventService.getInstance();
 	private static final Logger LOG = Logger.getLogger("br.com.lawbook.managedbean");
 	private static final ProfileService PROFILE_SERVICE = ProfileService.getInstance();
-	private final ResourceBundle rs = ResourceBundle.getBundle("br.com.lawbook.util.messages",
-			   							FacesContext.getCurrentInstance().getViewRoot().getLocale());
 
 	// TODO insert a "p:calendar" tag in schedule.xhtml
 
 	public ScheduleBean() {
 		this.event = new Event();
 		this.upcomingEvents = new ArrayList<Event>();
+		this.rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
 		try {
 			this.authProfile = PROFILE_SERVICE.getAuthorizedUserProfile();
 			this.idEventMapping = new HashMap<String, Long>();

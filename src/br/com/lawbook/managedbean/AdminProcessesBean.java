@@ -22,7 +22,7 @@ import br.com.lawbook.util.FacesUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 06DEC2011-01
+ * @version 09DEC2011-02
  *
  */
 @ManagedBean
@@ -30,7 +30,7 @@ import br.com.lawbook.util.FacesUtil;
 public class AdminProcessesBean implements Serializable{
 
 	private Long processId;
-	private final ResourceBundle rs;
+	private transient ResourceBundle rs;
 	private final Profile authProfile;
 	private LazyDataModel<Process> processes;
 	private static final long serialVersionUID = 8389996789724191248L;

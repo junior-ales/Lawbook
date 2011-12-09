@@ -25,7 +25,7 @@ import br.com.lawbook.util.FacesUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 07DEC2011-07
+ * @version 09DEC2011-08
  *
  */
 @ManagedBean
@@ -37,7 +37,7 @@ public class AdminProcessBean implements Serializable {
 	private Date openingDate;
 	private final List<User> users;
 	private final Profile authProfile;
-	private transient final ResourceBundle rs;
+	private transient ResourceBundle rs;
 	private static final long serialVersionUID = -7422431632550978387L;
 	private static final Logger LOG = Logger.getLogger("br.com.lawbook.managedbean");
 	private static final ProfileService PROFILE_SERVICE = ProfileService.getInstance();

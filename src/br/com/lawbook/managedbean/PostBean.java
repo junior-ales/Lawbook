@@ -16,7 +16,7 @@ import br.com.lawbook.util.FacesUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 01DEC2011-08
+ * @version 09DEC2011-09
  */
 @ManagedBean
 @RequestScoped
@@ -25,7 +25,7 @@ public class PostBean {
 	private Post post;
 	private Profile receiver;
 	private String postContent;
-	private final ResourceBundle rs;
+	private transient ResourceBundle rs;
 	private static final Logger LOG = Logger.getLogger("br.com.lawbook.managedbean");
 	private static final ProfileService PROFILE_SERVICE = ProfileService.getInstance();
 

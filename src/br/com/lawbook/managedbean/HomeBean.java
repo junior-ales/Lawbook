@@ -22,14 +22,14 @@ import br.com.lawbook.util.FacesUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 27NOV2011-10
+ * @version 09DEC2011-11
  */
 @ManagedBean
 @SessionScoped
 public class HomeBean implements Serializable {
 
 	private static final long serialVersionUID = 2357208428945366980L;
-	private final ResourceBundle rs;
+	private transient ResourceBundle rs;
 	private Profile authProfile;
 	private Profile publicProfile;
 	private LazyDataModel<Post> stream;
