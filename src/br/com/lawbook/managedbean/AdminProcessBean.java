@@ -25,7 +25,7 @@ import br.com.lawbook.util.FacesUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 09DEC2011-08
+ * @version 12DEC2011-09
  *
  */
 @ManagedBean
@@ -44,7 +44,7 @@ public class AdminProcessBean implements Serializable {
 	private static final ProcessService PROCESS_SERVICE = ProcessService.getInstance();
 
 	public AdminProcessBean() {
-		this.rs = ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+		this.rs = getResourceBundle();
 		this.process = new Process();
 		this.part = new User();
 		this.authProfile = PROFILE_SERVICE.getAuthorizedUserProfile();
@@ -80,6 +80,7 @@ public class AdminProcessBean implements Serializable {
 			PROCESS_SERVICE.create(this.process);
 			this.process = new Process();
 			this.part = new User();
+			this.rs = getResourceBundle();
 			FacesUtil.infoMessage("=)", this.rs.getString("msg_process_saved"));
 		} catch (final IllegalArgumentException e) {
 			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
@@ -99,6 +100,7 @@ public class AdminProcessBean implements Serializable {
 			PROCESS_SERVICE.update(this.process);
 			this.process = new Process();
 			this.part = new User();
+			this.rs = getResourceBundle();
 			FacesUtil.infoMessage("=)", this.rs.getString("msg_process_updated"));
 		} catch (final IllegalArgumentException e) {
 			LOG.severe(this.getClass().getSimpleName() + ": "+ e.getMessage());
@@ -135,6 +137,10 @@ public class AdminProcessBean implements Serializable {
 			LOG.info(this.getClass().getSimpleName() + ": defendantName set");
 		}
 
+	}
+	
+	private ResourceBundle getResourceBundle() {
+		return ResourceBundle.getBundle("br.com.lawbook.util.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
 	}
 
 	public Profile getAuthProfile() {
