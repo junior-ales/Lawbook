@@ -29,13 +29,12 @@ import br.com.lawbook.util.JavaUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 26NOV2011-12
+ * @version 14DEC2011-13
  */
 @ManagedBean
 @SessionScoped
 public class ProfileBean implements Serializable {
 
-	private static final long serialVersionUID = -3899574847108383874L;
 	private Date birth;
 	private String pass;
 	private Profile authProfile;
@@ -43,9 +42,10 @@ public class ProfileBean implements Serializable {
 	private Profile publicProfile;
 	private String passConfirmation;
 	private LazyDataModel<Post> wall;
-	private static final Logger LOG = Logger.getLogger("br.com.lawbook.managedbean");
+	private static final long serialVersionUID = -3899574847108383874L;
 	private static final UserService USER_SERVICE = UserService.getInstance();
 	private static final PostService POST_SERVICE = PostService.getInstance();
+	private static final Logger LOG = Logger.getLogger("br.com.lawbook.managedbean");
 	private static final ProfileService PROFILE_SERVICE = ProfileService.getInstance();
 	private ResourceBundle rs;
 
@@ -129,7 +129,7 @@ public class ProfileBean implements Serializable {
 
 	public String getLocale() {
 		String locale = this.authProfile.getLocale();
-		if (locale == null || locale.equals("")) locale = "pt_BR";
+		if (locale == null || locale.trim().isEmpty()) locale = "pt_BR";
 		return locale;
 	}
 

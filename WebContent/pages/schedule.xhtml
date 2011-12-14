@@ -25,30 +25,29 @@
 	                onEventSelectUpdate="eventDetails upcomingEventsTable" onEventSelectComplete="eventDialog.show()">
 	    </p:schedule>
 	
-	    <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip" width="625" resizable="false">
+	    <p:dialog widgetVar="eventDialog" header="#{label.event_details}" showEffect="clip" hideEffect="clip" width="625" resizable="false">
 	        <h:panelGrid id="eventDetails" columns="2" style="width:595px">
-	            <h:outputLabel for="title" value="Title:" />
-	            <p:inputText id="title" style="width:482px;" value="#{scheduleBean.event.title}" required="true" requiredMessage="Title is required" />
-	            <h:outputLabel for="from" value="From:" />
-	            
+	            <h:outputLabel for="title" value="#{label.title}:" />
+	            <p:inputText id="title" style="width:482px;" value="#{scheduleBean.event.title}" required="true" requiredMessage="#{label.msg_reqTitle}" />
+
+				<h:outputText value="#{label.start_date}:" />
 	            <h:panelGroup >
-		            <p:inputMask id="from" mask="99/99/9999 99:99" size="13" value="#{scheduleBean.event.startDate}" required="true" requiredMessage="Start date is required">
-		                <f:convertDateTime timeZone="America/Sao_Paulo" locale="#{profileBean.locale}" pattern="dd/MM/yyyy HH:mm" />
+		            <h:outputLabel for="from" value="#{label.start_date} " />
+		            <p:inputMask id="from" mask="99/99/9999 99:99" size="13" value="#{scheduleBean.event.startDate}" required="true" requiredMessage="#{label.msg_reqStartDate}">
+		                <f:convertDateTime timeZone="America/Sao_Paulo" locale="#{profileBean.authProfile.locale}" pattern="dd/MM/yyyy HH:mm" />
 		            </p:inputMask>
-		            <h:outputLabel for="to" value=" To: " />
-		            <p:inputMask id="to" mask="99/99/9999 99:99" size="13" value="#{scheduleBean.event.endDate}" required="true" requiredMessage="End date is required">
-		                <f:convertDateTime timeZone="America/Sao_Paulo" locale="#{profileBean.locale}" pattern="dd/MM/yyyy HH:mm" />
+		            <h:outputLabel for="to" value="#{label.end_date} " />
+		            <p:inputMask id="to" mask="99/99/9999 99:99" size="13" value="#{scheduleBean.event.endDate}" required="true" requiredMessage="#{label.msg_reqEndDate}">
+		                <f:convertDateTime timeZone="America/Sao_Paulo" locale="#{profileBean.authProfile.locale}" pattern="dd/MM/yyyy HH:mm" />
 		            </p:inputMask>
-		            <h:outputLabel for="allDay" value="All Day:" />
-		            <h:selectBooleanCheckbox id="allDay" value="#{scheduleBean.event.allDay}" />
 	            </h:panelGroup>
 	            
-	            <h:outputLabel for="content" value="Content:" />
+	            <h:outputLabel for="content" value="#{label.content}:" />
 	            <p:inputTextarea id="content" style="width:482px;height:80px;" value="#{scheduleBean.event.content}" />
-				<p:commandButton value="Delete" actionListener="#{scheduleBean.deleteEvent}" oncomplete="eventDialog.hide();" update="@form" disabled="#{scheduleBean.disabled}" />
+				<p:commandButton value="#{label.delete}" actionListener="#{scheduleBean.deleteEvent}" oncomplete="eventDialog.hide();" update="@form" disabled="#{scheduleBean.disabled}" />
 	            <h:panelGroup style="display:block; text-align: right; padding-top: 8px;">
-		            <p:commandButton type="reset" value="Reset" />
-		            <p:commandButton value="Save" oncomplete="eventDialog.hide();" update="@form" actionListener="#{scheduleBean.addEvent}" />
+		            <p:commandButton type="reset" value="#{label.reset}" />
+		            <p:commandButton value="#{label.save}" oncomplete="eventDialog.hide();" update="@form" actionListener="#{scheduleBean.addEvent}" />
 	            </h:panelGroup>
 	        </h:panelGrid>
 	    </p:dialog>

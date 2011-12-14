@@ -46,7 +46,7 @@ import br.com.lawbook.util.FacesUtil;
 
 /**
  * @author Edilson Luiz Ales Junior
- * @version 09DEC2011-09
+ * @version 14DEC2011-10
  *
  */
 @ManagedBean
@@ -60,7 +60,7 @@ public class ScheduleBean implements Serializable {
 	private transient ResourceBundle rs;
 	private LazyScheduleModel lazyEventModel;
 	private HashMap<String, Long> idEventMapping;
-	private static final long serialVersionUID = 9154003174394161805L;
+	private static final long serialVersionUID = 6478007771055618913L;
 	private static final EventService EVENT_SERVICE = EventService.getInstance();
 	private static final Logger LOG = Logger.getLogger("br.com.lawbook.managedbean");
 	private static final ProfileService PROFILE_SERVICE = ProfileService.getInstance();
@@ -89,7 +89,7 @@ public class ScheduleBean implements Serializable {
 
 	@PostConstruct
 	public void loadLazilyEvents() {
-		LOG.info("#### loadLazilyEvents()");
+		LOG.info(this.getClass().getSimpleName() + ": loadLazilyEvents()");
 
 		if(this.lazyEventModel == null) {
 			this.lazyEventModel = new LazyScheduleModel() {
@@ -115,6 +115,7 @@ public class ScheduleBean implements Serializable {
 				}
 			};
 		}
+		this.upcomingEvents = EVENT_SERVICE.getUpcomingEvents(this.authProfile);
 	}
 
 	public ScheduleEvent getEvent() {
@@ -142,6 +143,7 @@ public class ScheduleBean implements Serializable {
 	}
 
 	public void addEvent(final ActionEvent actionEvent) {
+		LOG.info(this.getClass().getSimpleName() + ": addEvent(ActionEvent actionEvent)");
 		if (this.event.getTitle() == null || this.event.getTitle().isEmpty()) {
 			FacesUtil.warnMessage("=|", this.rs.getString("msg_reqTitle"));
 			return;
@@ -156,7 +158,6 @@ public class ScheduleBean implements Serializable {
 			c.set(Calendar.HOUR_OF_DAY, 14);
 			this.event.setEndDate(c.getTime());
 		}
-
 		try {
 			if (this.event.getEventId() == null)
 				this.createEvent();
@@ -172,6 +173,7 @@ public class ScheduleBean implements Serializable {
 	}
 
 	public void deleteEvent(final ActionEvent actionEvent) {
+		LOG.info(this.getClass().getSimpleName() + ": deleteEvent(ActionEvent actionEvent)");
 		try {
 			EVENT_SERVICE.delete(this.event);
 			this.lazyEventModel.deleteEvent(this.getEvent());
@@ -187,6 +189,7 @@ public class ScheduleBean implements Serializable {
 	}
 
 	public void onEventSelect(final ScheduleEntrySelectEvent selectEvent) {
+		LOG.info(this.getClass().getSimpleName() + ": onEventSelect(ScheduleEntrySelectEvent selectEvent)");
 		try {
 			this.disabled = false;
 			final Long eventId = this.idEventMapping.get(selectEvent.getScheduleEvent().getId());
@@ -201,6 +204,7 @@ public class ScheduleBean implements Serializable {
 	}
 
 	public void onDateSelect(final DateSelectEvent selectEvent) {
+		LOG.info(this.getClass().getSimpleName() + ": onDateSelect(DateSelectEvent selectEvent)");
 		this.disabled = true;
 		this.event = new Event("", selectEvent.getDate(), selectEvent.getDate());
 	}
@@ -211,6 +215,7 @@ public class ScheduleBean implements Serializable {
 	}
 
 	public void onEventMove(final ScheduleEntryMoveEvent event) {
+		LOG.info(this.getClass().getSimpleName() + ": onEventMove(ScheduleEntryMoveEvent event)");
 		try {
 			final Long eventId = this.idEventMapping.get(event.getScheduleEvent().getId());
 			this.event = EVENT_SERVICE.getEventById(eventId);
@@ -240,6 +245,7 @@ public class ScheduleBean implements Serializable {
 	}
 
 	public void onEventResize(final ScheduleEntryResizeEvent event) {
+		LOG.info(this.getClass().getSimpleName() + ": onEventResize(ScheduleEntryResizeEvent event)");
 		try {
 			final Long eventId = this.idEventMapping.get(event.getScheduleEvent().getId());
 			this.event = EVENT_SERVICE.getEventById(eventId);
@@ -263,6 +269,7 @@ public class ScheduleBean implements Serializable {
 	}
 
 	private void updateEvent() throws IllegalArgumentException, HibernateException {
+		LOG.info(this.getClass().getSimpleName() + ": updateEvent()");
 		EVENT_SERVICE.update(this.event);
 		this.lazyEventModel.updateEvent(this.event);
 		this.idEventMapping.put(this.event.getId(), this.event.getEventId());
@@ -272,6 +279,7 @@ public class ScheduleBean implements Serializable {
 	}
 
 	private void createEvent() throws IllegalArgumentException, HibernateException {
+		LOG.info(this.getClass().getSimpleName() + ": createEvent()");
 		EVENT_SERVICE.create(this.event);
 		this.lazyEventModel.addEvent(this.event);
 		this.idEventMapping.put(this.event.getId(), this.event.getEventId());
